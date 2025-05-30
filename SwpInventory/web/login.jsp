@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>??ng nh?p qu?n lý kho</title>
+    <title>Dang nhap quan ly kho</title>
     <style>
-        /* Reset and base */
+         /* Reset and base */
         * {
             box-sizing: border-box;
         }
@@ -71,13 +71,18 @@
 </head>
 <body>
     <div class="container">
-        <h2>??ng nh?p h? th?ng</h2>
-        <form action="/login" method="post">
-            <label for="username">Tài kho?n</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">M?t kh?u</label>
+        <h2>Dang nhap</h2>
+        <form action="login" method="post">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
+            
+            <label for="password">Mat khau:</label>
             <input type="password" id="password" name="password" required>
-            <input type="submit" value="??ng nh?p">
+            
+            <input type="submit" value="Dang nhap">
+            <div style="color:red; text-align:center; margin-top:10px;">
+                ${requestScope.errorMessage}
+            </div>
         </form>
     </div>
 </body>
