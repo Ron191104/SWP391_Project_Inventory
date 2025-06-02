@@ -10,6 +10,7 @@ import java.io.IOException;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -32,24 +33,21 @@ public class RegisterServlet extends HttpServlet {
             case "Supplier Management": role = 3; break;
         }
 
-        // Validate phía server
-        if (username==null || username.trim().isEmpty() ||
-            password==null || password.trim().isEmpty() ||
+        if (username == null || username.trim().isEmpty() ||
+            password == null || password.trim().isEmpty() ||
             role == 0) {
             request.setAttribute("error", "Please fill all required fields!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        // Email (nếu nhập) phải đúng định dạng
-        if(email != null && !email.trim().isEmpty() && !email.matches("^[\\w.+\\-]+@[a-zA-Z\\d\\-.]+\\.[a-zA-Z]{2,}$")) {
+        if (email != null && !email.trim().isEmpty() && !email.matches("^[\\w.+\\-]+@[a-zA-Z\\d\\-.]+\\.[a-zA-Z]{2,}$")) {
             request.setAttribute("error", "Invalid email format!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        // Password nên >=6 ký tự
-        if(password.length() < 6) {
+        if (password.length() < 6) {
             request.setAttribute("error", "Password must be at least 6 characters!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
@@ -58,21 +56,24 @@ public class RegisterServlet extends HttpServlet {
         UserDAO dao = new UserDAO();
 
         try {
-            if(dao.checkUsernameExists(username)) {
+            if (dao.checkUsernameExists(username)) {
                 request.setAttribute("error", "Username already exists!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
                 return;
             }
 
-            // Hash password trước khi lưu
-            String hashedPassword = dao.hashPassword(password);
+            if (dao.checkEmailExists(email)) {
+                request.setAttribute("error", "Email already exists!");
+                request.getRequestDispatcher("register.jsp").forward(request, response);
+                return;
+            }
 
-            User user = new User(username, hashedPassword, name, email, phone, address, role, image);
+            // Không hash password, dùng plain text
+            User user = new User(username, password, name, email, phone, address, role, image, 0);
 
             if (dao.insertUser(user)) {
                 response.sendRedirect("register_success.jsp");
             } else {
-                // Thông báo lỗi chung
                 request.setAttribute("error", "Registration failed!");
                 request.getRequestDispatcher("register_failed.jsp").forward(request, response);
             }

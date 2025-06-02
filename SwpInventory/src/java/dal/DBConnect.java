@@ -14,7 +14,7 @@ public class DBConnect {
             // Nạp driver SQL Server
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             // Chuỗi kết nối - thay đổi theo cấu hình máy bạn
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=Inventory;user=sa;password=123";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=Inventory;user=sa;password=123456789";
             conn = DriverManager.getConnection(url);
         } catch (Exception e) {
             e.printStackTrace();

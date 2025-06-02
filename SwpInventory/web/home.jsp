@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-/<!-- Kiem tra role -->
-<span style="padding:0 16px; color:#999; font-size:x-small;">
-    <%= session.getAttribute("userRole") %>
-</span>
-/<!-- Kiem tra dang nhap -->
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%
+    // Kiểm tra đăng nhập
     if (session.getAttribute("userName") == null) {
         response.sendRedirect("signin.jsp");
         return;
     }
+    // Lấy role
+    Integer userRole = (Integer) session.getAttribute("userRole");
 %>
+<!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="UTF-8" />
@@ -350,35 +349,45 @@
     <body>
         <header class="header">
             <div class="header-left">
-                <h1>Xu?t kho</h1>
-                <nav class="nav" role="navigation" aria-label="?i?u h??ng ch�nh">
-                    <a href="product_list.html">S?n ph?m</a>
-                    <a href="import_goods.html">Nh?p kho</a>
-                    <a href="export_goods.html" class="active" aria-current="page">Xu?t kho</a>
-                    <a href="stats.html">Th?ng k�</a>
-                    <a href="login.html">??ng xu?t</a>
-                </nav>
-            </div>
-            <div class="header-right">
+            <h1>Quản lý kho</h1>
+            <nav class="nav">
+                <a href="product_list.jsp">Sản phẩm</a>
+                <a href="import_goods.jsp">Nhập kho</a>
+                <a href="export_goods.jsp">Xuất kho</a>
+                <a href="stats.jsp">Thống kê</a>
+                <% if(userRole != null && userRole == 0) { %>
+                    <!-- Chỉ admin mới thấy link duyệt tài khoản -->
+                    <a href="admin-approve">Duyệt tài khoản</a>
+                <% } %>
+                <a href="logout">Đăng xuất</a>
+            </nav>
+        </div>
+                
+              <div class="header-right">
+            <!-- avatar + tên user -->
+            <span style="font-weight:bold; color:#388e3c;">
+                <%= session.getAttribute("userName") %>
+            </span>
+        </div>
                 <div class="search-box" role="search">
-                    <input type="search" placeholder="T�m ki?m..." aria-label="T�m ki?m s?n ph?m ho?c xu?t kho..." id="searchInput" />
+                    <input type="search" placeholder="Tìm ki?m..." aria-label="Tìm ki?m s?n ph?m ho?c xu?t kho..." id="searchInput" />
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C14.77 5.4 12.61 3.5 9.99 3.5S5.22 5.4 5.22 8.39c0 3 2.13 5.41 4.77 5.41a4.87 4.87 0 003.22-1.3l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.99 13.29a4.43 4.43 0 01-4.43-4.42c0-2.44 2-4.42 4.43-4.42s4.42 1.97 4.42 4.41c0 2.48-1.98 4.43-4.42 4.43z"/></svg>
                 </div>
-                <div class="notification-wrapper" tabindex="0" aria-label="Th�ng b�o" role="button">
+                <div class="notification-wrapper" tabindex="0" aria-label="Thông báo" role="button">
                     <svg class="notification-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <path d="M12 22c1.1 0 1.99-.9 1.99-2H10c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z"/>
                     </svg>
-                    <span class="notification-badge" aria-label="S? th�ng b�o">3</span>
-                    <div class="notification-dropdown" tabindex="-1" aria-hidden="true" aria-label="Danh s�ch th�ng b�o">
-                        <div>B?n c� ??n h�ng m?i c?n x? l�.</div>
-                        <div>S?n ph?m SP002 s?p h?t h�ng.</div>
-                        <div>B�o c�o th�ng 5 ?� ???c c?p nh?t.</div>
+                    <span class="notification-badge" aria-label="S? thông báo">3</span>
+                    <div class="notification-dropdown" tabindex="-1" aria-hidden="true" aria-label="Danh sách thông báo">
+                        <div>B?n có ??n hàng m?i c?n x? lý.</div>
+                        <div>S?n ph?m SP002 s?p h?t hàng.</div>
+                        <div>Báo cáo tháng 5 ?ã ???c c?p nh?t.</div>
                     </div>
                 </div>
                 <div class="user-menu">
                     <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu ng??i d�ng">
-                        <img src="images/<%= session.getAttribute("userAvatar") %>" alt="Avatar ng??i d�ng" class="user-avatar" />
+                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu ng??i dùng">
+                        <img src="images/<%= session.getAttribute("userAvatar") %>" alt="Avatar ng??i dùng" class="user-avatar" />
                     </label>
                     <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
                         <span style="padding:12px 16px; color:#4caf50; font-weight:bold;">
