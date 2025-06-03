@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dang nhap quan ly kho</title>
     <style>
@@ -13,14 +14,14 @@
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #CBF2F2;
             color: #333;
         }
         /* Container */
         .container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 24px;
+            max-width: 500px;
+            margin: 200px auto;
+            padding: 25px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 0 16px rgba(0,0,0,0.1);
@@ -48,8 +49,8 @@
         form input[type="text"]:focus,
         form input[type="password"]:focus {
             outline: none;
-            border-color: #4caf50;
-            box-shadow: 0 0 5px #4caf50aa;
+            border-color: #82CAFA;
+            box-shadow: 0 0 5px #82CAFAaa;
         }
         form input[type="submit"] {
             margin-top: 20px;
@@ -59,7 +60,7 @@
             font-weight: 700;
             border: none;
             color: white;
-            background-color: #4caf50;
+            background-color: #82CAFA;
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s ease;
@@ -71,15 +72,15 @@
 </head>
 <body>
     <div class="container">
-        <h2>Dang nhap</h2>
+        <h2>Đăng nhập</h2>
         <form action="login" method="post">
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" required>
             
-            <label for="password">Mat khau:</label>
+            <label for="password">Mật khẩu:</label>
             <input type="password" id="password" name="password" required>
             
-            <input type="submit" value="Dang nhap">
+            <input type="submit" value="Đăng nhập">
             <div style="color:red; text-align:center; margin-top:10px;">
                 ${requestScope.errorMessage}
             </div>
