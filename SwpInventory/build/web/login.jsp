@@ -74,11 +74,11 @@
     <div class="container">
         <h2>Đăng nhập</h2>
         <form action="login" method="post">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required>
+            <label for="login">Email hoặc Tên đăng nhập:</label>
+            <input type="text" id="login" name="login" placeholder="Nhập email hoặc tên đăng nhập" required>
             
             <label for="password">Mật khẩu:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
             
             <input type="submit" value="Đăng nhập">
             <div style="color:red; text-align:center; margin-top:10px;">
@@ -88,3 +88,5 @@
     </div>
 </body>
 </html>
+
+

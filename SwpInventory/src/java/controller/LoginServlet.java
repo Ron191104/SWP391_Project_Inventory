@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dal.UserDAO;
@@ -14,13 +10,22 @@ import jakarta.servlet.annotation.WebServlet;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
+        String login = request.getParameter("login"); // lấy email hoặc username
         String password = request.getParameter("password");
 
         UserDAO dao = new UserDAO();
-        User user = dao.getUserByEmailAndPassword(email, password);
+        User user;
+
+        // Nếu login chứa '@' thì đăng nhập bằng email, ngược lại bằng username
+        if (login != null && login.contains("@")) {
+            user = dao.getUserByEmailAndPassword(login, password);
+        } else {
+            user = dao.getUserByUsernameAndPassword(login, password);
+        }
 
         if (user != null) {
             HttpSession session = request.getSession();
@@ -28,10 +33,10 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userRole", user.getRole());
             session.setAttribute("userImage", user.getImage());
             session.setAttribute("userEmail", user.getEmail());
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("dashboard.jsp");
         } else {
-            request.setAttribute("errorMessage", "Email hoặc mật khẩu không đúng!");
-            request.getRequestDispatcher("signin.jsp").forward(request, response);
+            request.setAttribute("errorMessage", "Email/Tên đăng nhập hoặc mật khẩu không đúng!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 }
