@@ -193,18 +193,21 @@
                 background-color: #FDF9DA;
             }
             .container {
-                max-width: 1200px;
+                max-width: 100%;
                 padding: 24px;
                 background: white;
-                border-radius: 8px;
-                box-shadow: 0 0 16px rgba(0,0,0,0.1);
+                margin-left: 10px;
+
+
             }
             table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-top: 28px;
                 table-layout: fixed;
+
             }
+
             th, td {
                 border: 1px solid #ddd;
                 padding: 5px;
@@ -286,7 +289,7 @@
                 top: 50%;
                 transform: translateY(-50%);
                 color: #aaa;
-                pointer-events: none;
+/*                pointer-events: none;*/
             }
             .fas.fa-search.search-icon{
                 border: none;
@@ -364,7 +367,7 @@
                         <th>Image</th>
                         <th style="width: 30px">Name</th>
                         <th style="width: 30px">Barcode</th>
-                        <th>Category</th>
+                        <th>Category ID</th>
                         <th>Unit</th>
                         <th>Import price</th>
                         <th>Sale price</th>

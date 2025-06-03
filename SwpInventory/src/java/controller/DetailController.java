@@ -12,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Categories;
 import model.Product;
 
 /**
@@ -36,6 +38,10 @@ public class DetailController extends HttpServlet {
         String id = request.getParameter("did");
         ProductDAO dao = new ProductDAO();
         Product p = dao.getProductByID(id);
+                List<Categories> listC = dao.getAllCategories();
+
+                request.setAttribute("listC", listC);
+
         request.setAttribute("detail", p);
         request.getRequestDispatcher("product_detail.jsp").forward(request, response);
     }

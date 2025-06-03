@@ -1,4 +1,5 @@
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +65,7 @@
                 margin-top: 0;
                 margin-bottom: 20px;
                 margin-top: 20px;
-                  
+
 
             }
 
@@ -98,7 +99,7 @@
             }
             .info-label {
                 font-weight: 600;
-                color: #89D0F0; 
+                color: #89D0F0;
                 min-width: 130px;
                 user-select: text;
             }
@@ -109,9 +110,9 @@
                 user-select: text;
             }
 
-           
-           
-          
+
+
+
 
             .description {
                 background-color: #eef9ff;
@@ -148,7 +149,7 @@
                 justify-content: center;
                 display: flex;
                 margin:  -20px;
-        }
+            }
         </style>
     </head>
     <body>
@@ -174,10 +175,16 @@
                         <div class="info-label">Barcode:</div>
                         <div class="info-value">${detail.barcode}</div>
                     </div>
-                    <div class="info-row">
-                        <div class="info-label">Category ID:</div>
-                        <div class="info-value">${detail.category_id}</div>
-                    </div>
+                    <c:forEach items="${listC}" var="c">
+                        <c:if test="${c.id == detail.category_id}">
+                            <div class="info-row">
+                                <div class="info-label">Category :</div> 
+                                <div class="info-value">${c.name}</div>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+
+
                     <div class="info-row">
                         <div class="info-label">Supplier ID:</div>
                         <div class="info-value">${detail.supplier_id}</div>
