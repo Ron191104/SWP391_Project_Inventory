@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Danh sách sản phẩm - Quản lý kho</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -48,6 +47,8 @@
                 display: flex;
                 gap: 12px;
                 margin-left: 40px;
+                position: relative;
+
             }
             .nav a {
                 color: white;
@@ -56,7 +57,14 @@
                 font-weight: 600;
                 transition: background-color 0.3s ease;
                 white-space: nowrap;
+                display: flex;
+                align-items: center;
             }
+            .nav a i {
+            margin-right: 8px; 
+            min-width: 16px;
+            text-align: center;
+        }
             .nav a:hover,
             .nav a.active {
                 background-color: #787ff6;
@@ -67,9 +75,7 @@
                 align-items: center;
                 gap: 20px;
             }
-            /*            .search-box {
-                            position: relative;
-                        }*/
+            
             .search-box input[type="search"] {
                 padding: 6px 28px 6px 12px;
                 border-radius: 20px;
@@ -228,11 +234,7 @@
             tbody tr:hover {
                 background-color: #FDF9DA;
             }
-            .button-container {
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-            }
+    
             .action-column {
                 width: 120px;
             }
@@ -242,10 +244,7 @@
                     gap: 10px;
                     padding: 12px 12px;
                 }
-                .header-left {
-                    flex-basis: 100%;
-                    justify-content: center;
-                }
+               
                 .nav {
                     margin-left: 0;
                     flex-wrap: wrap;
@@ -289,7 +288,6 @@
                 top: 50%;
                 transform: translateY(-50%);
                 color: #aaa;
-/*                pointer-events: none;*/
             }
             .fas.fa-search.search-icon{
                 border: none;
@@ -297,18 +295,84 @@
                 color: #89D0F0;
                 background-color: white;
             }
+            
+             .dropdown {
+            position: relative;
+        }
+        .dropdown input[type="checkbox"] {
+            display: none;
+        }
+        .dropdown-label {
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            color: white; 
+            display: flex;
+            align-items: center;
+        }
+        .dropdown-label i {
+            margin-right: 8px; 
+            min-width: 16px;
+            text-align: center;
+        }
+        .dropdown-label:hover {
+            background-color: #787ff6; 
+            color: white; 
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            min-width: 200px;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+        .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
+            display: flex;
+        }
+        .dropdown-menu a {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            white-space: nowrap;
+            color: #333;
+            display: block;
+        }
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+        .dropdown-menu a:hover {
+            background-color: #FDF9DA;
+        }
 
         </style>
     </head>
     <body>
         <div class="header">
             <div class="header-left">
-                <h1>Quản lý sản phẩm</h1>
+                <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="product_list" class="active">Sản phẩm</a>
-                    <a href="import_goods.html">Nhập kho</a>
-                    <a href="export_goods.html">Xuất kho</a>
-                    <a href="stats.html">Thống kê</a>
+                    <a href="dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <div class="dropdown">
+                        <input type="checkbox" id="product-dropdown" />
+                        <label for="product-dropdown" class="dropdown-label">
+                            <i class="fas fa-box"></i> Sản phẩm
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="product_add.jsp"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                        </div>
+                    </div>
+                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
                 </div>
             </div>
             <div class="header-right">

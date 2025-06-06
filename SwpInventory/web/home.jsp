@@ -61,7 +61,7 @@
             align-items: center;
         }
         .nav a i {
-            margin-right: 8px; /* Space icon from text */
+            margin-right: 8px; 
             min-width: 16px;
             text-align: center;
         }
@@ -161,7 +161,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            margin-top: 20px; /* Add some space above */
+            margin-top: 20px; 
         }
         .info-container img {
             max-width: 100%;
