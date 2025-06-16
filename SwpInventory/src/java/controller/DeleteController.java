@@ -12,16 +12,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Categories;
-import model.Product;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "CategoriesController", urlPatterns = {"/category"})
-public class CategoriesController extends HttpServlet {
+@WebServlet(name = "DeleteController", urlPatterns = {"/delete"})
+public class DeleteController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,21 +31,12 @@ public class CategoriesController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        ProductDAO dao = new ProductDAO();
-        String categoriesID = request.getParameter("id");
-        List<Product> listByCategory;
-        if (categoriesID == null || categoriesID.isEmpty()) {
-            response.sendRedirect("product_list");
-            return;
-        } else {
-            listByCategory = dao.getProductByCategory(categoriesID);
+        String did = request.getParameter("id");
+        if (did != null && !did.isEmpty()) {
+            ProductDAO dao = new ProductDAO();
+            dao.deleteProduct(did);
         }
-        List<Categories> listC = dao.getAllCategories();
-        request.setAttribute("listP", listByCategory);
-        request.setAttribute("listC", listC);
-        request.setAttribute("tag", categoriesID);
-        request.getRequestDispatcher("product_list.jsp").forward(request, response);
+        response.sendRedirect("product_list");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

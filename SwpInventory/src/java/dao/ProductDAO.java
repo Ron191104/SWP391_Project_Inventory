@@ -118,6 +118,41 @@ public class ProductDAO {
         }
         return null;
     }
-        
+
+    public void addProduct(String name, String barcode, int category_id, int supplier_id, double price_in, double price_out, int quantity, String unit, Date manufacture_date, Date expired_date, String image, String description) {
+        String query = "INSERT INTO Products (product_name, barcode, category_id, supplier_id, price_in, price_out, quantity, unit, manufacture_date, expired_date, image, description) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setString(1, name);
+            ps.setString(2, barcode);
+            ps.setInt(3, category_id);
+            ps.setInt(4, supplier_id);
+            ps.setDouble(5, price_in);
+            ps.setDouble(6, price_out);
+            ps.setInt(7, quantity);
+            ps.setString(8, unit);
+            ps.setDate(9, manufacture_date);
+            ps.setDate(10,expired_date);
+            ps.setString(11, image);
+            ps.setString(12, description);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+       public void deleteProduct(String id) {
+        String query = "delete from products where product_id=?";
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+
+        }
+    }
 
 }

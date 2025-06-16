@@ -12,16 +12,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
 import java.util.List;
 import model.Categories;
-import model.Product;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "CategoriesController", urlPatterns = {"/category"})
-public class CategoriesController extends HttpServlet {
+@WebServlet(name = "AddProductController", urlPatterns = {"/addproduct"})
+public class AddProductController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,22 +34,9 @@ public class CategoriesController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        ProductDAO dao = new ProductDAO();
-        String categoriesID = request.getParameter("id");
-        List<Product> listByCategory;
-        if (categoriesID == null || categoriesID.isEmpty()) {
-            response.sendRedirect("product_list");
-            return;
-        } else {
-            listByCategory = dao.getProductByCategory(categoriesID);
-        }
-        List<Categories> listC = dao.getAllCategories();
-        request.setAttribute("listP", listByCategory);
-        request.setAttribute("listC", listC);
-        request.setAttribute("tag", categoriesID);
-        request.getRequestDispatcher("product_list.jsp").forward(request, response);
+      
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -63,8 +50,13 @@ public class CategoriesController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    }
+ request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        ProductDAO dao = new ProductDAO();
+        List<Categories> listC = dao.getAllCategories();
+        request.setAttribute("listC", listC);
+        request.getRequestDispatcher("product_add.jsp").forward(request, response); 
+}
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -77,8 +69,38 @@ public class CategoriesController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    }
+ request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
+        try {
+            String name = request.getParameter("name");
+            String barcode = request.getParameter("barcode");
+            int category_id = Integer.parseInt(request.getParameter("category_id"));
+            int supplier_id = Integer.parseInt(request.getParameter("supplier_id"));
+            double price_in = Double.parseDouble(request.getParameter("price_in"));
+            double price_out = Double.parseDouble(request.getParameter("price_out"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String unit = request.getParameter("unit");
+
+            String mfd = request.getParameter("manufacture_date");
+            Date manufacture_date = (mfd == null || mfd.isEmpty()) ? null : Date.valueOf(mfd);
+
+            String exp = request.getParameter("expired_date");
+            Date expired_date = (exp == null || exp.isEmpty()) ? null : Date.valueOf(exp);
+
+            String image = request.getParameter("image");
+            String description = request.getParameter("description");
+
+            ProductDAO dao = new ProductDAO();
+            dao.addProduct(name, barcode, category_id, supplier_id, price_in, price_out, quantity, unit, manufacture_date, expired_date, image, description);
+
+            // Sau khi thêm xong, redirect về lại servlet để load lại form
+            response.sendRedirect("addproduct");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println(e.getMessage());
+        }    }
 
     /**
      * Returns a short description of the servlet.

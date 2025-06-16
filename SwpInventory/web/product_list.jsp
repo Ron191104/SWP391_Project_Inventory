@@ -10,9 +10,7 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-            * {
-                box-sizing: border-box;
-            }
+
             body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
@@ -61,10 +59,10 @@
                 align-items: center;
             }
             .nav a i {
-            margin-right: 8px; 
-            min-width: 16px;
-            text-align: center;
-        }
+                margin-right: 8px;
+                min-width: 16px;
+                text-align: center;
+            }
             .nav a:hover,
             .nav a.active {
                 background-color: #787ff6;
@@ -75,7 +73,7 @@
                 align-items: center;
                 gap: 20px;
             }
-            
+
             .search-box input[type="search"] {
                 padding: 6px 28px 6px 12px;
                 border-radius: 20px;
@@ -168,7 +166,7 @@
                 border-color: #FDF9DA;
                 outline: none;
             }
-            .user-menu nav.dropdown-menu {
+/*            .user-menu nav.dropdown-menu {
                 position: absolute;
                 top: 50px;
                 right: 0;
@@ -181,7 +179,26 @@
                 overflow: hidden;
                 display: none;
                 z-index: 1000;
-            }
+                
+                
+            }*/
+.user-menu nav.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: white;
+    color: #333;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    min-width: 180px;
+    flex-direction: column;
+    overflow: hidden;
+    display: none;
+    z-index: 1000;
+    max-height: 240px;       /* Thêm dòng này */
+    overflow-y: auto;        /* Thêm dòng này */
+    scrollbar-width: none;   /* Ẩn scrollbar trên Firefox */
+}
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
             }
@@ -234,7 +251,7 @@
             tbody tr:hover {
                 background-color: #FDF9DA;
             }
-    
+
             .action-column {
                 width: 120px;
             }
@@ -244,7 +261,7 @@
                     gap: 10px;
                     padding: 12px 12px;
                 }
-               
+
                 .nav {
                     margin-left: 0;
                     flex-wrap: wrap;
@@ -255,6 +272,7 @@
                     flex-basis: 100%;
                     justify-content: center;
                     gap: 12px;
+                    
                 }
                 .search-box input[type="search"] {
                     width: 120px;
@@ -295,61 +313,62 @@
                 color: #89D0F0;
                 background-color: white;
             }
-            
-             .dropdown {
-            position: relative;
-        }
-        .dropdown input[type="checkbox"] {
-            display: none;
-        }
-        .dropdown-label {
-            cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-            color: white; 
-            display: flex;
-            align-items: center;
-        }
-        .dropdown-label i {
-            margin-right: 8px; 
-            min-width: 16px;
-            text-align: center;
-        }
-        .dropdown-label:hover {
-            background-color: #787ff6; 
-            color: white; 
-        }
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            color: #333;
-            border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            min-width: 200px;
-            display: none;
-            flex-direction: column;
-            z-index: 1000;
-        }
-        .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
-            display: flex;
-        }
-        .dropdown-menu a {
-            padding: 12px 16px;
-            border-bottom: 1px solid #eee;
-            font-weight: 600;
-            white-space: nowrap;
-            color: #333;
-            display: block;
-        }
-        .dropdown-menu a:last-child {
-            border-bottom: none;
-        }
-        .dropdown-menu a:hover {
-            background-color: #FDF9DA;
-        }
+
+            .dropdown {
+                position: relative;
+            }
+            .dropdown input[type="checkbox"] {
+                display: none;
+            }
+            .dropdown-label {
+                cursor: pointer;
+                padding: 8px 16px;
+                border-radius: 4px;
+                transition: background-color 0.3s ease;
+                color: white;
+                display: flex;
+                align-items: center;
+            }
+            .dropdown-label i {
+                margin-right: 8px;
+                min-width: 16px;
+                text-align: center;
+            }
+            .dropdown-label:hover {
+                background-color: #787ff6;
+                color: white;
+            }
+            .dropdown-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: white;
+                color: #333;
+                border-radius: 8px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                min-width: 200px;
+                display: none;
+                flex-direction: column;
+                z-index: 1000;
+                
+            }
+            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
+                display: flex;
+            }
+            .dropdown-menu a {
+                padding: 12px 16px;
+                border-bottom: 1px solid #eee;
+                font-weight: 600;
+                white-space: nowrap;
+                color: #333;
+                display: block;
+            }
+            .dropdown-menu a:last-child {
+                border-bottom: none;
+            }
+            .dropdown-menu a:hover {
+                background-color: #FDF9DA;
+            }
 
         </style>
     </head>
@@ -367,7 +386,9 @@
                             <i class="fas fa-box"></i> Sản phẩm
                         </label>
                         <div class="dropdown-menu">
-                            <a href="product_add.jsp"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+
+                            <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
                         </div>
                     </div>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
@@ -429,16 +450,16 @@
                     <tr>
                         <th style="width: 5px">ID</th>
                         <th>Image</th>
-                        <th style="width: 30px">Name</th>
+                        <th style="width: 40px">Name</th>
                         <th style="width: 30px">Barcode</th>
                         <th>Category ID</th>
-                        <th>Unit</th>
+                        <th style="width: 10px">Unit</th>
                         <th>Import price</th>
                         <th>Sale price</th>
                         <th>Quantity</th>
                         <th>MFD</th>
                         <th>EXP</th>
-                        <th>Status</th>
+                        <th style="width: 10px">Status</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -470,8 +491,11 @@
                             </td>
                             <td>
                                 <input type="submit" value="Edit" style="margin-bottom: 5px;" />
-                                <input type="submit" value="Delete" />
-                            </td>
+                                <a href="delete?id=${o.id}" 
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm có ID=${o.id} không?')" 
+                                   style="background: #A5A9F9; color: white; padding: 5px 10px; border-radius: 4px;font-size: 10px; height: 10px">
+                                    Delete
+                                </a>                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>
