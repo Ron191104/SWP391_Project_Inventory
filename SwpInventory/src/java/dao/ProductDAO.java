@@ -133,7 +133,7 @@ public class ProductDAO {
             ps.setInt(7, quantity);
             ps.setString(8, unit);
             ps.setDate(9, manufacture_date);
-            ps.setDate(10,expired_date);
+            ps.setDate(10, expired_date);
             ps.setString(11, image);
             ps.setString(12, description);
             ps.executeUpdate();
@@ -142,8 +142,8 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
-    
-       public void deleteProduct(String id) {
+
+    public void deleteProduct(String id) {
         String query = "delete from products where product_id=?";
         try {
             con = DBConnect.getConnection();
@@ -153,6 +153,54 @@ public class ProductDAO {
         } catch (Exception e) {
 
         }
+    }
+
+    public List<Product> filterByPriceIn(double minPrice, double maxPrice) {
+        List<Product> products = new ArrayList<>();
+        String query = "select * from products WHERE price_in >= ? AND price_in <= ?";
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setDouble(1, minPrice);
+            ps.setDouble(2, maxPrice);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4),
+                        rs.getInt(5), rs.getDouble(6), rs.getDouble(7), rs.getInt(8), rs.getString(9),
+                        rs.getDate(10), rs.getDate(11), rs.getString(12), rs.getString(13));
+
+                products.add(product);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+    
+    public List<Product> filterByPriceOut(double minPrice, double maxPrice) {
+        List<Product> products = new ArrayList<>();
+        String query = "select * from products WHERE price_out >= ? AND price_out <= ?";
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setDouble(1, minPrice);
+            ps.setDouble(2, maxPrice);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4),
+                        rs.getInt(5), rs.getDouble(6), rs.getDouble(7), rs.getInt(8), rs.getString(9),
+                        rs.getDate(10), rs.getDate(11), rs.getString(12), rs.getString(13));
+
+                products.add(product);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 
 }

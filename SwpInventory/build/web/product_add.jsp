@@ -437,7 +437,7 @@
             <label for="exp">Ngày hết hạn</label>
             <input type="date" id="expired_date" name="expired_date" />
 
-            <label for="image">Ảnh (URL hoặc tên file)</label>
+            <label for="image">Ảnh</label>
             <input type="text" id="image" name="image" />
 
             <label for="description">Mô tả</label>

@@ -27,10 +27,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                background-color: #82CAFA; /* Màu chủ đạo */
+                background-color: #82CAFA;
                 color: white;
                 padding: 12px 24px;
                 position: relative;
+
             }
             .header-left {
                 display: flex;
@@ -166,10 +167,12 @@
                 border-color: #FDF9DA;
                 outline: none;
             }
-/*            .user-menu nav.dropdown-menu {
+
+            .user-menu nav.dropdown-menu {
                 position: absolute;
                 top: 50px;
-                right: 0;
+                left: -50%;
+                transform: translateX(-50%);
                 background: white;
                 color: #333;
                 border-radius: 8px;
@@ -179,26 +182,11 @@
                 overflow: hidden;
                 display: none;
                 z-index: 1000;
-                
-                
-            }*/
-.user-menu nav.dropdown-menu {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background: white;
-    color: #333;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    min-width: 180px;
-    flex-direction: column;
-    overflow: hidden;
-    display: none;
-    z-index: 1000;
-    max-height: 240px;       /* Thêm dòng này */
-    overflow-y: auto;        /* Thêm dòng này */
-    scrollbar-width: none;   /* Ẩn scrollbar trên Firefox */
-}
+                max-height: 240px;
+                overflow-y: auto;
+                scrollbar-width: none;
+            }
+
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
             }
@@ -272,7 +260,7 @@
                     flex-basis: 100%;
                     justify-content: center;
                     gap: 12px;
-                    
+
                 }
                 .search-box input[type="search"] {
                     width: 120px;
@@ -350,7 +338,7 @@
                 display: none;
                 flex-direction: column;
                 z-index: 1000;
-                
+
             }
             .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
                 display: flex;
@@ -369,6 +357,27 @@
             .dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
+
+            .form-control1 {
+                height: 13px;
+                width: 55px;
+                padding: 10px 15px;
+                border: 2px solid #82CAFA;
+                border-radius: 9px;
+                font-size: 11px;
+                outline: none;
+            }
+
+            .formPrice{
+                padding-right:42%;
+            }
+            
+            .filterType{
+                height: 20px;
+                border: none;
+                outline: none;
+            }
+           
 
         </style>
     </head>
@@ -389,6 +398,8 @@
                             <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
                             <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+
                         </div>
                     </div>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
@@ -414,10 +425,10 @@
                     <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
                         <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
-                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
-                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
-                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
+                    <nav class="dropdown-menu" id="user-menu-dropdown">
+                        <a href="myprofile.html">My Profile</a>
+                        <a href="change_password.html">Change Password</a>
+                        <a href="login.html">Log Out</a>
                     </nav>
                 </div>
             </div>
@@ -429,11 +440,27 @@
                 <form action="category">
                     <select id="product-type" name="id" class="product-select" onchange="this.form.submit()">
                         <option value="" ${empty tag ? "selected" : ""}>Tất cả sản phẩm</option>
+
                         <c:forEach items="${listC}" var="c">
                             <option value="${c.id}" ${c.id == tag ? "selected" : ""}>${c.name}</option>
                         </c:forEach>
                     </select>
                 </form>
+                <div class="formPrice">
+                    <form action="FilterByPriceController" method="get">
+                        <select class="filterType" name="filterType">
+                            <option value="in">Giá nhập</option>
+                            <option value="out">Giá bán</option>
+                        </select>
+                        <input type="number" name="minPrice" placeholder="Giá từ" class="form-control1" >
+                        <span style="font-size: 12px">đến</span>
+                        <input type="number" name="maxPrice" placeholder="Giá đến" class="form-control1" >
+                      
+                        <button type="submit" style="display: none">Lọc</button>
+                    </form>
+                </div>
+
+
 
                 <form action="search">
                     <div class="form-group">
@@ -493,7 +520,7 @@
                                 <input type="submit" value="Edit" style="margin-bottom: 5px;" />
                                 <a href="delete?id=${o.id}" 
                                    onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm có ID=${o.id} không?')" 
-                                   style="background: #A5A9F9; color: white; padding: 5px 10px; border-radius: 4px;font-size: 10px; height: 10px">
+                                   style="background: #787FF6; color: white; padding: 5px 10px; border-radius: 4px;font-size: 10px; height: 10px">
                                     Delete
                                 </a>                            </td>
                         </tr>
