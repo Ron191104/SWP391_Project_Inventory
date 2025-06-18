@@ -14,7 +14,7 @@
 
             body {
                 margin: 0;
-                font-family: 'Poppins', sans-serif;
+                font-family:  "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 background-color: #f5fafd;
                 color: #222;
             }
@@ -105,10 +105,17 @@
             }
             .info-value {
                 font-weight: 400;
-                max-width: 430px;
+                max-width: 400px;
                 word-wrap: break-word;
-                user-select: text;
+                padding: 6px 10px;
+                border: 1px solid #89D0F0;
+                border-radius: 6px;
+                background-color: white;
+                color: #333;
+                 width: 280px;
+                height: 20px;
             }
+
 
 
 
@@ -121,9 +128,8 @@
                 padding: 12px;
                 font-size: 0.95rem;
                 color: #305c7a;
-                max-height: 120px;
-                overflow-y: auto;
-                user-select: text;
+               height: 100px;
+               width: 100%;
                 line-height: 1.4;
             }
 
