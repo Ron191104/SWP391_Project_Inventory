@@ -54,6 +54,37 @@ public class CategoryDAO {
         e.printStackTrace();
     }
 }
+    
+    public Categories getCategoryById(int id) {
+    String sql = "SELECT * FROM categories WHERE category_id = ?";
+    try {
+        con = DBConnect.getConnection();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            int categoryId = rs.getInt("category_id");
+            String categoryName = rs.getString("category_name");
+            return new Categories(categoryId, categoryName);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+public void updateCategory(int id, String name) {
+    String sql = "UPDATE categories SET category_name = ? WHERE category_id = ?";
+    try {
+        con = DBConnect.getConnection();
+        ps = con.prepareStatement(sql);
+        ps.setString(1, name);
+        ps.setInt(2, id);
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
 
 
 }

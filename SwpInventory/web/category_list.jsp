@@ -431,7 +431,7 @@
                                 <td class="action-icons">
                                     <a href="category?id=${c.id}" class="fas fa-list" style="color: #787FF6;"></a>
 
-                                    <a href="" class="fas fa-pencil-alt" style="color: #787FF6;padding: 13px; "></a>
+                                    <a href="loadCategory?id=${c.id}" class="fas fa-pencil-alt" style="color: #787FF6;padding: 13px; "></a>
                                     <a href="deletecategory?id=${c.id}" class="fas fa-trash" 
                                        style="color: #787FF6;"
                                        onclick="return confirm('Bạn có chắc muốn xóa category có ID = ${c.id} không?');">
