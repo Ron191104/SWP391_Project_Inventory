@@ -208,8 +208,6 @@
                 padding: 24px;
                 background: white;
                 margin-left: 10px;
-
-
             }
             table {
                 width: 100%;
@@ -316,6 +314,7 @@
                 color: white;
                 display: flex;
                 align-items: center;
+                font-weight: 600;
             }
             .dropdown-label i {
                 margin-right: 8px;
@@ -392,13 +391,13 @@
                     <div class="dropdown">
                         <input type="checkbox" id="product-dropdown" />
                         <label for="product-dropdown" class="dropdown-label">
-                            <i class="fas fa-box"></i> Sản phẩm
+                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
                         </label>
                         <div class="dropdown-menu">
                             <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
                             <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+                            <a href="category?action=category"><i class="fas fa-list"></i> Danh sách phân loại</a>
 
                         </div>
                     </div>
@@ -459,8 +458,6 @@
                         <button type="submit" style="display: none">Lọc</button>
                     </form>
                 </div>
-
-
 
                 <form action="search">
                     <div class="form-group">

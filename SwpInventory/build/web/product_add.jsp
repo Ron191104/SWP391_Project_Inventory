@@ -163,6 +163,7 @@
                 color: white;
                 display: flex;
                 align-items: center;
+                font-weight: 600;
             }
             .dropdown-label i {
                 margin-right: 8px;
@@ -292,10 +293,11 @@
                 border-color: #FDF9DA;
                 outline: none;
             }
-            .user-menu nav.dropdown-menu {
+          .user-menu nav.dropdown-menu {
                 position: absolute;
                 top: 50px;
-                right: 0;
+                left: -50%;
+                transform: translateX(-50%);
                 background: white;
                 color: #333;
                 border-radius: 8px;
@@ -305,6 +307,9 @@
                 overflow: hidden;
                 display: none;
                 z-index: 1000;
+                max-height: 240px;
+                overflow-y: auto;
+                scrollbar-width: none;
             }
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
@@ -343,9 +348,6 @@
             }
 
 
-
-
-
         </style>
     </head>
     <body>
@@ -365,6 +367,8 @@
                             <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
                             <a href="product_add.jsp"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="category?action=category"><i class="fas fa-list"></i> Danh sách phân loại</a>
+
                         </div>
                     </div>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>

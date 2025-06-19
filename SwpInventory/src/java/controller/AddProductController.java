@@ -93,9 +93,7 @@ public class AddProductController extends HttpServlet {
 
             ProductDAO dao = new ProductDAO();
             dao.addProduct(name, barcode, category_id, supplier_id, price_in, price_out, quantity, unit, manufacture_date, expired_date, image, description);
-
-            // Sau khi thêm xong, redirect về lại servlet để load lại form
-            response.sendRedirect("addproduct");
+            response.sendRedirect("product_list");
 
         } catch (Exception e) {
             e.printStackTrace();

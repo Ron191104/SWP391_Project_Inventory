@@ -120,7 +120,7 @@ public class ProductDAO {
     }
 
     public void addProduct(String name, String barcode, int category_id, int supplier_id, double price_in, double price_out, int quantity, String unit, Date manufacture_date, Date expired_date, String image, String description) {
-        String query = "INSERT INTO Products (product_name, barcode, category_id, supplier_id, price_in, price_out, quantity, unit, manufacture_date, expired_date, image, description) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO products (product_name, barcode, category_id, supplier_id, price_in, price_out, quantity, unit, manufacture_date, expired_date, image, description) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             con = DBConnect.getConnection();
             ps = con.prepareStatement(query);
@@ -132,8 +132,9 @@ public class ProductDAO {
             ps.setDouble(6, price_out);
             ps.setInt(7, quantity);
             ps.setString(8, unit);
-            ps.setDate(9, manufacture_date);
-            ps.setDate(10, expired_date);
+            ps.setDate(9, new java.sql.Date(manufacture_date.getTime()));
+            ps.setDate(10, new java.sql.Date(expired_date.getTime()));
+
             ps.setString(11, image);
             ps.setString(12, description);
             ps.executeUpdate();
@@ -178,7 +179,7 @@ public class ProductDAO {
         }
         return products;
     }
-    
+
     public List<Product> filterByPriceOut(double minPrice, double maxPrice) {
         List<Product> products = new ArrayList<>();
         String query = "select * from products WHERE price_out >= ? AND price_out <= ?";
@@ -201,6 +202,23 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return products;
+    }
+
+    public int countProductByCategory(int categoryId) {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM products WHERE category_id = ?";
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, categoryId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
     }
 
 }
