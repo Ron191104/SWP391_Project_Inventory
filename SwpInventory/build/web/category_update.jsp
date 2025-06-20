@@ -301,7 +301,7 @@
 
                 <div class="form-group">
                     <label for="name">ID:</label>
-                    <input type="text" id="id" name="id"value="${detail.id}" required>
+                    <input type="text" id="id" name="id"value="${detail.id}" readonly="">
                 </div>
                 <div class="form-group">
                     <label for="name">Category Name:</label>

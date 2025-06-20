@@ -514,6 +514,7 @@
                                 </label>
                             </td>
                             <td>
+                                
                                 <input type="submit" value="Edit" style="margin-bottom: 5px;" />
                                 <a href="delete?id=${o.id}" 
                                    onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm có ID=${o.id} không?')" 

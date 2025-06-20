@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Product;
 import dao.ProductDAO;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import model.Categories;
 
 /**
@@ -220,5 +222,6 @@ public class ProductDAO {
         }
         return count;
     }
+
 
 }
