@@ -17,27 +17,24 @@ public class Product {
     private String barcode;
     private int category_id;
     private int supplier_id;
-    private double price_in;
-    private double price_out;
+    private double price;
     private int quantity;
     private String unit;
     private Date manufacture_date;
     private Date expired_date;
     private String image;
     private String description;
-    private boolean status = true;
 
     public Product() {
     }
 
-    public Product(int id, String name, String barcode, int category_id, int supplier_id, double price_in, double price_out, int quantity, String unit, Date manufacture_date, Date expired_date, String image, String description) {
+    public Product(int id, String name, String barcode, int category_id, int supplier_id, double price, int quantity, String unit, Date manufacture_date, Date expired_date, String image, String description) {
         this.id = id;
         this.name = name;
         this.barcode = barcode;
         this.category_id = category_id;
         this.supplier_id = supplier_id;
-        this.price_in = price_in;
-        this.price_out = price_out;
+        this.price = price;
         this.quantity = quantity;
         this.unit = unit;
         this.manufacture_date = manufacture_date;
@@ -86,21 +83,15 @@ public class Product {
         this.supplier_id = supplier_id;
     }
 
-    public double getPrice_in() {
-        return price_in;
+    public double getPrice() {
+        return price;
     }
 
-    public void setPrice_in(double price_in) {
-        this.price_in = price_in;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public double getPrice_out() {
-        return price_out;
-    }
-
-    public void setPrice_out(double price_out) {
-        this.price_out = price_out;
-    }
+  
 
     public int getQuantity() {
         return quantity;
@@ -150,17 +141,11 @@ public class Product {
         this.description = description;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 
     @Override
     public String toString() {
-        return "Product{" + "id=" + id + ", name=" + name + ", barcode=" + barcode + ", category_id=" + category_id + ", supplier_id=" + supplier_id + ", price_in=" + price_in + ", price_out=" + price_out + ", quantity=" + quantity + ", unit=" + unit + ", manufacture_date=" + manufacture_date + ", expired_date=" + expired_date + ", image=" + image + ", description=" + description + ", status=" + status + '}';
+        return "Product{" + "id=" + id + ", name=" + name + ", barcode=" + barcode + ", category_id=" + category_id + ", supplier_id=" + supplier_id + ", price=" + price + ", quantity=" + quantity + ", unit=" + unit + ", manufacture_date=" + manufacture_date + ", expired_date=" + expired_date + ", image=" + image + ", description=" + description + ", status=" + '}';
     }
     
     

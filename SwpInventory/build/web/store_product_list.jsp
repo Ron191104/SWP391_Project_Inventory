@@ -396,14 +396,16 @@
                         <div class="dropdown-menu">
                             <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
-                            <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+                            <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="category?action=category"><i class="fas fa-list"></i> Danh sách phân loại</a>
 
                         </div>
                     </div>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
                     <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+
+
                     <div class="dropdown">
                         <input type="checkbox" id="store-dropdown" />
                         <label for="store-dropdown" class="dropdown-label">
@@ -415,6 +417,8 @@
                             <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
                         </div>
                     </div>
+
+
                 </div>
             </div>
             <div class="header-right">
@@ -446,6 +450,39 @@
         <div class="container">
             <h3>Quản lí sản phẩm:</h3>
 
+            <div class="product-select-container" style="display: flex; align-items: center; justify-content: space-between;">
+                <form action="store_product_list">
+                    <select id="product-type" name="id" class="product-select" onchange="this.form.submit()">
+                        <option value="" ${empty tag ? "selected" : ""}>Tất cả sản phẩm</option>
+                        <c:forEach items="${listStoreCategory}" var="c">
+                            <option value="${c.storeCategoryId}" ${c.storeCategoryId  == tag ? "selected" : ""}>${c.categoryName}</option>
+                        </c:forEach>
+                    </select>
+
+                </form>
+                <div class="formPrice">
+                    <form action="FilterByPriceController" method="get">
+                        <select class="filterType" name="filterType">
+                            <option value="in">Giá nhập</option>
+                            <option value="out">Giá bán</option>
+                        </select>
+                        <input type="number" name="minPrice" placeholder="Giá từ" class="form-control1" >
+                        <span style="font-size: 12px">đến</span>
+                        <input type="number" name="maxPrice" placeholder="Giá đến" class="form-control1" >
+
+                        <button type="submit" style="display: none">Lọc</button>
+                    </form>
+                </div>
+
+                <form action="search">
+                    <div class="form-group">
+                        <input name="txt" type="text" class="form-control" placeholder="Search...">
+
+                        <button type="submit" class="fas fa-search search-icon"></button>
+                    </div>
+                </form>
+            </div>
+
 
             <table>
                 <thead>
@@ -454,41 +491,50 @@
                         <th>Image</th>
                         <th style="width: 40px">Name</th>
                         <th style="width: 30px">Barcode</th>
-                        <th>Category ID</th>
                         <th style="width: 10px">Unit</th>
                         <th>Import price</th>
+                        <th>Sale price</th>
                         <th>Quantity</th>
                         <th>MFD</th>
                         <th>EXP</th>
-                        <th style="width: 10px">Status</th>
-
+                        <th>Action</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <c:forEach items="${listP}" var="o">
+
+                    <c:forEach items="${storeProduct}" var="o">
                         <tr>
-                            <td style="width: 5px">${o.id}</td>
-
-
+                            <td>${o.storeProductId}</td>
                             <td>
-                                <img src="assets/image/${o.image}" width="50" height="50" alt="Product Image" />
+                                <a href="store_product_detail?did=${o.storeProductId}" title="Xem chi tiết">
+                                    <img src="assets/image/${o.product.image}" width="50" height="50" alt="Product Image" style="border-radius: 4px;"/>
+                                </a>       
                             </td>
-                            <td style="width: 30px">${o.name}</td>
-                            <td style="width: 30px">${o.barcode}</td>
-                            <td>${o.category_id}</td>
-                            <td>${o.unit}</td>
-                            <td>${o.price}</td>
+                            <td>${o.product.name}</td>
+                            <td>${o.product.barcode}</td>
+                            <td>${o.product.unit}</td>
+                            <td>${o.product.price}</td>
+                            <td>${o.priceOut}</td>
                             <td>${o.quantity}</td>
-                            <td>${o.manufacture_date}</td>
-                            <td>${o.expired_date}</td>
+                            <td>${o.product.manufacture_date}</td>
+                            <td>${o.product.expired_date}</td>
 
                             <td>
 
-                                <input type="submit" value="Edit" style="margin-bottom: 5px;" />
-                                <input type="submit" value="Delete" style="margin-bottom: 5px;" />
+                                <form action="edit_product" method="get">
+                                    <input type="hidden" name="id" value="${o.storeProductId}" />
+                                    <input type="submit" value="Edit" style="margin-bottom: 5px;" />
+                                </form>
+                                <a href="delete?id=${o.storeProductId}"
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm có ID=${o.storeProductId} không?')"
+                                   style="background: #787FF6; color: white; padding: 5px 10px; border-radius: 4px; font-size: 10px; height: 10px">
+                                    Delete
+                                </a>
                             </td>
                         </tr>
                     </c:forEach>
+
                 </tbody>
             </table>
         </div>

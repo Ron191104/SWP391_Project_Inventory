@@ -1,15 +1,98 @@
-<!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<html lang="vi">
+<!DOCTYPE html>
+<html>
     <head>
         <meta charset="UTF-8">
-        <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-        <link rel="stylesheet" href="assets/css/filter-icon.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <title>Thêm sản phẩm</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
+
+            form {
+                background: #fff;
+                padding: 24px 32px;
+                border-radius: 8px;
+                max-width: 800px;
+                margin: 40px auto;
+            }
+
+            h2 {
+                text-align: center;
+                color: #82CAFA;
+                margin-bottom: 32px;
+                font-weight: 700;
+                font-size: 32px;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+
+            form label {
+                display: block;
+                color: #82CAFA;
+                font-weight: 450;
+                margin-bottom: 10px;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            input[type="date"],textarea, select
+            {
+                width: 95%;
+                padding: 12px 14px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                font-size: 16px;
+                height: 40px;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+            select{
+                width: 95%;
+                height: 50px;
+                font-size: 15px;
+            }
+            .product-select {
+                padding: 12px 14px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 12px;
+                font-size: 16px;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+
+            textarea {
+                width: 95%;
+
+                height: 80px;
+            }
+
+            input[type="text"]:focus,
+            input[type="number"]:focus,
+            input[type="date"]:focus,
+            select:focus,
+            textarea:focus {
+                border-color: #5c6ac4;
+                outline: none;
+            }
+
+            button {
+                background-color: #82CAFA;
+                border: none;
+                padding: 12px 16px;
+                color: white;
+                font-size: 1rem;
+                font-weight: 600;
+                border-radius: 8px;
+                width: 100%;
+
+            }
+
+            button:hover {
+                background-color: #787FF6;
+            }
 
             body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -31,7 +114,6 @@
                 color: white;
                 padding: 12px 24px;
                 position: relative;
-
             }
             .header-left {
                 display: flex;
@@ -47,7 +129,6 @@
                 gap: 12px;
                 margin-left: 40px;
                 position: relative;
-
             }
             .nav a {
                 color: white;
@@ -69,21 +150,67 @@
                 background-color: #787ff6;
             }
 
+            .dropdown {
+                position: relative;
+            }
+            .dropdown input[type="checkbox"] {
+                display: none;
+            }
+            .dropdown-label {
+                cursor: pointer;
+                padding: 8px 16px;
+                border-radius: 4px;
+                transition: background-color 0.3s ease;
+                color: white;
+                display: flex;
+                align-items: center;
+                font-weight: 600;
+            }
+            .dropdown-label i {
+                margin-right: 8px;
+                min-width: 16px;
+                text-align: center;
+            }
+            .dropdown-label:hover {
+                background-color: #787ff6;
+                color: white;
+            }
+            .dropdown-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: white;
+                color: #333;
+                border-radius: 8px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                min-width: 200px;
+                display: none;
+                flex-direction: column;
+                z-index: 1000;
+            }
+            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
+                display: flex;
+            }
+            .dropdown-menu a {
+                padding: 12px 16px;
+                border-bottom: 1px solid #eee;
+                font-weight: 600;
+                white-space: nowrap;
+                color: #333;
+                display: block;
+            }
+            .dropdown-menu a:last-child {
+                border-bottom: none;
+            }
+            .dropdown-menu a:hover {
+                background-color: #FDF9DA;
+            }
+
             .header-right {
                 display: flex;
                 align-items: center;
                 gap: 20px;
             }
-
-            .search-box input[type="search"] {
-                padding: 6px 28px 6px 12px;
-                border-radius: 20px;
-                border: none;
-                outline: none;
-                font-size: 0.8rem;
-                width: 150px;
-            }
-
             .notification-wrapper {
                 position: relative;
                 cursor: pointer;
@@ -167,7 +294,6 @@
                 border-color: #FDF9DA;
                 outline: none;
             }
-
             .user-menu nav.dropdown-menu {
                 position: absolute;
                 top: 50px;
@@ -186,7 +312,6 @@
                 overflow-y: auto;
                 scrollbar-width: none;
             }
-
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
             }
@@ -203,51 +328,13 @@
             .user-menu nav.dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
-            .container {
-                max-width: 100%;
-                padding: 24px;
-                background: white;
-                margin-left: 10px;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 28px;
-                table-layout: fixed;
 
-            }
-
-            th, td {
-                border: 1px solid #ddd;
-                padding: 5px;
-                text-align: left;
-                width: 20px;
-                font-size: 0.85rem;
-                text-align: center;
-
-            }
-            th {
-                background-color: #82CAFA;
-                color: white;
-                font-weight: 700;
-            }
-            tbody tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-            tbody tr:hover {
-                background-color: #FDF9DA;
-            }
-
-            .action-column {
-                width: 120px;
-            }
             @media (max-width: 600px) {
                 .header {
                     flex-wrap: wrap;
                     gap: 10px;
                     padding: 12px 12px;
                 }
-
                 .nav {
                     margin-left: 0;
                     flex-wrap: wrap;
@@ -258,128 +345,38 @@
                     flex-basis: 100%;
                     justify-content: center;
                     gap: 12px;
-
                 }
-                .search-box input[type="search"] {
-                    width: 120px;
-                }
-                .search-box input[type="search"]:focus {
-                    width: 180px;
-                }
-            }
-
-            .product-select {
-                height: 37px;
-                width: 170px;
-                padding: 10px 15px;
-                border: 2px solid #82CAFA;
-                border-radius: 9px;
-                font-size: 11px;
-                outline: none;
-
-            }
-            .form-group {
-                position: relative;
-                width: 200px;
-            }
-            .form-control{
-                border: none;
-                outline: none;
-            }
-            .form-group .search-icon {
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #aaa;
-            }
-            .fas.fa-search.search-icon{
-                border: none;
-                outline: none;
-                color: #89D0F0;
-                background-color: white;
-            }
-
-            .dropdown {
-                position: relative;
-            }
-            .dropdown input[type="checkbox"] {
-                display: none;
-            }
-            .dropdown-label {
-                cursor: pointer;
-                padding: 8px 16px;
-                border-radius: 4px;
-                transition: background-color 0.3s ease;
-                color: white;
-                display: flex;
-                align-items: center;
-                font-weight: 600;
-            }
-            .dropdown-label i {
-                margin-right: 8px;
-                min-width: 16px;
-                text-align: center;
-            }
-            .dropdown-label:hover {
-                background-color: #787ff6;
-                color: white;
-            }
-            .dropdown-menu {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                background: white;
-                color: #333;
-                border-radius: 8px;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-                min-width: 200px;
-                display: none;
-                flex-direction: column;
-                z-index: 1000;
-
-            }
-            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
-                display: flex;
-            }
-            .dropdown-menu a {
-                padding: 12px 16px;
-                border-bottom: 1px solid #eee;
-                font-weight: 600;
-                white-space: nowrap;
-                color: #333;
-                display: block;
-            }
-            .dropdown-menu a:last-child {
-                border-bottom: none;
-            }
-            .dropdown-menu a:hover {
-                background-color: #FDF9DA;
-            }
-
-            .form-control1 {
-                height: 13px;
-                width: 55px;
-                padding: 10px 15px;
-                border: 2px solid #82CAFA;
-                border-radius: 9px;
-                font-size: 11px;
-                outline: none;
-            }
-
-            .formPrice{
-                padding-right:42%;
-            }
-
-            .filterType{
-                height: 20px;
-                border: none;
-                outline: none;
             }
 
 
         </style>
+
+        <script>
+            function fillProductInfo() {
+                var select = document.getElementById("productSelect");
+                var option = select.options[select.selectedIndex];
+                if (option.value === "") {
+                    ['barcode', 'price_in', 'unit', 'manufacture_date', 'expired_date', 'quantity', 'description'].forEach(id => document.getElementById(id).value = "");
+                    document.getElementById("productImage").style.display = "none";
+                    return;
+                }
+                document.getElementById("barcode").value = option.dataset.barcode;
+                document.getElementById("price_in").value = option.dataset.price;
+                document.getElementById("unit").value = option.dataset.unit;
+                document.getElementById("manufacture_date").value = option.dataset.mfd;
+                document.getElementById("expired_date").value = option.dataset.exp;
+                document.getElementById("quantity").value = option.dataset.quantity;
+                document.getElementById("description").value = option.dataset.description;
+
+                var image = option.dataset.image;
+                var imgElement = document.getElementById("productImage");
+                imgElement.src = "assets/image/" + image;
+                imgElement.style.display = "block";
+            }
+        </script>
+
     </head>
+
     <body>
         <div class="header">
             <div class="header-left">
@@ -391,19 +388,20 @@
                     <div class="dropdown">
                         <input type="checkbox" id="product-dropdown" />
                         <label for="product-dropdown" class="dropdown-label">
-                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
+                            <i class="fas fa-box"></i> Sản phẩm
                         </label>
                         <div class="dropdown-menu">
                             <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
-                            <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+                            <a href="product_add.jsp"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="category?action=category"><i class="fas fa-list"></i> Danh sách phân loại</a>
 
                         </div>
                     </div>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
                     <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+
                     <div class="dropdown">
                         <input type="checkbox" id="store-dropdown" />
                         <label for="store-dropdown" class="dropdown-label">
@@ -435,62 +433,75 @@
                     <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
                         <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown">
-                        <a href="myprofile.html">My Profile</a>
-                        <a href="change_password.html">Change Password</a>
-                        <a href="login.html">Log Out</a>
+                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
+                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
+                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
+                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
                     </nav>
                 </div>
             </div>
         </div>
-        <div class="container">
-            <h3>Quản lí sản phẩm:</h3>
+        <form action="addstoreproduct" method="post">
+            <h2>Thêm sản phẩm</h2>
+
+            <label for="productSelect">Chọn sản phẩm từ kho</label>
+            <select id="productSelect" name="product_id" onchange="fillProductInfo()" required>
+                <option value="">-- Chọn sản phẩm --</option>
+                <c:forEach var="p" items="${listProduct}">
+                    <option 
+                        value="${p.id}"
+                        data-barcode="${p.barcode}"
+                        data-price="${p.price}"
+                        data-unit="${p.unit}"
+                        data-mfd="${p.manufacture_date}"
+                        data-exp="${p.expired_date}"
+                        data-quantity="${p.quantity}"
+                        data-image="${p.image}"
+                        data-description="${p.description}">
+                        ${p.name}
+                    </option>
+                </c:forEach>
+
+            </select>
+
+            <label>Barcode</label>
+            <input type="text" id="barcode" readonly />
+
+            <label>Giá nhập</label>
+            <input type="text" id="price_in" readonly />
+
+            <label>Đơn vị tính</label>
+            <input type="text" id="unit" readonly />
+
+            <label>Ngày sản xuất</label>
+            <input type="text" id="manufacture_date" readonly />
+
+            <label>Hạn sử dụng</label>
+            <input type="text" id="expired_date" readonly />
+
+            <label>Số lượng tồn trong kho</label>
+            <input type="text" id="quantity" readonly />
+
+            <label>Hình ảnh</label>
+            <img id="productImage" src="" alt="Hình ảnh sản phẩm" style="display:none; max-width:200px; margin:10px 0;" />
+
+            <label for="storeCategorySelect">Chọn danh mục cửa hàng</label>
+            <select id="storeCategorySelect" name="store_category_id" required>
+                <option value="">-- Chọn danh mục --</option>
+                <c:forEach var="c" items="${listCategory}">
+                    <option value="${c.storeCategoryId}">${c.categoryName}</option>
+                </c:forEach>
+            </select>
 
 
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 5px">ID</th>
-                        <th>Image</th>
-                        <th style="width: 40px">Name</th>
-                        <th style="width: 30px">Barcode</th>
-                        <th>Category ID</th>
-                        <th style="width: 10px">Unit</th>
-                        <th>Import price</th>
-                        <th>Quantity</th>
-                        <th>MFD</th>
-                        <th>EXP</th>
-                        <th style="width: 10px">Status</th>
+            <label>Giá bán</label>
+            <input type="number" name="price_out" step="0.01" min="0" required />
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${listP}" var="o">
-                        <tr>
-                            <td style="width: 5px">${o.id}</td>
+            <label>Mô tả</label>
+            <textarea id="description" readonly rows="3"></textarea>
 
 
-                            <td>
-                                <img src="assets/image/${o.image}" width="50" height="50" alt="Product Image" />
-                            </td>
-                            <td style="width: 30px">${o.name}</td>
-                            <td style="width: 30px">${o.barcode}</td>
-                            <td>${o.category_id}</td>
-                            <td>${o.unit}</td>
-                            <td>${o.price}</td>
-                            <td>${o.quantity}</td>
-                            <td>${o.manufacture_date}</td>
-                            <td>${o.expired_date}</td>
-
-                            <td>
-
-                                <input type="submit" value="Edit" style="margin-bottom: 5px;" />
-                                <input type="submit" value="Delete" style="margin-bottom: 5px;" />
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
+            <button type="submit">Thêm vào cửa hàng</button>
+        </form>
     </body>
 </html>

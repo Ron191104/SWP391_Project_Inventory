@@ -9,11 +9,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
         <title>JSP Page</title>
         <style>
-             body {
+            body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
@@ -316,7 +316,7 @@
         </style>
     </head>
     <body>
- <div class="header">
+        <div class="header">
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
