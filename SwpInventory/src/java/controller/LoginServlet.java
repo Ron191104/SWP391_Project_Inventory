@@ -1,7 +1,8 @@
 package controller;
 
-import dal.UserDAO;
+import dao.UserDAO;
 import model.User;
+import dao.SystemLogDAO;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -33,8 +34,14 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userRole", user.getRole());
             session.setAttribute("userImage", user.getImage());
             session.setAttribute("userEmail", user.getEmail());
+
+            // Ghi LOG đăng nhập thành công
+            SystemLogDAO logDao = new SystemLogDAO();
+            logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");
+
             response.sendRedirect("dashboard.jsp");
         } else {
+            // Nếu muốn, cũng có thể ghi log đăng nhập thất bại (tùy ý)
             request.setAttribute("errorMessage", "Email/Tên đăng nhập hoặc mật khẩu không đúng!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }

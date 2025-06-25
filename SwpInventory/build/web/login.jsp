@@ -81,7 +81,7 @@
                 <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
 
                 <div style="text-align:right; margin-top:10px;">
-                    <a href="forgetpassword.jsp" style="color:#1976D2; text-decoration:underline;">Quên mật khẩu?</a>
+<a href="forgetpassword.jsp" style="color:#1976D2; text-decoration:underline;">Quên mật khẩu?</a>
                 </div>
 
                 <input type="submit" value="Login">
