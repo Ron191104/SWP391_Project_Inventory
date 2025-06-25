@@ -3,9 +3,48 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/SWP_Project_Inventory/SWP391_Project_Inventory/SwpInventory/src/java/dal/UserDAO.java</file>
-            <file>file:/D:/SWP_Project_Inventory/SWP391_Project_Inventory/SwpInventory/nbproject/build-impl.xml</file>
-            <file>file:/D:/SWP_Project_Inventory/SWP391_Project_Inventory/SwpInventory/src/java/controller/RegisterServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/LoginServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/dashboard.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/register.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/ViewOrderListServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/edit_user.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/dashboard_admin.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/CategoriesController.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/index.html</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/change_password_admin.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/admin_login.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/product_list.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/DeleteUserServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/AdminChangePassGiveUsers.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/OtpController.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/UserManagementServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/forgetpassword.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/MyProfileServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/store_dashboard.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/ProductController.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/model/SystemLog.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/EditUserServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/inventory_dashboard.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/import_good.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/approve_users.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/AdminChangePasswordServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/supplier_management.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/WEB-INF/web.xml</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/AdminApproveUserServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/system_logs.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/myprofile.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/model/User.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/user_management.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/RegisterServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/home.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/UpdateCategoryController.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/login.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/SystemLogServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/CreateOrderServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/ChangePasswordWhenForgetController.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/web/export_good.jsp</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/controller/AdminLoginServlet.java</file>
+            <file>file:/D:/SWP_Check/SwpInventory/src/java/dao/UserDAO.java</file>
         </group>
     </open-files>
 </project-private>

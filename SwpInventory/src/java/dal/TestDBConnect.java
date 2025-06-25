@@ -12,7 +12,7 @@ public class TestDBConnect {
         // Thay đổi các thông tin bên dưới cho đúng với database của bạn
         String url = "jdbc:sqlserver://localhost:1433;databaseName=Inventory";
         String user = "sa";
-        String password = "123"; // thay bằng mật khẩu thật
+        String password = "123456789"; // thay bằng mật khẩu thật
 
         try {
             // Nạp driver JDBC

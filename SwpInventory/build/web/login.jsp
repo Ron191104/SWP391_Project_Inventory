@@ -1,89 +1,116 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dang nhap quan ly kho</title>
+    <title>Đăng nhập hệ thống</title>
     <style>
-         /* Reset and base */
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box;}
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #CBF2F2;
             color: #333;
         }
-        /* Container */
         .container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 24px;
+            max-width: 430px;
+            margin: 120px auto;
+            padding: 25px 30px 20px 30px;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 0 16px rgba(0,0,0,0.1);
+            box-shadow: 0 0 16px rgba(0,0,0,0.12);
         }
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
-        /* Form styles */
         form label {
             display: block;
-            margin: 12px 0 6px;
+            margin: 11px 0 5px;
             font-weight: 600;
-            color: #333;
         }
         form input[type="text"],
         form input[type="password"] {
             width: 100%;
             padding: 10px 12px;
             font-size: 1rem;
-            border-radius: 6px;
+            border-radius: 5px;
             border: 1.8px solid #ccc;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s;
         }
         form input[type="text"]:focus,
         form input[type="password"]:focus {
+            border-color: #82CAFA;
+            box-shadow: 0 0 5px #82CAFAaa;
             outline: none;
-            border-color: #4caf50;
-            box-shadow: 0 0 5px #4caf50aa;
         }
         form input[type="submit"] {
-            margin-top: 20px;
+            margin-top: 18px;
             width: 100%;
-            padding: 12px;
-            font-size: 1.1rem;
+            padding: 11px;
+            font-size: 1.05rem;
             font-weight: 700;
             border: none;
             color: white;
-            background-color: #4caf50;
-            border-radius: 6px;
+            background-color: #82CAFA;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
         form input[type="submit"]:hover {
-            background-color: #388e3c;
+            background-color: #787FF6;
+        }
+        .error-message {
+            color: #d32f2f;
+            text-align: center;
+            margin-top: 10px;
+            min-height: 22px;
+            font-size: 1rem;
+        }
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+        .links a {
+            color: #1976D2;
+            text-decoration: underline;
+            font-size: 0.98rem;
+        }
+        .register-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: #388e3c;
+            text-decoration: underline;
+            font-size: 1.03rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Dang nhap</h2>
-        <form action="login" method="post">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required>
-            
-            <label for="password">Mat khau:</label>
-            <input type="password" id="password" name="password" required>
-            
-            <input type="submit" value="Dang nhap">
-            <div style="color:red; text-align:center; margin-top:10px;">
-                ${requestScope.errorMessage}
-            </div>
-        </form>
-    </div>
+<div class="container">
+    <h2>Đăng nhập hệ thống</h2>
+    <form action="login" method="post" autocomplete="off">
+        <label for="login">Email hoặc Tên đăng nhập:</label>
+        <input type="text" id="login" name="login" placeholder="Nhập email hoặc Tên đăng nhập" required>
+
+        <label for="password">Mật khẩu:</label>
+        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
+
+        <div class="links">
+            <a href="forgetpassword.jsp">Quên mật khẩu?</a>
+        </div>
+
+        <input type="submit" value="Đăng nhập">
+
+        <div class="error-message">
+            ${errorMessage}
+        </div>
+
+        <a href="register.jsp" class="register-link">Chưa có tài khoản? Đăng ký</a>
+    </form>
+</div>
 </body>
 </html>
