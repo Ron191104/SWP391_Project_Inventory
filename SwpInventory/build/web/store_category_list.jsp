@@ -322,14 +322,14 @@
 
             }
             th:nth-child(1), td:nth-child(1) {
-                width: 40%;
+                width: 7%;
             }
 
             th:nth-child(2), td:nth-child(4) {
-                width: 20%;
+                width: 40%;
             }
             th:nth-child(3), td:nth-child(3) {
-                width: 25%;
+                width: 20%;
             }
             .table-wrapper {
                 display: flex;
@@ -429,14 +429,17 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Stt</th>
                             <th>Name</th>
                             <th>Quantity</th>
                             <th>Action</th>
                         </tr>
                     </thead> 
                     <tbody>
-                        <c:forEach items="${listStoreCategory}" var="c">
+                        <c:forEach items="${listStoreCategory}" var="c"  varStatus="stt">
                             <tr>
+                                <td>${stt.index + 1}</td>
+
                                 <td>${c.categoryName}</td>
                                 <td>${c.quantity}</td>
                                 <td class="action-icons">
