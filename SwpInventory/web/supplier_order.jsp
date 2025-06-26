@@ -141,7 +141,7 @@
                                 </span>
                             </td>
                             <td>
-                                <a href="order-detail?orderId=${order.orderId}" class="btn-detail" style="background-color:#007bff;color:white;padding:6px 12px;border-radius:4px;text-decoration:none;">
+                                <a href="supplier_orderdetails?orderId=${order.orderId}" class="btn-detail" style="background-color:#007bff;color:white;padding:6px 12px;border-radius:4px;text-decoration:none;">
                                     <i class="fas fa-eye"></i> Xem đơn hàng
                                 </a>
                             </td>

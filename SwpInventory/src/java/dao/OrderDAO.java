@@ -197,52 +197,47 @@ public class OrderDAO {
 
         return list;
     }
-    
-    
 
 //Lấy đơn hàng theo nhà cung cấp
     public List<Order> getOrdersBySupplierId(int supplierId) {
-    List<Order> list = new ArrayList<>();
-    // DEBUG: In toàn bộ đơn hàng từ JDBC
-    try (Connection conn = DBConnect.getConnection();
-         Statement st = conn.createStatement();
-         ResultSet rs = st.executeQuery("SELECT * FROM orders")) {
-        System.out.println("=== TOÀN BỘ ĐƠN HÀNG TRONG DB KẾT NỐI QUA JDBC ===");
-        while (rs.next()) {
-            System.out.println("Order ID: " + rs.getInt("order_id") + ", Supplier ID: " + rs.getInt("supplier_id"));
-        }
-    }
-    catch(Exception e) {
-        System.out.println("Lỗi khi đọc toàn bộ đơn hàng để debug.");
-        e.printStackTrace();
-    }
-
-    String sql = "SELECT * FROM orders WHERE supplier_id = ?";
-    System.out.println("⚙️ SQL Query: " + sql + " | supplier_id = " + supplierId);
-
-    try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setInt(1, supplierId);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            Order o = new Order();
-            o.setOrderId(rs.getInt("order_id"));
-            o.setSupplierId(rs.getInt("supplier_id"));
-            o.setEmployeeId(rs.getInt("employee_id"));
-            o.setOrderDate(rs.getTimestamp("order_date").toLocalDateTime());
-            o.setStatus(rs.getInt("status"));
-            o.setNote(rs.getString("note"));
-            list.add(o);
+        List<Order> list = new ArrayList<>();
+        // DEBUG: In toàn bộ đơn hàng từ JDBC
+        try (Connection conn = DBConnect.getConnection(); Statement st = conn.createStatement(); ResultSet rs = st.executeQuery("SELECT * FROM orders")) {
+            System.out.println("=== TOÀN BỘ ĐƠN HÀNG TRONG DB KẾT NỐI QUA JDBC ===");
+            while (rs.next()) {
+                System.out.println("Order ID: " + rs.getInt("order_id") + ", Supplier ID: " + rs.getInt("supplier_id"));
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi đọc toàn bộ đơn hàng để debug.");
+            e.printStackTrace();
         }
 
-        System.out.println("📦 Số đơn hàng tìm thấy trong DAO: " + list.size());
+        String sql = "SELECT * FROM orders WHERE supplier_id = ?";
+        System.out.println("⚙️ SQL Query: " + sql + " | supplier_id = " + supplierId);
 
-    } catch (Exception e) {
-        System.out.println("❌ Lỗi khi lấy đơn hàng theo supplier_id:");
-        e.printStackTrace();
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, supplierId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderId(rs.getInt("order_id"));
+                o.setSupplierId(rs.getInt("supplier_id"));
+                o.setEmployeeId(rs.getInt("employee_id"));
+                o.setOrderDate(rs.getTimestamp("order_date").toLocalDateTime());
+                o.setStatus(rs.getInt("status"));
+                o.setNote(rs.getString("note"));
+                list.add(o);
+            }
+
+            System.out.println("📦 Số đơn hàng tìm thấy trong DAO: " + list.size());
+
+        } catch (Exception e) {
+            System.out.println("❌ Lỗi khi lấy đơn hàng theo supplier_id:");
+            e.printStackTrace();
+        }
+        return list;
     }
-    return list;
-}
 
     public boolean updateOrderStatus(int orderId, int status) {
         String sql = "UPDATE orders SET status = ? WHERE order_id = ?";
@@ -254,6 +249,20 @@ public class OrderDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public int getOrderStatus(int orderId) {
+        String sql = "SELECT status FROM orders WHERE order_id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("status");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1; // hoặc giá trị mặc định khác
     }
 
 }
