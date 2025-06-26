@@ -141,16 +141,9 @@
                                 </span>
                             </td>
                             <td>
-                                <c:if test="${order.status == 0}">
-                                    <form action="approve-order" method="post" style="display:inline;">
-                                        <input type="hidden" name="orderId" value="${order.orderId}" />
-                                        <button class="btn-approve" type="submit" name="action" value="approve">✔ Duyệt</button>
-                                    </form>
-                                    <form action="approve-order" method="post" style="display:inline;">
-                                        <input type="hidden" name="orderId" value="${order.orderId}" />
-                                        <button class="btn-reject" type="submit" name="action" value="reject">✖ Từ chối</button>
-                                    </form>
-                                </c:if>
+                                <a href="order-detail?orderId=${order.orderId}" class="btn-detail" style="background-color:#007bff;color:white;padding:6px 12px;border-radius:4px;text-decoration:none;">
+                                    <i class="fas fa-eye"></i> Xem đơn hàng
+                                </a>
                             </td>
                         </tr>
                     </c:forEach>
