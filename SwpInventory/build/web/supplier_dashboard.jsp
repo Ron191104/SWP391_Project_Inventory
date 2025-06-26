@@ -2,142 +2,224 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <title>Dashboard Nhà Cung Cấp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
+            margin: 0;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background-color: #82CAFA;
-            padding: 12px 24px;
+            padding: 16px 32px;
             color: white;
         }
         .header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
             margin: 0;
+            font-size: 24px;
         }
         .nav a {
             color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-weight: 600;
+            margin-left: 16px;
+            font-weight: bold;
             text-decoration: none;
-            transition: background-color 0.3s ease;
-            display: inline-block;
-            margin-left: 12px;
         }
         .nav a:hover {
-            background-color: #787ff6;
+            text-decoration: underline;
         }
-        .container {
-            max-width: 1000px;
+
+        .main-content {
+            max-width: 1200px;
             margin: 40px auto;
-            background: #fff;
-            padding: 24px;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            color: white;
             border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        h2 {
-            text-align: center;
-            color: #82CAFA;
-            margin-bottom: 24px;
-            font-size: 28px;
+        .card.orange { background-color: #FFA500; }
+        .card.cyan { background-color: #00CED1; }
+        .card.indigo { background-color: #4B0082; }
+        .card.green { background-color: #28a745; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
         }
+
+        .section-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            font-size: 14px;
         }
+
         th, td {
             padding: 12px;
-            text-align: left;
             border-bottom: 1px solid #ddd;
         }
+
         th {
             background-color: #82CAFA;
             color: white;
+            text-align: left;
         }
-        .btn-approve {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 6px 12px;
+
+        .product {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product img {
+            width: 32px;
+            height: 32px;
             border-radius: 4px;
-            cursor: pointer;
         }
-        .btn-approve:hover {
-            background-color: #218838;
+
+        .price {
+            font-weight: bold;
+            color: #333;
         }
-        .status-label {
-            font-weight: 600;
+
+        .sno {
+            width: 40px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Dashboard Nhà Cung Cấp</h1>
-        <div class="nav">
-            <a href="supplier-dashboard"><i class="fas fa-box"></i> Đơn hàng</a>
-            <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-        </div>
+<div class="header">
+    <h1>Nhà Cung Cấp</h1>
+    <div class="nav">
+        <a href="supplier_order"><i class="fas fa-box"></i> Đơn hàng</a>
+        <a href="supplier-dashboard?view=approved"><i class="fas fa-check"></i> Đã cung cấp</a>
+        <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
     </div>
+</div>
 
-    <div class="container">
-        <h2>Danh sách đơn hàng được gửi tới</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Mã đơn</th>
-                    <th>Ngày tạo</th>
-                    <th>Nhân viên tạo</th>
-                    <th>Ghi chú</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="order" items="${orders}">
+<main class="main-content">
+
+    <!-- Summary Cards -->
+    <section class="cards">
+        <div class="card orange">
+            <div>
+                <p>100</p>
+                <p>Customers</p>
+            </div>
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="card cyan">
+            <div>
+                <p>100</p>
+                <p>Suppliers</p>
+            </div>
+            <i class="fas fa-user-check"></i>
+        </div>
+        <div class="card indigo">
+            <div>
+                <p>100</p>
+                <p>Purchase Invoice</p>
+            </div>
+            <i class="fas fa-file-alt"></i>
+        </div>
+        <div class="card green">
+            <div>
+                <p>105</p>
+                <p>Sales Invoice</p>
+            </div>
+            <i class="fas fa-file-invoice"></i>
+        </div>
+    </section>
+
+    <!-- Dashboard Content Grid -->
+    <section class="dashboard-grid">
+
+        <!-- Purchase & Sales Chart -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Purchase & Sales</h2>
+                <select>
+                    <option>2022</option>
+                    <option>2023</option>
+                    <option selected>2024</option>
+                </select>
+            </div>
+            <img src="https://storage.googleapis.com/a1aa/image/c868b569-edcd-49f6-34db-68201db812a0.jpg" alt="Chart" style="width: 100%; border-radius: 6px;">
+        </div>
+
+        <!-- Recently Added Products -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Recently Added Products</h2>
+            </div>
+            <table>
+                <thead>
                     <tr>
-                        <td>${order.orderId}</td>
-                        <td>${order.orderDate}</td>
-                        <td>${order.employeeId}</td>
-                        <td>${order.note}</td>
-                        <td>
-                            <span class="status-label">
-                                <c:choose>
-                                    <c:when test="${order.status == 0}">Chờ duyệt</c:when>
-                                    <c:when test="${order.status == 1}">Đã duyệt</c:when>
-                                    <c:when test="${order.status == 2}">Từ chối</c:when>
-                                    <c:otherwise>Khác</c:otherwise>
-                                </c:choose>
-                            </span>
-                        </td>
-                        <td>
-                            <c:if test="${order.status == 0}">
-                                <form action="approve-order" method="post" style="display:inline;">
-                                    <input type="hidden" name="orderId" value="${order.orderId}" />
-                                    <button class="btn-approve" type="submit" name="action" value="approve">Duyệt</button>
-                                </form>
-                                <form action="approve-order" method="post" style="display:inline;">
-                                    <input type="hidden" name="orderId" value="${order.orderId}" />
-                                    <button class="btn-approve" type="submit" name="action" value="reject" style="background-color:#dc3545;">Từ chối</button>
-                                </form>
-                            </c:if>
-                        </td>
+                        <th class="sno">Sno</th>
+                        <th>Products</th>
+                        <th class="price">Price</th>
                     </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    <!-- Ví dụ động -->
+                    <c:forEach var="product" items="${recentProducts}">
+                        <tr>
+                            <td class="sno">${product.id}</td>
+                            <td class="product">
+                                <img src="${product.image}" alt="${product.name}">
+                                ${product.name}
+                            </td>
+                            <td class="price">$${product.price}</td>
+                        </tr>
+                    </c:forEach>
+                    <!-- Nếu bạn chưa có dữ liệu thật, bạn có thể thay bằng dữ liệu tĩnh như trong bản gốc -->
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</main>
 </body>
 </html>

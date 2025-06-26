@@ -339,6 +339,11 @@
         </style>
     </head>
     <body>
+
+        <%
+                List<model.OrderDetails> cart = (List<model.OrderDetails>) session.getAttribute("cart");
+        %>
+
         <div class="header">
             <div class="header-left">
                 <h1>Quản lý sản phẩm</h1>
@@ -377,38 +382,54 @@
         </div>
         <div class="container">
             <h3>Tạo đơn hàng:</h3>
-            <form action="create_order" method="post">
-                <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-evenly;">
+            <form action="create_order" method="get">
+                <div style="display: flex; justify-content: center; margin-bottom: 16px;">
                     <div style="text-align: left;">
-                        <label for="id" style="display: block; margin-bottom: 4px;">Sản phẩm:</label>
-                        <select name="id" class="product-select" required style="font-size:16px; padding:8px; width:250px;">
-                            <option value="" disabled selected>Chọn sản phẩm</option>
-                            <c:forEach items="${listP}" var="p">
-                                <option value="${p.id}">${p.name}</option>
+                        <label for="supplierId" style="display: block; margin-bottom: 4px;">Nhà cung cấp:</label>
+                        <select name="supplierId" class="product-select"
+                                style="font-size:16px; padding:8px; width:250px;"
+                                onchange="this.form.submit()" <c:if test="${not empty cart}">disabled</c:if>>
+                            <option value="" disabled <c:if test="${empty param.supplierId}">selected</c:if>>Chọn nhà cung cấp</option>
+                            <c:forEach items="${listS}" var="s">
+                                <option value="${s.supplier_id}" <c:if test="${param.supplierId == s.supplier_id}">selected</c:if>>${s.supplier_name}</option>
                             </c:forEach>
                         </select>
                     </div>
-
-                    <div style="text-align: left;">
-                        <label for="quantity" style="display: block; margin-bottom: 4px;">Số lượng:</label>
-                        <input type="number" name="quantity" min="1" value="1"
-                               style="font-size:16px; padding:8px; width:250px;" placeholder="Nhập số lượng" required>
-                    </div>
-                </div>
-
-                <br>
-
-                <div style="text-align:center;">
-                    <input type="submit" value="Thêm vào đơn hàng"
-                           style="font-size:16px; padding:8px 16px;">
                 </div>
             </form>
 
 
+            <c:if test="${not empty param.supplierId}">
+                <form action="create_order" method="post">
+                    <input type="hidden" name="supplierId" value="${param.supplierId}" />
 
-            <%
-                List<model.OrderDetails> cart = (List<model.OrderDetails>) session.getAttribute("cart");
-            %>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-evenly;">
+                        <div style="text-align: left;">
+                            <label for="id" style="display: block; margin-bottom: 4px;">Sản phẩm:</label>
+                            <select name="id" class="product-select" required style="font-size:16px; padding:8px; width:250px;">
+                                <option value="" disabled selected>Chọn sản phẩm</option>
+                                <c:forEach items="${listP}" var="p">
+                                    <option value="${p.id}">${p.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div style="text-align: left;">
+                            <label for="quantity" style="display: block; margin-bottom: 4px;">Số lượng:</label>
+                            <input type="number" name="quantity" min="1" value="1"
+                                   style="font-size:16px; padding:8px; width:250px;" placeholder="Nhập số lượng" required>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div style="text-align:center;">
+                        <input type="submit" value="Thêm vào đơn hàng"
+                               style="font-size:16px; padding:8px 16px;">
+                    </div>
+                </form>
+            </c:if>
+
+
 
             <c:if test="${not empty cart}">
                 <h3>Sản phẩm đã chọn:</h3>
@@ -463,17 +484,17 @@
 
 
 
-                <c:if test="${not empty cart}">
-                    <form action="submit_order" method="post" style=" text-align: center; margin-top: 10px">
-                        <div style="text-align: left;">
-                            <label for="note" style="display: block; margin-bottom: 4px;">Ghi chú:</label>
-                            <input type="text" name="note"
-                                   style="font-size:16px; padding:8px; width:250px;" placeholder="Nhập ghi chú">
-                        </div>
-                        <input type="submit" value="Đặt hàng"
-                               style="font-size:16px; padding:8px 16px;"/>
-                    </form>
-                </c:if>
+            <c:if test="${not empty cart}">
+                <form action="submit_order" method="post" style=" text-align: center; margin-top: 10px">
+                    <div style="text-align: left;">
+                        <label for="note" style="display: block; margin-bottom: 4px;">Ghi chú:</label>
+                        <input type="text" name="note"
+                               style="font-size:16px; padding:8px; width:250px;" placeholder="Nhập ghi chú">
+                    </div>
+                    <input type="submit" value="Đặt hàng"
+                           style="font-size:16px; padding:8px 16px;"/>
+                </form>
+            </c:if>
 
 
         </div>

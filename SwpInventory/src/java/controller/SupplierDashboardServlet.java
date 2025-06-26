@@ -24,6 +24,9 @@ import model.User;
  */
 @WebServlet("/supplier-dashboard")
 public class SupplierDashboardServlet extends HttpServlet {
+
+    private OrderDAO orderDAO = new OrderDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -36,10 +39,8 @@ public class SupplierDashboardServlet extends HttpServlet {
             return;
         }
 
-        OrderDAO dao = new OrderDAO();
-        List<Order> orders = dao.getOrdersBySupplier(supplier.getSupplier_id());
-
+        List<Order> orders = orderDAO.getOrdersBySupplierId(supplier.getSupplier_id());
         request.setAttribute("orders", orders);
-        request.getRequestDispatcher("supplier-dashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("supplier_dashboard.jsp").forward(request, response);
     }
 }

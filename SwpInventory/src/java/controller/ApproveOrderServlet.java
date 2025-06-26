@@ -1,35 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dao.OrderDAO;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
+import java.io.IOException;
 
-/**
- *
- * @author LENOVO
- */
-@WebServlet("/approve-order")
+@WebServlet("/approve_order")
 public class ApproveOrderServlet extends HttpServlet {
+    private OrderDAO orderDAO = new OrderDAO();
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
 
-        int orderId = Integer.parseInt(request.getParameter("order_id"));
-        String action = request.getParameter("action");
+        String action = req.getParameter("action"); // approve/reject
+        String orderIdStr = req.getParameter("orderId");
+        if (action != null && orderIdStr != null) {
+            int orderId = Integer.parseInt(orderIdStr);
+            int status = 0;
+            if ("approve".equals(action)) status = 1;
+            else if ("reject".equals(action)) status = 2;
 
-        int status = action.equals("approve") ? 1 : 2;
-
-        boolean success = new OrderDAO().updateOrderStatus(orderId, status);
-
-        response.sendRedirect("supplier-dashboard");
+            boolean updated = orderDAO.updateOrderStatus(orderId, status);
+            // Có thể set thông báo vào session nếu muốn hiển thị lại
+        }
+        // Trở lại dashboard đơn hàng
+        resp.sendRedirect("supplier_order");
     }
 }

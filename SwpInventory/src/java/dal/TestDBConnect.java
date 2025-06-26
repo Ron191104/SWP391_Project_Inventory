@@ -23,6 +23,7 @@ public class TestDBConnect {
                 System.out.println("Kết nối database thành công!");
                 conn.close();
             }
+
         } catch (Exception e) {
             System.out.println("Kết nối thất bại: " + e.getMessage());
             e.printStackTrace();
