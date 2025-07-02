@@ -31,6 +31,7 @@ public class SearchController extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
+
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -75,6 +76,8 @@ public class SearchController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
+
+
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -82,6 +85,8 @@ public class SearchController extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
+
+
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs

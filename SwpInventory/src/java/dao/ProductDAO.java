@@ -1,3 +1,5 @@
+
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -24,6 +26,8 @@ import java.lang.System.Logger.Level;
 public class ProductDAO {
 
     java.sql.Connection con = null;
+
+
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -35,6 +39,8 @@ public class ProductDAO {
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
             while (rs.next()) {
+
+
                 list.add(new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4),
                         rs.getInt(5), rs.getDouble(6), rs.getInt(7), rs.getString(8),
                         rs.getDate(9), rs.getDate(10), rs.getString(11), rs.getString(12)));
@@ -45,5 +51,7 @@ public class ProductDAO {
 
         return list;
     }
+
+
 
 }

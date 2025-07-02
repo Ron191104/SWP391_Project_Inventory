@@ -371,12 +371,12 @@
                 padding-right:42%;
             }
 
+
             .filterType{
                 height: 20px;
                 border: none;
                 outline: none;
             }
-
 
         </style>
     </head>
@@ -399,11 +399,13 @@
                             <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
                             <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
 
+
                         </div>
                     </div>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
                     <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+
                     <div class="dropdown">
                         <input type="checkbox" id="store-dropdown" />
                         <label for="store-dropdown" class="dropdown-label">
@@ -415,6 +417,7 @@
                             <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="header-right">
@@ -446,7 +449,6 @@
         <div class="container">
             <h3>Quản lí sản phẩm:</h3>
 
-
             <table>
                 <thead>
                     <tr>
@@ -472,6 +474,7 @@
 
                             <td>
                                 <img src="assets/image/${o.image}" width="50" height="50" alt="Product Image" />
+
                             </td>
                             <td style="width: 30px">${o.name}</td>
                             <td style="width: 30px">${o.barcode}</td>

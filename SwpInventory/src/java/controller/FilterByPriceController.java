@@ -7,17 +7,20 @@ package controller;
 import dao.StoreCategoryDAO;
 import dao.StoreProductDAO;
 import java.io.IOException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Product;
 import model.StoreCategory;
 import model.StoreProduct;
+
 
 /**
  *
@@ -37,6 +40,7 @@ public class FilterByPriceController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         Integer storeId = (Integer) session.getAttribute("storeId");
         if (storeId == null) {
@@ -67,8 +71,10 @@ public class FilterByPriceController extends HttpServlet {
             }
         }
 
+
         StoreProductDAO dao = new StoreProductDAO();
         List<StoreProduct> productList = new ArrayList<>();
+
 
         if ("in".equals(filterType)) {
             productList = dao.filterByPriceIn(minPrice, maxPrice, storeId);
