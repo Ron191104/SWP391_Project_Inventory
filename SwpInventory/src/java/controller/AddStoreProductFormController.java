@@ -5,6 +5,7 @@
 package controller;
 
 import dao.ProductDAO;
+import dao.StoreCategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,15 +14,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Categories;
 import model.Product;
+import model.StoreCategory;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "CategoriesController", urlPatterns = {"/category"})
-public class CategoriesController extends HttpServlet {
+@WebServlet(name = "AddStoreProductFormController", urlPatterns = {"/store_product_add"})
+public class AddStoreProductFormController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,41 +33,21 @@ public class CategoriesController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    response.setContentType("text/html;charset=UTF-8");
-    ProductDAO dao = new ProductDAO();
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        int storeId = (Integer) request.getSession().getAttribute("storeId");
 
-    String action = request.getParameter("action");
-    if (action == null) {
-        action = "product"; 
+        ProductDAO productDao = new ProductDAO();
+        List<Product> listProduct = productDao.getAllProduct();
+
+        StoreCategoryDAO categoryDao = new StoreCategoryDAO();
+        List<StoreCategory> listCategory = categoryDao.getCategoriesByStoreId(storeId);
+
+        request.setAttribute("listProduct", listProduct);
+        request.setAttribute("listCategory", listCategory);
+        request.getRequestDispatcher("store_product_add.jsp").forward(request, response);
     }
-
-    if (action.equals("product")) {
-        String categoriesID = request.getParameter("id");
-        List<Product> listByCategory;
-        if (categoriesID == null || categoriesID.isEmpty()) {
-            response.sendRedirect("product_list");
-            return;
-        } else {
-            listByCategory = dao.getProductByCategory(categoriesID);
-        }
-        List<Categories> listC = dao.getAllCategories();
-        request.setAttribute("listP", listByCategory);
-        request.setAttribute("listC", listC);
-        request.setAttribute("tag", categoriesID);
-        request.getRequestDispatcher("product_list.jsp").forward(request, response);
-    } else if (action.equals("category")) {
-        List<Categories> listC = dao.getAllCategories();
-        for (Categories c : listC) {
-    int quantity = dao.countProductByCategory(c.getId());
-    c.setQuantity(quantity);
-}
-        request.setAttribute("listC", listC);
-        request.getRequestDispatcher("category_list.jsp").forward(request, response);
-    }
-}
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

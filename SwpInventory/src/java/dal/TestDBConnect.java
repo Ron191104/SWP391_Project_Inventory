@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 public class TestDBConnect {
     public static void main(String[] args) {
         // Thay đổi các thông tin bên dưới cho đúng với database của bạn
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=Inventory";
+         String url = "jdbc:sqlserver://localhost:1433;databaseName=dtbhongphuoc;encrypt=true;trustServerCertificate=true";
         String user = "sa";
         String password = "123456789"; // thay bằng mật khẩu thật
 

@@ -1,16 +1,18 @@
-<!DOCTYPE html>
+<%-- 
+    Document   : category_list
+    Created on : Jun 17, 2025, 10:36:30 AM
+    Author     : ADMIN
+--%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<html lang="vi">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
     <head>
-        <meta charset="UTF-8">
-        <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-        <link rel="stylesheet" href="assets/css/filter-icon.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-
             body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
@@ -203,14 +205,9 @@
             .user-menu nav.dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
-            .container {
-                max-width: 100%;
-                padding: 24px;
-                background: white;
-                margin-left: 10px;
-            }
+
             table {
-                width: 100%;
+                width: 70%;
                 border-collapse: collapse;
                 margin-top: 28px;
                 table-layout: fixed;
@@ -238,9 +235,7 @@
                 background-color: #FDF9DA;
             }
 
-            .action-column {
-                width: 120px;
-            }
+
             @media (max-width: 600px) {
                 .header {
                     flex-wrap: wrap;
@@ -260,44 +255,7 @@
                     gap: 12px;
 
                 }
-                .search-box input[type="search"] {
-                    width: 120px;
-                }
-                .search-box input[type="search"]:focus {
-                    width: 180px;
-                }
-            }
 
-            .product-select {
-                height: 37px;
-                width: 170px;
-                padding: 10px 15px;
-                border: 2px solid #82CAFA;
-                border-radius: 9px;
-                font-size: 11px;
-                outline: none;
-
-            }
-            .form-group {
-                position: relative;
-                width: 200px;
-            }
-            .form-control{
-                border: none;
-                outline: none;
-            }
-            .form-group .search-icon {
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #aaa;
-            }
-            .fas.fa-search.search-icon{
-                border: none;
-                outline: none;
-                color: #89D0F0;
-                background-color: white;
             }
 
             .dropdown {
@@ -356,27 +314,39 @@
             .dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
+            .container {
+                max-width: 100%;
+                padding: 24px;
+                background: white;
+                margin-left: 10px;
 
-            .form-control1 {
-                height: 13px;
-                width: 55px;
-                padding: 10px 15px;
-                border: 2px solid #82CAFA;
-                border-radius: 9px;
-                font-size: 11px;
-                outline: none;
+            }
+            th:nth-child(1), td:nth-child(1) {
+                width: 7%;
             }
 
-            .formPrice{
-                padding-right:42%;
+            th:nth-child(2), td:nth-child(4) {
+                width: 40%;
             }
-
-            .filterType{
-                height: 20px;
+            th:nth-child(3), td:nth-child(3) {
+                width: 20%;
+            }
+            .table-wrapper {
+                display: flex;
+                justify-content: center;
+            }
+            .btn-add {
+                padding: 8px 16px;
+                background-color: #82CAFA;
+                color: white;
                 border: none;
-                outline: none;
+                border-radius: 6px;
+                cursor: pointer;
+                margin-top: 20px;
             }
-
+            .btn-add:hover {
+                background-color: #787FF6;
+            }
 
         </style>
     </head>
@@ -391,12 +361,12 @@
                     <div class="dropdown">
                         <input type="checkbox" id="product-dropdown" />
                         <label for="product-dropdown" class="dropdown-label">
-                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
+                            <i class="fas fa-box"></i> Sản phẩm
                         </label>
                         <div class="dropdown-menu">
                             <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
-                            <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
                             <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
 
                         </div>
@@ -404,6 +374,9 @@
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
                     <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+
+
+
                     <div class="dropdown">
                         <input type="checkbox" id="store-dropdown" />
                         <label for="store-dropdown" class="dropdown-label">
@@ -443,54 +416,48 @@
                 </div>
             </div>
         </div>
+
         <div class="container">
-            <h3>Quản lí sản phẩm:</h3>
 
-
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 5px">ID</th>
-                        <th>Image</th>
-                        <th style="width: 40px">Name</th>
-                        <th style="width: 30px">Barcode</th>
-                        <th>Category ID</th>
-                        <th style="width: 10px">Unit</th>
-                        <th>Import price</th>
-                        <th>Quantity</th>
-                        <th>MFD</th>
-                        <th>EXP</th>
-                        <th style="width: 10px">Status</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${listP}" var="o">
+            <div class="header-wrapper" style="display: flex;  justify-content: space-between;">
+                <h3>Quản lí phân loại:</h3>
+                <form action="store_category_add.jsp">
+                    <input type="submit" class="btn-add" value="Add Category" />
+                </form>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
                         <tr>
-                            <td style="width: 5px">${o.id}</td>
-
-
-                            <td>
-                                <img src="assets/image/${o.image}" width="50" height="50" alt="Product Image" />
-                            </td>
-                            <td style="width: 30px">${o.name}</td>
-                            <td style="width: 30px">${o.barcode}</td>
-                            <td>${o.category_id}</td>
-                            <td>${o.unit}</td>
-                            <td>${o.price}</td>
-                            <td>${o.quantity}</td>
-                            <td>${o.manufacture_date}</td>
-                            <td>${o.expired_date}</td>
-
-                            <td>
-
-                                <input type="submit" value="Edit" style="margin-bottom: 5px;" />
-                                <input type="submit" value="Delete" style="margin-bottom: 5px;" />
-                            </td>
+                            <th>Stt</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
                         </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+                    </thead> 
+                    <tbody>
+                        <c:forEach items="${listStoreCategory}" var="c"  varStatus="stt">
+                            <tr>
+                                <td>${stt.index + 1}</td>
+
+                                <td>${c.categoryName}</td>
+                                <td>${c.quantity}</td>
+                                <td class="action-icons">
+                                    <a href="store_product_list?id=${c.storeCategoryId}" class="fas fa-list" style="color: #787FF6;"></a>
+                                    <a href="loadCategory?id=${c.storeCategoryId}" class="fas fa-pencil-alt" style="color: #787FF6;padding: 13px;"></a>
+                                    <a href="deletecategory?id=${c.storeCategoryId}" class="fas fa-trash"
+                                       style="color: #787FF6;"
+                                       onclick="return confirm('Bạn có chắc muốn xóa category có ID = ${c.storeCategoryId} không?');">
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+
+
+
+                    </tbody>
+                </table> 
+            </div>
         </div>
     </body>
 </html>

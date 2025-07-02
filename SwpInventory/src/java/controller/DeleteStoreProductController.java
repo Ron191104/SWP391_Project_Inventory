@@ -5,6 +5,7 @@
 package controller;
 
 import dao.ProductDAO;
+import dao.StoreProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author ADMIN
  */
 @WebServlet(name = "DeleteController", urlPatterns = {"/delete"})
-public class DeleteController extends HttpServlet {
+public class DeleteStoreProductController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,12 +32,17 @@ public class DeleteController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String did = request.getParameter("id");
-        if (did != null && !did.isEmpty()) {
-            ProductDAO dao = new ProductDAO();
-            dao.deleteProduct(did);
+        String iddelete = request.getParameter("id");
+        if (iddelete != null) {
+            try {
+                int id = Integer.parseInt(iddelete);
+                StoreProductDAO dao = new StoreProductDAO();
+                dao.deleteStoreProduct(id);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
-        response.sendRedirect("product_list");
+        response.sendRedirect("store_product_list");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
