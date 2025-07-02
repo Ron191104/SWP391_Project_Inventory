@@ -6,22 +6,16 @@ public class OrderDetailsDisplay {
     private int quantity;
     private String unit;
     private double price;
-    private String note;
-    private int status;
 
     public OrderDetailsDisplay() {}
 
-    public OrderDetailsDisplay(int orderId, String productName, int quantity, String unit, double price, String note, int status) {
+    public OrderDetailsDisplay(int orderId, String productName, int quantity, String unit, double price) {
         this.orderId = orderId;
         this.productName = productName;
         this.quantity = quantity;
         this.unit = unit;
         this.price = price;
-        this.note = note;
-        this.status = status;
     }
-
-    // getters and setters
 
     public int getOrderId() {
         return orderId;
@@ -61,21 +55,5 @@ public class OrderDetailsDisplay {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 }

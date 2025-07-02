@@ -77,8 +77,7 @@ public class AddProductController extends HttpServlet {
             String barcode = request.getParameter("barcode");
             int category_id = Integer.parseInt(request.getParameter("category_id"));
             int supplier_id = Integer.parseInt(request.getParameter("supplier_id"));
-            double price_in = Double.parseDouble(request.getParameter("price_in"));
-            double price_out = Double.parseDouble(request.getParameter("price_out"));
+            double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             String unit = request.getParameter("unit");
 
@@ -92,7 +91,7 @@ public class AddProductController extends HttpServlet {
             String description = request.getParameter("description");
 
             ProductDAO dao = new ProductDAO();
-            dao.addProduct(name, barcode, category_id, supplier_id, price_in, price_out, quantity, unit, manufacture_date, expired_date, image, description);
+            dao.addProduct(name, barcode, category_id, supplier_id, price, quantity, unit, manufacture_date, expired_date, image, description);
             response.sendRedirect("product_list");
 
         } catch (Exception e) {
