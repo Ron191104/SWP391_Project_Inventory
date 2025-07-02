@@ -111,7 +111,18 @@
             <p style="color:red;">Tổng số đơn hàng: ${fn:length(orderList)}</p>
             <p style="color:blue;">Supplier ID đang đăng nhập: ${sessionScope.supplier.supplier_id}</p>
             <p style="color:green;">Số đơn hàng tìm thấy: ${fn:length(orderList)}</p>
-
+            <!-- Bộ lọc trạng thái đơn hàng -->
+            <form method="get" action="supplier_order" style="display:inline-block; margin-bottom: 20px;">
+                <label for="statusFilter"><b>Trạng thái đơn hàng:</b></label>
+                <select name="status" id="statusFilter" style="padding: 8px 16px; border: 2px solid #82CAFA; border-radius: 8px; font-size: 1em;" onchange="this.form.submit()">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="0" ${param.status == '0' ? 'selected' : ''}>Chờ duyệt</option>
+                    <option value="1" ${param.status == '1' ? 'selected' : ''}>Đã duyệt</option>
+                    <option value="2" ${param.status == '2' ? 'selected' : ''}>Từ chối</option>
+                    <option value="3" ${param.status == '3' ? 'selected' : ''}>Đã cung cấp</option>
+                </select>
+            </form>
+                
             <table>
                 <thead>
                     <tr>

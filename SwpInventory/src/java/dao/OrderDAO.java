@@ -264,5 +264,28 @@ public class OrderDAO {
         }
         return -1; // hoặc giá trị mặc định khác
     }
+// Lấy đơn hàng theo supplierId và trạng thái (status)
 
+    public List<Order> getOrdersBySupplierIdAndStatus(int supplierId, int status) {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE supplier_id = ? AND status = ? ORDER BY order_date DESC";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, supplierId);
+            ps.setInt(2, status);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderId(rs.getInt("order_id"));
+                o.setSupplierId(rs.getInt("supplier_id"));
+                o.setEmployeeId(rs.getInt("employee_id"));
+                o.setOrderDate(rs.getTimestamp("order_date").toLocalDateTime());
+                o.setStatus(rs.getInt("status"));
+                o.setNote(rs.getString("note"));
+                list.add(o);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

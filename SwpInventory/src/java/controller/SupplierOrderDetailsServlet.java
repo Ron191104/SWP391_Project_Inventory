@@ -1,6 +1,7 @@
 package controller;
 
 import dao.OrderDAO;
+import model.Order;
 import model.OrderDetailsDisplay;
 
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @WebServlet("/supplier_orderdetails")
 public class SupplierOrderDetailsServlet extends HttpServlet {
+
     private OrderDAO orderDAO = new OrderDAO();
 
     @Override
@@ -29,12 +31,13 @@ public class SupplierOrderDetailsServlet extends HttpServlet {
         // Lấy chi tiết đơn hàng
         List<OrderDetailsDisplay> orderDetailsList = orderDAO.getFullOrderDetails(orderId);
 
-        // Lấy trạng thái đơn hàng
-        int orderStatus = orderDAO.getOrderStatus(orderId);
+        // Lấy thông tin đơn hàng (đầy đủ)
+        Order order = orderDAO.getOrderById(orderId);
 
         request.setAttribute("orderId", orderId);
         request.setAttribute("orderDetailsList", orderDetailsList);
-        request.setAttribute("orderStatus", orderStatus);
+        request.setAttribute("orderStatus", order != null ? order.getStatus() : null);
+        request.setAttribute("order", order); // Truyền sang để JSP lấy
 
         request.getRequestDispatcher("supplier_orderdetails.jsp").forward(request, response);
     }
@@ -49,6 +52,8 @@ public class SupplierOrderDetailsServlet extends HttpServlet {
             orderDAO.updateOrderStatus(orderId, 1); // Đã duyệt
         } else if ("reject".equals(action)) {
             orderDAO.updateOrderStatus(orderId, 2); // Từ chối
+        } else if ("delivered".equals(action)) {
+            orderDAO.updateOrderStatus(orderId, 3); // Đã cung cấp
         }
         response.sendRedirect("supplier_orderdetails?orderId=" + orderId);
     }
