@@ -1,19 +1,19 @@
-
+<%-- 
+    Document   : category_list
+    Created on : Jun 17, 2025, 10:36:30 AM
+    Author     : ADMIN
+--%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        <title>JSP Page</title>
         <style>
             body {
-
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
@@ -207,7 +207,7 @@
             }
 
             table {
-                width: 50%;
+                width: 70%;
                 border-collapse: collapse;
                 margin-top: 28px;
                 table-layout: fixed;
@@ -272,7 +272,6 @@
                 color: white;
                 display: flex;
                 align-items: center;
-
                 font-weight: 600;
             }
             .dropdown-label i {
@@ -315,49 +314,38 @@
             .dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
-            .card {
-                background-color: #fff;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                margin: 30px;
-                padding-left: 30px;
+            .container {
+                max-width: 100%;
+                padding: 24px;
+                background: white;
+                margin-left: 10px;
 
-                display: inline-block;
-                width: 160px;
-                height: 80px;
             }
-            .card h3 {
-                font-size: 18px;
+            th:nth-child(1), td:nth-child(1) {
+                width: 5%;
             }
-            .card .value {
-                font-size: 1em;
-                font-weight: bold;
+
+            th:nth-child(4), td:nth-child(4) {
+                width: 30%;
             }
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                cursor: help;
+             th:nth-child(3), td:nth-child(3) {
+                width: 15%;
             }
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 180px;
-                background-color: #333;
-                color: #fff;
-                text-align: center;
+            .table-wrapper {
+                display: flex;
+                justify-content: center;
+            }
+            .btn-add {
+                padding: 8px 16px;
+                background-color: #82CAFA;
+                color: white;
+                border: none;
                 border-radius: 6px;
-                padding: 6px;
-                position: absolute;
-                z-index: 10;
-                bottom: 125%;
-                left: 50%;
-                margin-left: -90px;
-                opacity: 0;
-                transition: opacity 0.3s;
-                font-size: 0.75rem;
+                cursor: pointer;
+                margin-top: 20px;
             }
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
+            .btn-add:hover {
+                background-color: #787FF6;
             }
 
         </style>
@@ -367,8 +355,7 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="store_dashboard.jsp">
-
+                    <a href="dashboard.html">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -377,23 +364,16 @@
                             <i class="fas fa-box"></i> Sản phẩm
                         </label>
                         <div class="dropdown-menu">
-                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
-                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
+                            <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
 
                         </div>
                     </div>
-                    <a href="import_goods.html"><i class="fas fa-box-open"></i> Nhập hàng</a>
+                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
-                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
-
-                    <a href="choose_store"><i class="fas fa-store"></i>Chi nhánh</a>
-
-
-
-
-
                 </div>
             </div>
             <div class="header-right">
@@ -423,23 +403,48 @@
             </div>
         </div>
 
-        <div class="card">
-        <h3>Clicks <span class="tooltip">
-                <i class="fas fa-info-circle"></i>
-                <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-            </span>
-            <div class="value">100</div>
-            <div>-13,04%</div>
-        </div>
+        <div class="container">
 
-     <div class="card">
-        <h3>Clicks <span class="tooltip">
-                <i class="fas fa-info-circle"></i>
-                <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-            </span>
-            <div class="value">100</div>
-            <div>-13,04%</div>
-        </div>
+            <div class="header-wrapper" style="display: flex;  justify-content: space-between;">
+                <h3>Quản lí phân loại:</h3>
+                <form action="category_add.jsp">
+                    <input type="submit" class="btn-add" value="Add Category" />
+                </form>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        <c:forEach items="${listC}" var="c">
+                            <tr>
+                                <td>${c.id}</td>
+                                <td>${c.name}</td>
+                                <td>${c.quantity}</td>
 
+                                <td class="action-icons">
+                                    <a href="category?id=${c.id}" class="fas fa-list" style="color: #787FF6;"></a>
+
+                                    <a href="loadCategory?id=${c.id}" class="fas fa-pencil-alt" style="color: #787FF6;padding: 13px; "></a>
+                                    <a href="deletecategory?id=${c.id}" class="fas fa-trash" 
+                                       style="color: #787FF6;"
+                                       onclick="return confirm('Bạn có chắc muốn xóa category có ID = ${c.id} không?');">
+                                    </a>
+                                </td>
+
+                            </tr>
+                        </c:forEach>
+
+
+                    </tbody>
+                </table> 
+            </div>
+        </div>
     </body>
 </html>

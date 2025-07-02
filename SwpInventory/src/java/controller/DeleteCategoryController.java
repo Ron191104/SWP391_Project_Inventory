@@ -5,10 +5,7 @@
 
 package controller;
 
-import dao.ProductDAO;
-import dao.StoreCategoryDAO;
-import dao.StoreProductDAO;
-
+import dao.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,64 +14,46 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Product;
-import model.StoreCategory;
-import model.StoreProduct;
-
-
 /**
  *
  * @author ADMIN
  */
-
-@WebServlet(name = "SearchController", urlPatterns = {"/search"})
-public class SearchController extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-
+@WebServlet(name="DeleteCategoryController", urlPatterns={"/deletecategory"})
+public class DeleteCategoryController extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
-        Integer storeId = (Integer) session.getAttribute("storeId");
-        if (storeId == null) {
-            response.sendRedirect("choose_store");
-            return;
-        }
+    throws ServletException, IOException {
+      response.setContentType("text/html;charset=UTF-8");
+    String idRaw = request.getParameter("id");
 
-        String txtSearch = request.getParameter("txt");
+    try {
+        int id = Integer.parseInt(idRaw);
+        CategoryDAO dao = new CategoryDAO();
 
-        StoreProductDAO dao = new StoreProductDAO();
-        List<StoreProduct> list = dao.searchByName(txtSearch, storeId);
+        // Cập nhật product set category_id = null
+        dao.clearProductsByCategoryId(id);
 
-        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
-        List<StoreCategory> listC = categoryDAO.getAllStoreCategory(storeId);
+        // Xóa category
+        dao.deleteCategory(id);
 
-        String categoriesID = request.getParameter("id");
-        request.setAttribute("tag", categoriesID);
-
-        request.setAttribute("storeProduct", list);
-        request.setAttribute("listStoreCategory", listC);
-
-        request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
+    response.sendRedirect("category?action=category");
+    }
+    
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /** 
+     * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -82,15 +61,12 @@ public class SearchController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
-    }
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
-
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -98,15 +74,12 @@ public class SearchController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
-
      * @return a String containing servlet description
      */
     @Override

@@ -1,19 +1,23 @@
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.OrderDetails" %>
 
+
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+        <link rel="stylesheet" href="assets/css/filter-icon.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        <title>JSP Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Danh sách sản phẩm - Quản lý kho</title>
         <style>
+            * {
+                box-sizing: border-box;
+            }
             body {
-
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
@@ -29,11 +33,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                background-color: #82CAFA;
+                background-color: #82CAFA; /* Màu chủ đạo */
                 color: white;
                 padding: 12px 24px;
                 position: relative;
-
             }
             .header-left {
                 display: flex;
@@ -48,8 +51,6 @@
                 display: flex;
                 gap: 12px;
                 margin-left: 40px;
-                position: relative;
-
             }
             .nav a {
                 color: white;
@@ -58,13 +59,6 @@
                 font-weight: 600;
                 transition: background-color 0.3s ease;
                 white-space: nowrap;
-                display: flex;
-                align-items: center;
-            }
-            .nav a i {
-                margin-right: 8px;
-                min-width: 16px;
-                text-align: center;
             }
             .nav a:hover,
             .nav a.active {
@@ -76,7 +70,9 @@
                 align-items: center;
                 gap: 20px;
             }
-
+            /*            .search-box {
+                            position: relative;
+                        }*/
             .search-box input[type="search"] {
                 padding: 6px 28px 6px 12px;
                 border-radius: 20px;
@@ -169,12 +165,10 @@
                 border-color: #FDF9DA;
                 outline: none;
             }
-
             .user-menu nav.dropdown-menu {
                 position: absolute;
                 top: 50px;
-                left: -50%;
-                transform: translateX(-50%);
+                right: 0;
                 background: white;
                 color: #333;
                 border-radius: 8px;
@@ -184,11 +178,7 @@
                 overflow: hidden;
                 display: none;
                 z-index: 1000;
-                max-height: 240px;
-                overflow-y: auto;
-                scrollbar-width: none;
             }
-
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
             }
@@ -205,15 +195,57 @@
             .user-menu nav.dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
-
+            .container {
+                max-width: 800px;
+                margin: 32px auto;
+                padding: 24px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 0 16px rgba(0,0,0,0.1);
+            }
+            form label {
+                display: block;
+                margin: 12px 0 6px;
+                font-weight: 600;
+                color: #333;
+            }
+            form input[type="text"],
+            form input[type="number"] {
+                width: 100%;
+                padding: 10px 12px;
+                font-size: 1rem;
+                border-radius: 6px;
+                border: 1.8px solid #ccc;
+                transition: border-color 0.3s ease;
+            }
+            form input[type="text"]:focus,
+            form input[type="number"]:focus {
+                outline: none;
+                border-color: #82CAFA;
+                box-shadow: 0 0 5px #82CAFAaa;
+            }
+            form input[type="submit"] {
+                margin-top: 10px;
+                width: 300px;
+                padding: 12px;
+                font-size: 1.1rem;
+                font-weight: 700;
+                border: none;
+                color: white;
+                background-color: #82CAFA;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            form input[type="submit"]:hover {
+                background-color: #21a5fc;
+            }
             table {
-                width: 50%;
+                width: 100%;
                 border-collapse: collapse;
                 margin-top: 28px;
                 table-layout: fixed;
-
             }
-
             th, td {
                 border: 1px solid #ddd;
                 padding: 5px;
@@ -234,15 +266,24 @@
             tbody tr:hover {
                 background-color: #FDF9DA;
             }
-
-
+            .button-container {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .action-column {
+                width: 120px;
+            }
             @media (max-width: 600px) {
                 .header {
                     flex-wrap: wrap;
                     gap: 10px;
                     padding: 12px 12px;
                 }
-
+                .header-left {
+                    flex-basis: 100%;
+                    justify-content: center;
+                }
                 .nav {
                     margin-left: 0;
                     flex-wrap: wrap;
@@ -253,111 +294,46 @@
                     flex-basis: 100%;
                     justify-content: center;
                     gap: 12px;
-
                 }
-
+                .search-box input[type="search"] {
+                    width: 120px;
+                }
+                .search-box input[type="search"]:focus {
+                    width: 180px;
+                }
             }
 
-            .dropdown {
+            .product-select {
+                height: 37px;
+                width: 170px;
+                padding: 10px 15px;
+                border: 2px solid #82CAFA;
+                border-radius: 9px;
+                font-size: 11px;
+                outline: none;
+
+            }
+            .form-group {
                 position: relative;
+                width: 200px;
             }
-            .dropdown input[type="checkbox"] {
-                display: none;
+            .form-control{
+                border: none;
+                outline: none;
             }
-            .dropdown-label {
-                cursor: pointer;
-                padding: 8px 16px;
-                border-radius: 4px;
-                transition: background-color 0.3s ease;
-                color: white;
-                display: flex;
-                align-items: center;
-
-                font-weight: 600;
-            }
-            .dropdown-label i {
-                margin-right: 8px;
-                min-width: 16px;
-                text-align: center;
-            }
-            .dropdown-label:hover {
-                background-color: #787ff6;
-                color: white;
-            }
-            .dropdown-menu {
+            .form-group .search-icon {
                 position: absolute;
-                top: 100%;
-                left: 0;
-                background: white;
-                color: #333;
-                border-radius: 8px;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-                min-width: 200px;
-                display: none;
-                flex-direction: column;
-                z-index: 1000;
-
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #aaa;
+                pointer-events: none;
             }
-            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
-                display: flex;
-            }
-            .dropdown-menu a {
-                padding: 12px 16px;
-                border-bottom: 1px solid #eee;
-                font-weight: 600;
-                white-space: nowrap;
-                color: #333;
-                display: block;
-            }
-            .dropdown-menu a:last-child {
-                border-bottom: none;
-            }
-            .dropdown-menu a:hover {
-                background-color: #FDF9DA;
-            }
-            .card {
-                background-color: #fff;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                margin: 30px;
-                padding-left: 30px;
-
-                display: inline-block;
-                width: 160px;
-                height: 80px;
-            }
-            .card h3 {
-                font-size: 18px;
-            }
-            .card .value {
-                font-size: 1em;
-                font-weight: bold;
-            }
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                cursor: help;
-            }
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 180px;
-                background-color: #333;
-                color: #fff;
-                text-align: center;
-                border-radius: 6px;
-                padding: 6px;
-                position: absolute;
-                z-index: 10;
-                bottom: 125%;
-                left: 50%;
-                margin-left: -90px;
-                opacity: 0;
-                transition: opacity 0.3s;
-                font-size: 0.75rem;
-            }
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
+            .fas.fa-search.search-icon{
+                border: none;
+                outline: none;
+                color: #89D0F0;
+                background-color: white;
             }
 
         </style>
@@ -365,35 +341,12 @@
     <body>
         <div class="header">
             <div class="header-left">
-                <h1>Tên kho</h1>
+                <h1>Quản lý sản phẩm</h1>
                 <div class="nav">
-                    <a href="store_dashboard.jsp">
-
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                    <div class="dropdown">
-                        <input type="checkbox" id="product-dropdown" />
-                        <label for="product-dropdown" class="dropdown-label">
-                            <i class="fas fa-box"></i> Sản phẩm
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
-
-                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
-
-                        </div>
-                    </div>
-                    <a href="import_goods.html"><i class="fas fa-box-open"></i> Nhập hàng</a>
-                    <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
-                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
-
-                    <a href="choose_store"><i class="fas fa-store"></i>Chi nhánh</a>
-
-
-
-
-
+                    <a href="product_list" class="active">Sản phẩm</a>
+                    <a href="import_goods.html">Nhập kho</a>
+                    <a href="export_goods.html">Xuất kho</a>
+                    <a href="stats.html">Thống kê</a>
                 </div>
             </div>
             <div class="header-right">
@@ -414,32 +367,67 @@
                     <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
                         <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown">
-                        <a href="myprofile.html">My Profile</a>
-                        <a href="change_password.html">Change Password</a>
-                        <a href="login.html">Log Out</a>
+                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
+                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
+                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
+                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
                     </nav>
                 </div>
             </div>
         </div>
 
-        <div class="card">
-        <h3>Clicks <span class="tooltip">
-                <i class="fas fa-info-circle"></i>
-                <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-            </span>
-            <div class="value">100</div>
-            <div>-13,04%</div>
+
+        <div class="container" style="text-align: center">
+            <h2>Danh sách đơn hàng đã gửi</h2>
+
+            <c:if test="${empty orderDisplayList}">
+                <p>Chưa có đơn hàng nào.</p>
+            </c:if>
+
+            <c:forEach var="od" items="${orderDisplayList}">
+                <a href="order_details?orderId=${od.orderId}" style="text-decoration: none; color: inherit;">
+                    <div style="
+                         border: 2px solid #82CAFA;
+                         border-radius: 12px;
+                         margin: 20px auto;
+                         max-width: 600px;
+                         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                         background-color: #f9fcff;
+                         font-family: 'Segoe UI', sans-serif;
+                         transition: transform 0.2s ease;
+                         " onmouseover="this.style.transform = 'scale(1.02)'" onmouseout="this.style.transform = 'scale(1)'">
+                        <h3 style="color: #0b5ed7;">Đơn hàng #${od.orderId}</h3>
+                        <p><strong>Nhà cung cấp:</strong> ${od.supplierName}</p>
+                        <p><strong>Ngày đặt:</strong> ${od.orderDate}</p>
+                        <p><strong>Số sản phẩm:</strong> ${od.productCount}</p>
+                        <c:if test="${not empty od.note}">
+                            <p><strong>Ghi chú:</strong> ${od.note}</p>
+                        </c:if>
+                        <p><strong>Trạng thái:</strong>
+                            <c:choose>
+                                <c:when test="${od.status == 0}">
+                                    <span style="color: gray;">Đang chờ xác nhận</span>
+                                </c:when>
+                                <c:when test="${od.status == 1}">
+                                    <span style="color: blue;">Đã xác nhận</span>
+                                </c:when>
+                                <c:when test="${od.status == 2}">
+                                    <span style="color: red;">Đã từ chối</span>
+                                </c:when>
+                                <c:when test="${od.status == 3}">
+                                    <span style="color: green;">Đã hoàn thành</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span style="color: black;">Không rõ</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
+                    </div>
+                </a>
+            </c:forEach>
         </div>
 
-     <div class="card">
-        <h3>Clicks <span class="tooltip">
-                <i class="fas fa-info-circle"></i>
-                <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-            </span>
-            <div class="value">100</div>
-            <div>-13,04%</div>
-        </div>
+
 
     </body>
 </html>

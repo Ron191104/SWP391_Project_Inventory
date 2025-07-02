@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+
 import model.Product;
 
 /**
@@ -36,7 +37,9 @@ public class ProductController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         ProductDAO dao = new ProductDAO();
         List<Product> list = dao.getAllProduct();
+
         request.setAttribute("listP", list);
+
         request.getRequestDispatcher("product_list.jsp").forward(request, response);
     }
 

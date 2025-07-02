@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.OrderDetails" %>
+
 
 <html lang="vi">
     <head>
@@ -9,8 +12,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Danh sách sản phẩm - Quản lý kho</title>
         <style>
-
+            * {
+                box-sizing: border-box;
+            }
             body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
@@ -27,11 +33,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                background-color: #82CAFA;
+                background-color: #82CAFA; /* Màu chủ đạo */
                 color: white;
                 padding: 12px 24px;
                 position: relative;
-
             }
             .header-left {
                 display: flex;
@@ -46,8 +51,6 @@
                 display: flex;
                 gap: 12px;
                 margin-left: 40px;
-                position: relative;
-
             }
             .nav a {
                 color: white;
@@ -56,13 +59,6 @@
                 font-weight: 600;
                 transition: background-color 0.3s ease;
                 white-space: nowrap;
-                display: flex;
-                align-items: center;
-            }
-            .nav a i {
-                margin-right: 8px;
-                min-width: 16px;
-                text-align: center;
             }
             .nav a:hover,
             .nav a.active {
@@ -74,7 +70,9 @@
                 align-items: center;
                 gap: 20px;
             }
-
+            /*            .search-box {
+                            position: relative;
+                        }*/
             .search-box input[type="search"] {
                 padding: 6px 28px 6px 12px;
                 border-radius: 20px;
@@ -167,12 +165,10 @@
                 border-color: #FDF9DA;
                 outline: none;
             }
-
             .user-menu nav.dropdown-menu {
                 position: absolute;
                 top: 50px;
-                left: -50%;
-                transform: translateX(-50%);
+                right: 0;
                 background: white;
                 color: #333;
                 border-radius: 8px;
@@ -182,11 +178,7 @@
                 overflow: hidden;
                 display: none;
                 z-index: 1000;
-                max-height: 240px;
-                overflow-y: auto;
-                scrollbar-width: none;
             }
-
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
             }
@@ -204,19 +196,56 @@
                 background-color: #FDF9DA;
             }
             .container {
-                max-width: 100%;
+                max-width: 800px;
+                margin: 32px auto;
                 padding: 24px;
                 background: white;
-                margin-left: 10px;
+                border-radius: 8px;
+                box-shadow: 0 0 16px rgba(0,0,0,0.1);
+            }
+            form label {
+                display: block;
+                margin: 12px 0 6px;
+                font-weight: 600;
+                color: #333;
+            }
+            form input[type="text"],
+            form input[type="number"] {
+                width: 100%;
+                padding: 10px 12px;
+                font-size: 1rem;
+                border-radius: 6px;
+                border: 1.8px solid #ccc;
+                transition: border-color 0.3s ease;
+            }
+            form input[type="text"]:focus,
+            form input[type="number"]:focus {
+                outline: none;
+                border-color: #82CAFA;
+                box-shadow: 0 0 5px #82CAFAaa;
+            }
+            form input[type="submit"] {
+                margin-top: 10px;
+                width: 30%;
+                padding: 12px;
+                font-size: 1.1rem;
+                font-weight: 700;
+                border: none;
+                color: white;
+                background-color: #82CAFA;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            form input[type="submit"]:hover {
+                background-color: #21a5fc;
             }
             table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-top: 28px;
                 table-layout: fixed;
-
             }
-
             th, td {
                 border: 1px solid #ddd;
                 padding: 5px;
@@ -237,7 +266,11 @@
             tbody tr:hover {
                 background-color: #FDF9DA;
             }
-
+            .button-container {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
             .action-column {
                 width: 120px;
             }
@@ -247,7 +280,10 @@
                     gap: 10px;
                     padding: 12px 12px;
                 }
-
+                .header-left {
+                    flex-basis: 100%;
+                    justify-content: center;
+                }
                 .nav {
                     margin-left: 0;
                     flex-wrap: wrap;
@@ -258,7 +294,6 @@
                     flex-basis: 100%;
                     justify-content: center;
                     gap: 12px;
-
                 }
                 .search-box input[type="search"] {
                     width: 120px;
@@ -292,6 +327,7 @@
                 top: 50%;
                 transform: translateY(-50%);
                 color: #aaa;
+                pointer-events: none;
             }
             .fas.fa-search.search-icon{
                 border: none;
@@ -300,124 +336,22 @@
                 background-color: white;
             }
 
-            .dropdown {
-                position: relative;
-            }
-            .dropdown input[type="checkbox"] {
-                display: none;
-            }
-            .dropdown-label {
-                cursor: pointer;
-                padding: 8px 16px;
-                border-radius: 4px;
-                transition: background-color 0.3s ease;
-                color: white;
-                display: flex;
-                align-items: center;
-                font-weight: 600;
-            }
-            .dropdown-label i {
-                margin-right: 8px;
-                min-width: 16px;
-                text-align: center;
-            }
-            .dropdown-label:hover {
-                background-color: #787ff6;
-                color: white;
-            }
-            .dropdown-menu {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                background: white;
-                color: #333;
-                border-radius: 8px;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-                min-width: 200px;
-                display: none;
-                flex-direction: column;
-                z-index: 1000;
-
-            }
-            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
-                display: flex;
-            }
-            .dropdown-menu a {
-                padding: 12px 16px;
-                border-bottom: 1px solid #eee;
-                font-weight: 600;
-                white-space: nowrap;
-                color: #333;
-                display: block;
-            }
-            .dropdown-menu a:last-child {
-                border-bottom: none;
-            }
-            .dropdown-menu a:hover {
-                background-color: #FDF9DA;
-            }
-
-            .form-control1 {
-                height: 13px;
-                width: 55px;
-                padding: 10px 15px;
-                border: 2px solid #82CAFA;
-                border-radius: 9px;
-                font-size: 11px;
-                outline: none;
-            }
-
-            .formPrice{
-                padding-right:42%;
-            }
-
-
-
-            .filterType{
-                height: 20px;
-                border: none;
-                outline: none;
-            }
         </style>
     </head>
     <body>
+
+        <%
+                List<model.OrderDetails> cart = (List<model.OrderDetails>) session.getAttribute("cart");
+        %>
+
         <div class="header">
             <div class="header-left">
-                <h1>Tên kho</h1>
+                <h1>Quản lý sản phẩm</h1>
                 <div class="nav">
-                    <a href="dashboard.html">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                    <div class="dropdown">
-                        <input type="checkbox" id="product-dropdown" />
-                        <label for="product-dropdown" class="dropdown-label">
-                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
-
-                            <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
-
-
-                        </div>
-                    </div>
-                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
-                    <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
-
-                    <div class="dropdown">
-                        <input type="checkbox" id="store-dropdown" />
-                        <label for="store-dropdown" class="dropdown-label">
-                            <i class="fas fa-store"></i> <span style="font-weight:600">Cửa hàng</span>
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
-                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
-                        </div>
-                    </div>
-
+                    <a href="product_list" class="active">Sản phẩm</a>
+                    <a href="import_goods.html">Nhập kho</a>
+                    <a href="export_goods.html">Xuất kho</a>
+                    <a href="stats.html">Thống kê</a>
                 </div>
             </div>
             <div class="header-right">
@@ -438,60 +372,132 @@
                     <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
                         <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown">
-                        <a href="myprofile.html">My Profile</a>
-                        <a href="change_password.html">Change Password</a>
-                        <a href="login.html">Log Out</a>
+                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
+                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
+                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
+                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
                     </nav>
                 </div>
             </div>
         </div>
         <div class="container">
-            <h3>Quản lí sản phẩm:</h3>
-            <table>
-                <thead>
+            <h3>Tạo đơn hàng:</h3>
+            <form action="create_order" method="get">
+                <div style="display: flex; justify-content: center; margin-bottom: 16px;">
+                    <div style="text-align: left;">
+                        <label for="supplierId" style="display: block; margin-bottom: 4px;">Nhà cung cấp:</label>
+                        <select name="supplierId" class="product-select"
+                                style="font-size:16px; padding:8px; width:250px;"
+                                onchange="this.form.submit()" <c:if test="${not empty cart}">disabled</c:if>>
+                            <option value="" disabled <c:if test="${empty param.supplierId}">selected</c:if>>Chọn nhà cung cấp</option>
+                            <c:forEach items="${listS}" var="s">
+                                <option value="${s.supplier_id}" <c:if test="${param.supplierId == s.supplier_id}">selected</c:if>>${s.supplier_name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+
+            <c:if test="${not empty param.supplierId}">
+                <form action="create_order" method="post">
+                    <input type="hidden" name="supplierId" value="${param.supplierId}" />
+
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-evenly;">
+                        <div style="text-align: left;">
+                            <label for="id" style="display: block; margin-bottom: 4px;">Sản phẩm:</label>
+                            <select name="id" class="product-select" required style="font-size:16px; padding:8px; width:250px;">
+                                <option value="" disabled selected>Chọn sản phẩm</option>
+                                <c:forEach items="${listP}" var="p">
+                                    <option value="${p.id}">${p.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div style="text-align: left;">
+                            <label for="quantity" style="display: block; margin-bottom: 4px;">Số lượng:</label>
+                            <input type="number" name="quantity" min="1" value="1"
+                                   style="font-size:16px; padding:8px; width:250px;" placeholder="Nhập số lượng" required>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div style="text-align:center;">
+                        <input type="submit" value="Thêm vào đơn hàng"
+                               style="font-size:16px; padding:8px 16px;">
+                    </div>
+                </form>
+            </c:if>
+
+
+
+            <c:if test="${not empty cart}">
+                <h3>Sản phẩm đã chọn:</h3>
+                <table border="1" cellpadding="10" cellspacing="0">
                     <tr>
-                        <th style="width: 5px">ID</th>
-                        <th>Image</th>
-                        <th style="width: 40px">Name</th>
-                        <th style="width: 30px">Barcode</th>
-                        <th>Category ID</th>
-                        <th style="width: 10px">Unit</th>
-                        <th>Import price</th>
-                        <th>Quantity</th>
-                        <th>MFD</th>
-                        <th>EXP</th>
-                        <th style="width: 10px">Status</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn vị</th>
+                        <th>Giá</th>
+                        <th>Thành tiền</th>
+                        <th></th>
                     </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${listP}" var="o">
+                    <c:set var="total" value="0" />
+                    <c:forEach var="od" items="${cart}">
                         <tr>
-                            <td style="width: 5px">${o.id}</td>
-
-
                             <td>
-                                <img src="assets/image/${o.image}" width="50" height="50" alt="Product Image" />
-
+                                <c:forEach items="${listP}" var="p">
+                                    <c:if test="${p.id == od.productId}">
+                                        ${p.name}
+                                    </c:if>
+                                </c:forEach>
                             </td>
-                            <td style="width: 30px">${o.name}</td>
-                            <td style="width: 30px">${o.barcode}</td>
-                            <td>${o.category_id}</td>
-                            <td>${o.unit}</td>
-                            <td>${o.price}</td>
-                            <td>${o.quantity}</td>
-                            <td>${o.manufacture_date}</td>
-                            <td>${o.expired_date}</td>
-
+                            <td>${od.quantity}</td>
                             <td>
-
-                                <input type="submit" value="Edit" style="margin-bottom: 5px;" />
-                                <input type="submit" value="Delete" style="margin-bottom: 5px;" />
+                                <c:forEach items="${listP}" var="p">
+                                    <c:if test="${p.id == od.productId}">
+                                        ${p.unit}
+                                    </c:if>
+                                </c:forEach>
+                            </td>
+                            <td>${od.price}</td>
+                            <td>
+                                <c:set var="subtotal" value="${od.quantity * od.price}" />
+                                ${subtotal}
+                                <c:set var="total" value="${total + subtotal}" />
+                            </td>
+                            <td>
+                                <form action="remove_from_cart" method="post" style="margin:0;">
+                                    <input type="hidden" name="productId" value="${od.productId}" />
+                                    <input type="submit" value="Xóa" style="all: unset; cursor: pointer; color: red; text-decoration: underline;" />
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>
-                </tbody>
-            </table>
+                    <tr>
+                        <td colspan="5" style="text-align:right;"><strong>Tổng cộng:</strong></td>
+                        <td><strong>${total}</strong></td>
+                    </tr>
+                </table>
+            </c:if>
+
+
+
+
+            <c:if test="${not empty cart}">
+                <form action="submit_order" method="post" style=" text-align: center; margin-top: 10px">
+                    <div style="text-align: left;">
+                        <label for="note" style="display: block; margin-bottom: 4px;">Ghi chú:</label>
+                        <input type="text" name="note"
+                               style="font-size:16px; padding:8px; width:250px;" placeholder="Nhập ghi chú">
+                    </div>
+                    <input type="submit" value="Đặt hàng"
+                           style="font-size:16px; padding:8px 16px;"/>
+                </form>
+            </c:if>
+
+
         </div>
+
     </body>
 </html>

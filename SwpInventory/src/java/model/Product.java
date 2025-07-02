@@ -1,7 +1,9 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package model;
 
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.Date;
  *
  * @author ADMIN
  */
+
 public class Product {
 
     private int id;
@@ -29,6 +32,7 @@ public class Product {
     }
 
     public Product(int id, String name, String barcode, int category_id, int supplier_id, double price, int quantity, String unit, Date manufacture_date, Date expired_date, String image, String description) {
+
         this.id = id;
         this.name = name;
         this.barcode = barcode;
@@ -90,9 +94,7 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-
   
-
     public int getQuantity() {
         return quantity;
     }
@@ -141,13 +143,9 @@ public class Product {
         this.description = description;
     }
 
-
-
     @Override
     public String toString() {
         return "Product{" + "id=" + id + ", name=" + name + ", barcode=" + barcode + ", category_id=" + category_id + ", supplier_id=" + supplier_id + ", price=" + price + ", quantity=" + quantity + ", unit=" + unit + ", manufacture_date=" + manufacture_date + ", expired_date=" + expired_date + ", image=" + image + ", description=" + description + ", status=" + '}';
     }
-    
-    
-    
 }
+

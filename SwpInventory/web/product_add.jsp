@@ -1,19 +1,99 @@
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+        <meta charset="UTF-8" />
+        <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        <title>JSP Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Thêm Sản Phẩm</title>
         <style>
-            body {
 
+
+            form {
+                background: #fff;
+                padding: 24px 32px;
+                border-radius: 8px;
+                max-width: 800px;
+                margin: 40px auto;
+            }
+
+            h2 {
+                text-align: center;
+                color: #82CAFA;
+                margin-bottom: 32px;
+                font-weight: 700;
+                font-size: 32px;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+
+            form label {
+                display: block;
+                color: #82CAFA;
+                font-weight: 450;
+                margin-bottom: 10px;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            input[type="date"],textarea
+            {
+                width: 95%;
+                padding: 12px 14px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 12px;
+                font-size: 16px;
+                height: 10px;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+            select{
+                width: 99%;
+            }
+            .product-select {
+                padding: 12px 14px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 12px;
+                font-size: 16px;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+
+            textarea {
+                width: 95%;
+
+                height: 30px;
+            }
+
+            input[type="text"]:focus,
+            input[type="number"]:focus,
+            input[type="date"]:focus,
+            select:focus,
+            textarea:focus {
+                border-color: #5c6ac4;
+                outline: none;
+            }
+
+            button {
+                background-color: #82CAFA;
+                border: none;
+                padding: 12px 16px;
+                color: white;
+                font-size: 1rem;
+                font-weight: 600;
+                border-radius: 8px;
+                width: 100%;
+
+            }
+
+            button:hover {
+                background-color: #787FF6;
+            }
+
+            body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
@@ -33,7 +113,6 @@
                 color: white;
                 padding: 12px 24px;
                 position: relative;
-
             }
             .header-left {
                 display: flex;
@@ -49,7 +128,6 @@
                 gap: 12px;
                 margin-left: 40px;
                 position: relative;
-
             }
             .nav a {
                 color: white;
@@ -71,21 +149,67 @@
                 background-color: #787ff6;
             }
 
+            .dropdown {
+                position: relative;
+            }
+            .dropdown input[type="checkbox"] {
+                display: none;
+            }
+            .dropdown-label {
+                cursor: pointer;
+                padding: 8px 16px;
+                border-radius: 4px;
+                transition: background-color 0.3s ease;
+                color: white;
+                display: flex;
+                align-items: center;
+                font-weight: 600;
+            }
+            .dropdown-label i {
+                margin-right: 8px;
+                min-width: 16px;
+                text-align: center;
+            }
+            .dropdown-label:hover {
+                background-color: #787ff6;
+                color: white;
+            }
+            .dropdown-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: white;
+                color: #333;
+                border-radius: 8px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                min-width: 200px;
+                display: none;
+                flex-direction: column;
+                z-index: 1000;
+            }
+            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
+                display: flex;
+            }
+            .dropdown-menu a {
+                padding: 12px 16px;
+                border-bottom: 1px solid #eee;
+                font-weight: 600;
+                white-space: nowrap;
+                color: #333;
+                display: block;
+            }
+            .dropdown-menu a:last-child {
+                border-bottom: none;
+            }
+            .dropdown-menu a:hover {
+                background-color: #FDF9DA;
+            }
+
             .header-right {
                 display: flex;
                 align-items: center;
                 gap: 20px;
             }
-
-            .search-box input[type="search"] {
-                padding: 6px 28px 6px 12px;
-                border-radius: 20px;
-                border: none;
-                outline: none;
-                font-size: 0.8rem;
-                width: 150px;
-            }
-
             .notification-wrapper {
                 position: relative;
                 cursor: pointer;
@@ -169,8 +293,7 @@
                 border-color: #FDF9DA;
                 outline: none;
             }
-
-            .user-menu nav.dropdown-menu {
+          .user-menu nav.dropdown-menu {
                 position: absolute;
                 top: 50px;
                 left: -50%;
@@ -188,7 +311,6 @@
                 overflow-y: auto;
                 scrollbar-width: none;
             }
-
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
             }
@@ -206,43 +328,12 @@
                 background-color: #FDF9DA;
             }
 
-            table {
-                width: 50%;
-                border-collapse: collapse;
-                margin-top: 28px;
-                table-layout: fixed;
-
-            }
-
-            th, td {
-                border: 1px solid #ddd;
-                padding: 5px;
-                text-align: left;
-                width: 20px;
-                font-size: 0.85rem;
-                text-align: center;
-
-            }
-            th {
-                background-color: #82CAFA;
-                color: white;
-                font-weight: 700;
-            }
-            tbody tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-            tbody tr:hover {
-                background-color: #FDF9DA;
-            }
-
-
             @media (max-width: 600px) {
                 .header {
                     flex-wrap: wrap;
                     gap: 10px;
                     padding: 12px 12px;
                 }
-
                 .nav {
                     margin-left: 0;
                     flex-wrap: wrap;
@@ -253,112 +344,9 @@
                     flex-basis: 100%;
                     justify-content: center;
                     gap: 12px;
-
                 }
-
             }
 
-            .dropdown {
-                position: relative;
-            }
-            .dropdown input[type="checkbox"] {
-                display: none;
-            }
-            .dropdown-label {
-                cursor: pointer;
-                padding: 8px 16px;
-                border-radius: 4px;
-                transition: background-color 0.3s ease;
-                color: white;
-                display: flex;
-                align-items: center;
-
-                font-weight: 600;
-            }
-            .dropdown-label i {
-                margin-right: 8px;
-                min-width: 16px;
-                text-align: center;
-            }
-            .dropdown-label:hover {
-                background-color: #787ff6;
-                color: white;
-            }
-            .dropdown-menu {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                background: white;
-                color: #333;
-                border-radius: 8px;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-                min-width: 200px;
-                display: none;
-                flex-direction: column;
-                z-index: 1000;
-
-            }
-            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
-                display: flex;
-            }
-            .dropdown-menu a {
-                padding: 12px 16px;
-                border-bottom: 1px solid #eee;
-                font-weight: 600;
-                white-space: nowrap;
-                color: #333;
-                display: block;
-            }
-            .dropdown-menu a:last-child {
-                border-bottom: none;
-            }
-            .dropdown-menu a:hover {
-                background-color: #FDF9DA;
-            }
-            .card {
-                background-color: #fff;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                margin: 30px;
-                padding-left: 30px;
-
-                display: inline-block;
-                width: 160px;
-                height: 80px;
-            }
-            .card h3 {
-                font-size: 18px;
-            }
-            .card .value {
-                font-size: 1em;
-                font-weight: bold;
-            }
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                cursor: help;
-            }
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 180px;
-                background-color: #333;
-                color: #fff;
-                text-align: center;
-                border-radius: 6px;
-                padding: 6px;
-                position: absolute;
-                z-index: 10;
-                bottom: 125%;
-                left: 50%;
-                margin-left: -90px;
-                opacity: 0;
-                transition: opacity 0.3s;
-                font-size: 0.75rem;
-            }
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
-            }
 
         </style>
     </head>
@@ -367,8 +355,7 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="store_dashboard.jsp">
-
+                    <a href="dashboard.html">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -377,23 +364,16 @@
                             <i class="fas fa-box"></i> Sản phẩm
                         </label>
                         <div class="dropdown-menu">
-                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
-                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
+                            <a href="product_add.jsp"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="category?action=category"><i class="fas fa-list"></i> Danh sách phân loại</a>
 
                         </div>
                     </div>
-                    <a href="import_goods.html"><i class="fas fa-box-open"></i> Nhập hàng</a>
+                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
-                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
-
-                    <a href="choose_store"><i class="fas fa-store"></i>Chi nhánh</a>
-
-
-
-
-
                 </div>
             </div>
             <div class="header-right">
@@ -414,32 +394,61 @@
                     <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
                         <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown">
-                        <a href="myprofile.html">My Profile</a>
-                        <a href="change_password.html">Change Password</a>
-                        <a href="login.html">Log Out</a>
+                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
+                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
+                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
+                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
                     </nav>
                 </div>
             </div>
         </div>
 
-        <div class="card">
-        <h3>Clicks <span class="tooltip">
-                <i class="fas fa-info-circle"></i>
-                <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-            </span>
-            <div class="value">100</div>
-            <div>-13,04%</div>
-        </div>
+        <form action="addproduct" method="post">
+            <h2>Thêm Sản Phẩm</h2>
 
-     <div class="card">
-        <h3>Clicks <span class="tooltip">
-                <i class="fas fa-info-circle"></i>
-                <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-            </span>
-            <div class="value">100</div>
-            <div>-13,04%</div>
-        </div>
+            <label for="name">Tên sản phẩm</label>
+            <input type="text" id="name" name="name" required />
 
+            <label for="barcode">Barcode</label>
+            <input type="text" id="barcode" name="barcode" required />
+
+            <label for="category_id">Loại sản phẩm</label>
+            <select id="category_id" name="category_id" class="product-select" required>
+                <option value="" selected>Chọn category</option>
+                <c:forEach var="c" items="${listC}">
+                    <option value="${c.id}">${c.name}</option>
+                </c:forEach>
+            </select>
+
+            <label for="supplier_id">Mã nhà cung cấp</label>
+            <input type="text" id="supplier_id" name="supplier_id" required />
+
+            <label for="price_in">Giá nhập</label>
+            <input type="number" id="price_in" name="price_in" step="0.01" min="0" required />
+
+            <label for="price_out">Giá bán</label>
+            <input type="number" id="price_out" name="price_out" step="0.01" min="0" required />
+
+            <label for="quantity">Số lượng</label>
+            <input type="number" id="quantity" name="quantity" min="0" required />
+
+            <label for="unit">Đơn vị tính</label>
+            <input type="text" id="unit" name="unit" required />
+
+            <label for="mfd">Ngày sản xuất</label>
+            <input type="date" id="manufacture_date" name="manufacture_date" />
+
+            <label for="exp">Ngày hết hạn</label>
+            <input type="date" id="expired_date" name="expired_date" />
+
+            <label for="image">Ảnh</label>
+            <input type="text" id="image" name="image" />
+
+            <label for="description">Mô tả</label>
+            <textarea id="description" name="description" rows="4"></textarea>
+
+            <button type="submit">Thêm sản phẩm</button>
+        </form>
     </body>
 </html>
+

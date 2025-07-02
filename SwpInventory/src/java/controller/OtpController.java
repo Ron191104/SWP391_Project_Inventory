@@ -2,13 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
-import dao.ProductDAO;
-import dao.StoreCategoryDAO;
-import dao.StoreProductDAO;
-
+import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,27 +12,22 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.Product;
-import model.StoreCategory;
-import model.StoreProduct;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jakarta.mail.MessagingException;
 
 /**
  *
- * @author ADMIN
+ * @author Duy Thai
  */
-
-@WebServlet(name = "SearchController", urlPatterns = {"/search"})
-public class SearchController extends HttpServlet {
+@WebServlet(name = "OtpController", urlPatterns = {"/otp"})
+public class OtpController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -45,36 +36,24 @@ public class SearchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
-        Integer storeId = (Integer) session.getAttribute("storeId");
-        if (storeId == null) {
-            response.sendRedirect("choose_store");
-            return;
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet OtpController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet OtpController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-
-        String txtSearch = request.getParameter("txt");
-
-        StoreProductDAO dao = new StoreProductDAO();
-        List<StoreProduct> list = dao.searchByName(txtSearch, storeId);
-
-        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
-        List<StoreCategory> listC = categoryDAO.getAllStoreCategory(storeId);
-
-        String categoriesID = request.getParameter("id");
-        request.setAttribute("tag", categoriesID);
-
-        request.setAttribute("storeProduct", list);
-        request.setAttribute("listStoreCategory", listC);
-
-        request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -82,15 +61,13 @@ public class SearchController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("otp.jsp").forward(request, response);
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -98,15 +75,31 @@ public class SearchController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-
             throws ServletException, IOException {
-        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        //get session to continue with the otp authorize
+        HttpSession session = request.getSession();
+        //get otp
+        String otp = (String)session.getAttribute("otp");
+        //get email
+        String email = (String)session.getAttribute("email");
+        //get input otp
+        String inputOtp = request.getParameter("inputOtp");
+        //compare input otp and otp
+        if(inputOtp.equals(otp)){
+            //go to changepassword page
+            response.sendRedirect("changepasswordwhenforget");
+        }else{
+            //send error
+            String error = "Wrong OTP, please try again!";
+            request.setAttribute("error", error);
+            request.getRequestDispatcher("otp.jsp").forward(request, response);
+        }
     }
 
     /**
      * Returns a short description of the servlet.
      *
-
      * @return a String containing servlet description
      */
     @Override
