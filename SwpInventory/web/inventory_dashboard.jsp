@@ -76,7 +76,7 @@
                 <i class="fas fa-plus-circle card-icon"></i>
                 <h3>Tạo đơn đặt hàng</h3>
                 <p>Tạo một đơn đặt hàng mới để gửi đến nhà cung cấp.</p>
-                <a href="#">Tạo đơn hàng</a>
+                <a href="create_order">Tạo đơn hàng</a>
             </div>
             <div class="dashboard-card">
                  <i class="fas fa-list-alt card-icon"></i>

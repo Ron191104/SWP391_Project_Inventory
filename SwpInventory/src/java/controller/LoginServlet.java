@@ -27,23 +27,49 @@ public class LoginServlet extends HttpServlet {
         } else {
             user = dao.getUserByUsernameAndPassword(login, password);
         }
-
-        if (user != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("userName", user.getName());
-            session.setAttribute("userRole", user.getRole());
-            session.setAttribute("userImage", user.getImage());
-            session.setAttribute("userEmail", user.getEmail());
-
-            // Ghi LOG đăng nhập thành công
-            SystemLogDAO logDao = new SystemLogDAO();
-            logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");
-
-            response.sendRedirect("dashboard.jsp");
-        } else {
-            // Nếu muốn, cũng có thể ghi log đăng nhập thất bại (tùy ý)
-            request.setAttribute("errorMessage", "Email/Tên đăng nhập hoặc mật khẩu không đúng!");
+        if (user == null) {
+            // Sai tài khoản hoặc mật khẩu
+            request.setAttribute("errorMessage", "Sai tài khoản hoặc mật khẩu!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
+        // CHỈ kiểm tra duyệt với user KHÔNG PHẢI admin
+        if (user.getRole() != 4  && user.getIsApproved() == 0) {
+            request.setAttribute("errorMessage", "Tài khoản của bạn chưa được duyệt. Vui lòng liên hệ quản trị viên.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
+        // Đã được duyệt, cho đăng nhập như bình thường
+        HttpSession session = request.getSession();
+        session.setAttribute("userName", user.getName());
+        session.setAttribute("userRole", user.getRole());
+        session.setAttribute("userImage", user.getImage());
+        session.setAttribute("userEmail", user.getEmail());
+
+        // Ghi LOG đăng nhập thành công
+        SystemLogDAO logDao = new SystemLogDAO();
+        logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");
+
+        // Điều hướng theo role (int)
+        int role = user.getRole(); // role là int
+        switch (role) {
+            case 1:
+                response.sendRedirect("inventory_dashboard.jsp");
+                break;
+            case 2:
+                response.sendRedirect("store_dashboard.jsp");
+                break;
+            case 3:
+                response.sendRedirect("supplier_dashboard.jsp");
+                break;
+            case 4:
+                response.sendRedirect("admin_dashboard.jsp");
+                break;
+            default:
+                response.sendRedirect("general_dashboard.jsp");
+                break;
         }
     }
 }

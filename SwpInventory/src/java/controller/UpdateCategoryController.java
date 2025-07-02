@@ -4,7 +4,10 @@
  */
 package controller;
 
-import dao.CategoryDAO;
+
+import dao.StoreCategoryDAO;
+
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +15,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import jakarta.servlet.http.HttpSession;
+
 
 /**
  *
@@ -32,20 +39,31 @@ public class UpdateCategoryController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String idRaw = request.getParameter("id");
-        String name = request.getParameter("name");
+
+
+        HttpSession session = request.getSession();
+        Integer storeId = (Integer) session.getAttribute("storeId");
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
+        }
 
         try {
-            int id = Integer.parseInt(idRaw);
-            CategoryDAO dao = new CategoryDAO();
-            dao.updateCategory(id, name);
+            int id = Integer.parseInt(request.getParameter("id"));
+            String name = request.getParameter("name").trim();
+
+            StoreCategoryDAO dao = new StoreCategoryDAO();
+            dao.updateStoreCategory(id, storeId, name);
+
+            response.sendRedirect("store_category_list");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        response.sendRedirect("category?action=category");
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

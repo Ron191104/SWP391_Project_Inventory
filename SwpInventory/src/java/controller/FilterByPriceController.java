@@ -4,18 +4,23 @@
  */
 package controller;
 
-import dao.ProductDAO;
+import dao.StoreCategoryDAO;
+import dao.StoreProductDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import model.Categories;
 import model.Product;
+import model.StoreCategory;
+import model.StoreProduct;
+
 
 /**
  *
@@ -35,6 +40,14 @@ public class FilterByPriceController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        Integer storeId = (Integer) session.getAttribute("storeId");
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
+        }
+
         String minPriceRaw = request.getParameter("minPrice");
         String maxPriceRaw = request.getParameter("maxPrice");
         String filterType = request.getParameter("filterType");
@@ -58,20 +71,26 @@ public class FilterByPriceController extends HttpServlet {
             }
         }
 
-        ProductDAO dao = new ProductDAO();
-        List<Product> productList = new ArrayList<>();
 
-        if ("price".equals(filterType)) {
-            productList = dao.filterByPrice(minPrice, maxPrice);
+        StoreProductDAO dao = new StoreProductDAO();
+        List<StoreProduct> productList = new ArrayList<>();
+
+
+        if ("in".equals(filterType)) {
+            productList = dao.filterByPriceIn(minPrice, maxPrice, storeId);
+        } else if ("out".equals(filterType)) {
+            productList = dao.filterByPriceOut(minPrice, maxPrice, storeId);
         } else {
-            productList = dao.getAllProduct(); // fallback nếu không lọc gì
+            productList = dao.getAllStoreProduct(storeId);
         }
 
-        List<Categories> categoryList = dao.getAllCategories();
+        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
+        List<StoreCategory> categoryList = categoryDAO.getAllStoreCategory(storeId);
 
-        request.setAttribute("listC", categoryList);
-        request.setAttribute("listP", productList);
-        request.getRequestDispatcher("product_list.jsp").forward(request, response);
+        request.setAttribute("listStoreCategory", categoryList);
+        request.setAttribute("storeProduct", productList);
+        request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
