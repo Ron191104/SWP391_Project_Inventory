@@ -75,6 +75,7 @@ public class FilterByPriceController extends HttpServlet {
         StoreProductDAO dao = new StoreProductDAO();
         List<StoreProduct> productList = new ArrayList<>();
 
+
         if ("in".equals(filterType)) {
             productList = dao.filterByPriceIn(minPrice, maxPrice, storeId);
         } else if ("out".equals(filterType)) {
@@ -89,7 +90,6 @@ public class FilterByPriceController extends HttpServlet {
         request.setAttribute("listStoreCategory", categoryList);
         request.setAttribute("storeProduct", productList);
         request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
-
 
     }
 

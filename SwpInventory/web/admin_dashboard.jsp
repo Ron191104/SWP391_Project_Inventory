@@ -236,15 +236,19 @@
             <div class="user-menu">
                 <input type="checkbox" id="user-menu-toggle" />
                 <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
-                    <img src="images/<%= session.getAttribute("userAvatar") != null ? session.getAttribute("userAvatar") : "default-avatar.png" %>" alt="Avatar người dùng" class="user-avatar" />
+                    <img src="<%= request.getContextPath() + "/" + 
+    (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() 
+        ? session.getAttribute("userImage") 
+        : "images/default-avatar.png") %>" 
+    alt="Avatar người dùng" class="user-avatar" />
                 </label>
                 <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
                     <span style="padding:12px 16px; color:#e53935; font-weight:bold;">
                         <%= session.getAttribute("userName") %>
                     </span>
-                    <a href="myprofile.jsp" role="menuitem" tabindex="0">My Profile</a>
-                    <a href="change_password.jsp" role="menuitem" tabindex="0">Change Password</a>
-                    <a href="logout" role="menuitem" tabindex="0">Log Out</a>
+                    <a href="myprofile" role="menuitem" tabindex="0">My Profile</a>
+                    <a href="change_password_admin.jsp" role="menuitem" tabindex="0">Change Password</a>
+                    <a href="login.jsp" role="menuitem" tabindex="0">Log Out</a>
                 </nav>
             </div>
             <span style="padding:0 16px; color:#fff6c5; font-size:x-small;">

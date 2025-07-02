@@ -7,6 +7,7 @@ package controller;
 
 import dao.StoreCategoryDAO;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -38,6 +40,7 @@ public class UpdateCategoryController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+
         HttpSession session = request.getSession();
         Integer storeId = (Integer) session.getAttribute("storeId");
         if (storeId == null) {
@@ -59,6 +62,7 @@ public class UpdateCategoryController extends HttpServlet {
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
 
     /**
      * Handles the HTTP <code>GET</code> method.

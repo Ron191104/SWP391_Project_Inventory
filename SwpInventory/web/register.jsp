@@ -62,7 +62,7 @@
         %>
             <div class="error-message"><%= error %></div>
         <% } %>
-        <form id="registrationForm" action="register" method="POST" autocomplete="off">
+        <form id="registrationForm" action="register" method="POST" enctype="multipart/form-data" autocomplete="off">
             <label for="username">Username *</label>
             <input type="text" id="username" name="username" maxlength="50" required />
 
@@ -97,8 +97,8 @@
                 <option value="Supplier Management">Supplier Management</option>
             </select>
 
-            <label for="image">Image URL/Path</label>
-            <input type="text" id="image" name="image" maxlength="255" />
+            <label for="imageFile">Avatar (Upload image)</label>
+            <input type="file" id="imageFile" name="imageFile" accept="image/*" />
 
             <button type="submit" class="btn-primary">Register</button>
         </form>

@@ -40,6 +40,7 @@ public class ProductController extends HttpServlet {
 
         request.setAttribute("listP", list);
 
+
         request.getRequestDispatcher("product_list.jsp").forward(request, response);
     }
 

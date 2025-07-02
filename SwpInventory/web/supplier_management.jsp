@@ -1,12 +1,94 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Quản lý nhà cung cấp</title>
     <style>
-        table { border-collapse: collapse; margin-top: 20px;}
-        th, td { border: 1px solid #ccc; padding: 6px 10px; }
-        form.inline { display: inline; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        button {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #e53935;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #c62828;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+            width: 100%;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #e53935;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        form.inline {
+            display: inline;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #e53935;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -20,7 +102,14 @@
         <button type="submit">Thêm</button>
     </form>
     <table>
-        <tr><th>ID</th><th>Tên</th><th>Điện thoại</th><th>Email</th><th>Địa chỉ</th><th>Hành động</th></tr>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Điện thoại</th>
+            <th>Email</th>
+            <th>Địa chỉ</th>
+            <th>Hành động</th>
+        </tr>
         <c:forEach var="s" items="${suppliers}">
             <tr>
                 <td>${s.supplierId}</td>
@@ -48,5 +137,6 @@
             </tr>
         </c:forEach>
     </table>
+    <a href="user-management">Quay lại danh sách</a>
 </body>
 </html>

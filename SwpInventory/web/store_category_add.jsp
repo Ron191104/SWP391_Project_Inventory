@@ -257,6 +257,7 @@
                 <h1>Tên kho</h1>
                 <div class="nav">
                     <a href="store_dashboard.jsp"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+
                     <a href="product_list"><i class="fas fa-box"></i> Sản phẩm</a>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
                     <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>

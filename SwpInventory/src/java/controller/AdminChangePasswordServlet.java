@@ -26,13 +26,13 @@ public class AdminChangePasswordServlet extends HttpServlet {
 
         if (user == null) {
             request.setAttribute("error", "Mật khẩu cũ không đúng!");
-            request.getRequestDispatcher("change_password.jsp").forward(request, response);
+            request.getRequestDispatcher("change_password_user.jsp").forward(request, response);
             return;
         }
 
         if (!newPassword.equals(confirmPassword)) {
             request.setAttribute("error", "Mật khẩu mới và xác nhận không khớp!");
-            request.getRequestDispatcher("change_password.jsp").forward(request, response);
+            request.getRequestDispatcher("change_password_user.jsp").forward(request, response);
             return;
         }
 
@@ -43,6 +43,6 @@ public class AdminChangePasswordServlet extends HttpServlet {
         logDao.insertLog(username, "Đổi mật khẩu", "Đổi mật khẩu thành công");
 
         request.setAttribute("message", "Đổi mật khẩu thành công!");
-        request.getRequestDispatcher("change_password.jsp").forward(request, response);
+        request.getRequestDispatcher("change_password_user.jsp").forward(request, response);
     }
 }

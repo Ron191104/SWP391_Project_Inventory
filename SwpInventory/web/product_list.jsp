@@ -372,12 +372,12 @@
             }
 
 
-
             .filterType{
                 height: 20px;
                 border: none;
                 outline: none;
             }
+
         </style>
     </head>
     <body>
@@ -448,6 +448,7 @@
         </div>
         <div class="container">
             <h3>Quản lí sản phẩm:</h3>
+
             <table>
                 <thead>
                     <tr>
@@ -462,6 +463,7 @@
                         <th>MFD</th>
                         <th>EXP</th>
                         <th style="width: 10px">Status</th>
+
                     </tr>
                 </thead>
                 <tbody>

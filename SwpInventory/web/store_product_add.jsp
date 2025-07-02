@@ -383,6 +383,8 @@
                 <h1>Tên kho</h1>
                 <div class="nav">
                     <a href="store_dashboard.jsp">
+
+
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -480,6 +482,7 @@
             <input type="text" id="expired_date" readonly />
 
             <label>Số lượng</label>
+
             <input type="text" id="quantity" readonly />
 
             <label>Hình ảnh</label>

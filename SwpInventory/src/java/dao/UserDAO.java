@@ -13,7 +13,7 @@ public class UserDAO {
 
     private final String jdbcURL = "jdbc:sqlserver://localhost:1433;databaseName=Inventory;encrypt=true;trustServerCertificate=true";
     private final String jdbcUser = "sa";
-    private final String jdbcPass = "123";
+    private final String jdbcPass = "123456789";
 
     // Kiểm tra trùng username
     public boolean checkUsernameExists(String username) throws Exception {
@@ -258,6 +258,7 @@ public class UserDAO {
                 String address = rs.getString("address");
                 int role = rs.getInt("role");
                 String image = rs.getString("image");
+                int isApproved = rs.getInt("is_approved");
                 user = new User(
                         username,
                         password,
@@ -266,7 +267,8 @@ public class UserDAO {
                         phone,
                         address,
                         role,
-                        image
+                        image,
+                        isApproved
                 );
             }
             rs.close();
@@ -317,6 +319,51 @@ public void updatePassword(String username, String newPassword) {
         e.printStackTrace();
     }
 }
+// Hàm cho myprofile
+ public User getUserByEmail(String email) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getInt("role"),
+                        rs.getString("image"),
+                        rs.getInt("is_approved")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+ 
 
+// Update đầy đủ thông tin cá nhân (trừ username và is_approved)
+    public boolean updateProfile(User user) {
+        String sql = "UPDATE users SET password=?, name=?, email=?, phone=?, address=?, role=?, image=? WHERE username=?";
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getPassword());
+            ps.setString(2, user.getName());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPhone());
+            ps.setString(5, user.getAddress());
+            ps.setInt(6, user.getRole());
+            ps.setString(7, user.getImage());
+            ps.setString(8, user.getUsername());
+            return ps.executeUpdate() > 0;
+        } catch(Exception e) { e.printStackTrace(); }
+        return false;
+    }
     
 }

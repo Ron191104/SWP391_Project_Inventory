@@ -220,6 +220,7 @@
                 text-align: left;
                 width: 20px;
                 height: 40px;
+
                 font-size: 0.85rem;
                 text-align: center;
 
@@ -358,6 +359,7 @@
         margin-right: 5.5px;
         cursor: pointer;
 font-size: 10px;
+
         </style>
     </head>
     <body>
@@ -366,6 +368,7 @@ font-size: 10px;
                 <h1>Tên kho</h1>
                 <div class="nav">
                     <a href="store_dashboard.jsp">
+
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -440,6 +443,7 @@ font-size: 10px;
                     <thead>
                         <tr>
                             <th></th>
+
                             <th>Name</th>
                             <th>Quantity</th>
                             <th>Action</th>
@@ -465,6 +469,7 @@ font-size: 10px;
            onclick="if(confirm('Bạn có chắc muốn xóa category có ID = ${c.storeCategoryId} không?')) location.href='deletecategory?id=${c.storeCategoryId}'"
            class="action-button" />
 </td>
+
                             </tr>
                         </c:forEach>
 
