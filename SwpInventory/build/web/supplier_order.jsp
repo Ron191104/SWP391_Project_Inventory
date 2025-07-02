@@ -122,7 +122,7 @@
                     <option value="3" ${param.status == '3' ? 'selected' : ''}>Đã cung cấp</option>
                 </select>
             </form>
-                
+
             <table>
                 <thead>
                     <tr>
@@ -139,7 +139,7 @@
                         <tr>
                             <td>${order.orderId}</td>
                             <td>${order.orderDate}</td>
-                            <td>${order.employeeId}</td>
+                            <td>${order.employeeId} </td>
                             <td>${order.note}</td>
                             <td>
                                 <span class="status-label">
