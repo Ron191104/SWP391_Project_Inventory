@@ -147,7 +147,7 @@
                                         <c:when test="${order.status == 0}">⏳ Chờ duyệt</c:when>
                                         <c:when test="${order.status == 1}">✔ Đã duyệt</c:when>
                                         <c:when test="${order.status == 2}">✖ Từ chối</c:when>
-                                        <c:otherwise>❓ Không xác định</c:otherwise>
+                                        <c:otherwise> 🚚 Đã cung cấp</c:otherwise>
                                     </c:choose>
                                 </span>
                             </td>

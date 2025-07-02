@@ -19,7 +19,7 @@ import model.Supplier;
  *
  * @author LENOVO
  */
-@WebServlet("/supplier-login-page")
+@WebServlet("/supplier_login")
 public class SupplierLoginPageServlet extends HttpServlet {
     private SupplierDAO supplierDAO = new SupplierDAO();
 
