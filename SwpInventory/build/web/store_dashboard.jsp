@@ -1,8 +1,4 @@
-<%-- 
-    Document   : store_dashboard
-    Created on : Jun 17, 2025, 3:00:09 PM
-    Author     : ADMIN
---%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -272,6 +268,7 @@
                 color: white;
                 display: flex;
                 align-items: center;
+                font-weight: 600;
             }
             .dropdown-label i {
                 margin-right: 8px;
@@ -313,6 +310,54 @@
             .dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
+
+
+
+            .card {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                margin: 30px;
+                padding-left: 30px;
+
+                display: inline-block;
+                width: 160px;
+                height: 80px;
+            }
+            .card h3 {
+                font-size: 18px;
+            }
+            .card .value {
+                font-size: 1em;
+                font-weight: bold;
+            }
+            .tooltip {
+                position: relative;
+                display: inline-block;
+                cursor: help;
+            }
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 180px;
+                background-color: #333;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 6px;
+                position: absolute;
+                z-index: 10;
+                bottom: 125%;
+                left: 50%;
+                margin-left: -90px;
+                opacity: 0;
+                transition: opacity 0.3s;
+                font-size: 0.75rem;
+            }
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+            }
+
         </style>
     </head>
     <body>
@@ -320,7 +365,7 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="dashboard.html">
+                    <a href="store_dashboard.jsp">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -329,16 +374,22 @@
                             <i class="fas fa-box"></i> Sản phẩm
                         </label>
                         <div class="dropdown-menu">
-                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
-                            <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
 
                         </div>
                     </div>
-                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="import_goods.html"><i class="fas fa-box-open"></i> Nhập hàng</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+
+                    <a href="choose_store"><i class="fas fa-store"></i>Chi nhánh</a>
+
+
+
+
                 </div>
             </div>
             <div class="header-right">
@@ -367,5 +418,24 @@
                 </div>
             </div>
         </div>
+
+        <div class="card">
+        <h3>Clicks <span class="tooltip">
+                <i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
+            </span>
+            <div class="value">100</div>
+            <div>-13,04%</div>
+        </div>
+
+     <div class="card">
+        <h3>Clicks <span class="tooltip">
+                <i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
+            </span>
+            <div class="value">100</div>
+            <div>-13,04%</div>
+        </div>
+
     </body>
 </html>

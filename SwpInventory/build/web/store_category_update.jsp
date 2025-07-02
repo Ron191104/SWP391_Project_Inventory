@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
         <style>
-            body {
+             body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
@@ -248,42 +248,37 @@
             input[type="submit"]:hover {
                 background-color: #787FF6;
             }
-
-            .form-value {
-                padding: 10px;
-                background-color: #f9f9f9;
+           
+            .form-container {
+                background-color: white;
                 border: 1px solid #ddd;
-                border-radius: 6px;
-                margin-bottom: 15px;
-                color: #333;
-                width: 95%;
+                padding: 20px;
+                border-radius: 8px;
+                width: 100%;
+                max-width: 400px;
+                margin: 50px auto;
+                height: 300px;
             }
 
+          
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+          
         </style>
     </head>
     <body>
 
-        <div class="header">
+         <div class="header">
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="store_dashboard.jsp"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     <a href="product_list"><i class="fas fa-box"></i> Sản phẩm</a>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
                     <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
-                    
-                    <div class="dropdown">
-                        <input type="checkbox" id="store-dropdown" />
-                        <label for="store-dropdown" class="dropdown-label">
-                            <i class="fas fa-store"></i> <span style="font-weight:600">Cửa hàng</span>
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
-                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="header-right">

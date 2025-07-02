@@ -219,6 +219,7 @@
                 padding: 5px;
                 text-align: left;
                 width: 20px;
+                height: 40px;
                 font-size: 0.85rem;
                 text-align: center;
 
@@ -347,7 +348,16 @@
             .btn-add:hover {
                 background-color: #787FF6;
             }
-
+            
+             .action-button {
+        padding: 5px 10px;
+        background-color: #787FF6;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        margin-right: 5.5px;
+        cursor: pointer;
+font-size: 10px;
         </style>
     </head>
     <body>
@@ -355,7 +365,7 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="dashboard.html">
+                    <a href="store_dashboard.jsp">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -429,7 +439,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Stt</th>
+                            <th></th>
                             <th>Name</th>
                             <th>Quantity</th>
                             <th>Action</th>
@@ -442,14 +452,19 @@
 
                                 <td>${c.categoryName}</td>
                                 <td>${c.quantity}</td>
-                                <td class="action-icons">
-                                    <a href="store_product_list?id=${c.storeCategoryId}" class="fas fa-list" style="color: #787FF6;"></a>
-                                    <a href="loadCategory?id=${c.storeCategoryId}" class="fas fa-pencil-alt" style="color: #787FF6;padding: 13px;"></a>
-                                    <a href="deletecategory?id=${c.storeCategoryId}" class="fas fa-trash"
-                                       style="color: #787FF6;"
-                                       onclick="return confirm('Bạn có chắc muốn xóa category có ID = ${c.storeCategoryId} không?');">
-                                    </a>
-                                </td>
+                                <td class="action-buttons">
+    <input type="button" value="Detail"
+           onclick="location.href='store_product_list?id=${c.storeCategoryId}'"
+           class="action-button" />
+
+    <input type="button" value="Edit"
+           onclick="location.href='loadCategory?id=${c.storeCategoryId}'"
+           class="action-button" />
+
+    <input type="button" value="Delete"
+           onclick="if(confirm('Bạn có chắc muốn xóa category có ID = ${c.storeCategoryId} không?')) location.href='deletecategory?id=${c.storeCategoryId}'"
+           class="action-button" />
+</td>
                             </tr>
                         </c:forEach>
 
