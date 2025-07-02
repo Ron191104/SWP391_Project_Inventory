@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
-import dao.CategoryDAO;
+import dao.StoreProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,42 +17,38 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-@WebServlet(name="DeleteCategoryController", urlPatterns={"/deletecategory"})
-public class DeleteCategoryController extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+@WebServlet(name = "AddStoreProductController", urlPatterns = {"/addstoreproduct"})
+public class AddStoreProductController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-      response.setContentType("text/html;charset=UTF-8");
-    String idRaw = request.getParameter("id");
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        int storeId = (Integer) request.getSession().getAttribute("storeId");
+        int productId = Integer.parseInt(request.getParameter("product_id"));
+        double priceOut = Double.parseDouble(request.getParameter("price_out"));
+        int storeCategoryId = Integer.parseInt(request.getParameter("store_category_id"));
 
-    try {
-        int id = Integer.parseInt(idRaw);
-        CategoryDAO dao = new CategoryDAO();
+        int quantity = 0;
 
-        // Cập nhật product set category_id = null
-        dao.clearProductsByCategoryId(id);
+        StoreProductDAO dao = new StoreProductDAO();
+        dao.addStoreProduct(storeId, storeCategoryId, productId, priceOut, quantity);
 
-        // Xóa category
-        dao.deleteCategory(id);
-
-    } catch (Exception e) {
-        e.printStackTrace();
+        response.sendRedirect("store_product_list");
     }
-
-    response.sendRedirect("category?action=category");
-    }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,12 +56,13 @@ public class DeleteCategoryController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -74,12 +70,13 @@ public class DeleteCategoryController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

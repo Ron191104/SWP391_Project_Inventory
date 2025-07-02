@@ -4,8 +4,8 @@
  */
 package controller;
 
-import dao.CategoryDAO;
 import dao.ProductDAO;
+import dao.StoreProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Categories;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "AddCategoryController", urlPatterns = {"/addcategory"})
-public class AddCategoryController extends HttpServlet {
+@WebServlet(name = "DeleteController", urlPatterns = {"/delete"})
+public class DeleteStoreProductController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,17 +32,28 @@ public class AddCategoryController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String name = request.getParameter("name");
-        try {
-            CategoryDAO dao = new CategoryDAO();
-            dao.addCategory(name);
-        } catch (Exception e) {
-            e.printStackTrace();
+        String iddelete = request.getParameter("id");
+        if (iddelete != null) {
+            try {
+                int id = Integer.parseInt(iddelete);
+                StoreProductDAO dao = new StoreProductDAO();
+                dao.deleteStoreProduct(id);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
-        response.sendRedirect("category?action=category");
+        response.sendRedirect("store_product_list");
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

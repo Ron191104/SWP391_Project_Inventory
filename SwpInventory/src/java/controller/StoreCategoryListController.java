@@ -4,7 +4,8 @@
  */
 package controller;
 
-import dao.ProductDAO;
+import dao.StoreCategoryDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +13,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.StoreCategory;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "DeleteController", urlPatterns = {"/delete"})
-public class DeleteController extends HttpServlet {
+@WebServlet(name = "StoreCategoryListController", urlPatterns = {"/store_category_list"})
+public class StoreCategoryListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,12 +35,28 @@ public class DeleteController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String did = request.getParameter("id");
-        if (did != null && !did.isEmpty()) {
-            ProductDAO dao = new ProductDAO();
-            dao.deleteProduct(did);
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        Integer storeId = (Integer) session.getAttribute("storeId");
+
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
         }
-        response.sendRedirect("product_list");
+
+        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
+        List<StoreCategory> listStoreCategory = categoryDAO.getAllStoreCategory(storeId);
+
+        dao.StoreProductDAO productDAO = new dao.StoreProductDAO();
+        for (StoreCategory c : listStoreCategory) {
+            int quantity = productDAO.getStoreProductByCategory(storeId, c.getStoreCategoryId()).size();
+            c.setQuantity(quantity);
+        }
+
+        request.setAttribute("listStoreCategory", listStoreCategory);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("store_category_list.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

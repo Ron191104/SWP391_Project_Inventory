@@ -4,22 +4,23 @@
  */
 package controller;
 
-import dao.CategoryDAO;
+import dao.ProductDAO;
+import dao.StoreCategoryDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Categories;
+import jakarta.servlet.http.HttpSession;
+import model.StoreCategory;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "LoadCategoryController", urlPatterns = {"/loadCategory"})
-public class LoadCategoryController extends HttpServlet {
+@WebServlet(name = "AddCategoryController", urlPatterns = {"/addcategory"})
+public class AddStoreCategoryController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,30 +34,29 @@ public class LoadCategoryController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        Integer storeId = (Integer) session.getAttribute("storeId");
 
-        String idRaw = request.getParameter("id");
-        try {
-            int id = Integer.parseInt(idRaw);
-            CategoryDAO dao = new CategoryDAO();
-            Categories c = dao.getCategoryById(id);
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
+        }
 
-            request.setAttribute("detail", c);
-            request.getRequestDispatcher("category_update.jsp").forward(request, response);
+        String name = request.getParameter("name");
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (name != null && !name.trim().isEmpty()) {
+            StoreCategoryDAO dao = new StoreCategoryDAO();
+            StoreCategory category = new StoreCategory();
+            category.setStoreId(storeId);
+            category.setCategoryName(name.trim());
+            dao.addStoreCategory(category);
+
+            response.sendRedirect("store_category_list");
+        } else {
+            response.sendRedirect("store_category_add.jsp");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

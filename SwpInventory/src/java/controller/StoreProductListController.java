@@ -6,16 +6,16 @@ package controller;
 
 import dao.StoreCategoryDAO;
 import dao.StoreProductDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
-import model.Product;
 import model.StoreCategory;
 import model.StoreProduct;
 
@@ -23,8 +23,8 @@ import model.StoreProduct;
  *
  * @author ADMIN
  */
-@WebServlet(name = "FilterByPriceController", urlPatterns = {"/FilterByPriceController"})
-public class FilterByPriceController extends HttpServlet {
+@WebServlet(name = "StoreProductListController", urlPatterns = {"/store_product_list"})
+public class StoreProductListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,57 +37,52 @@ public class FilterByPriceController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+
         HttpSession session = request.getSession();
         Integer storeId = (Integer) session.getAttribute("storeId");
+
         if (storeId == null) {
             response.sendRedirect("choose_store");
             return;
         }
-
-        String minPriceRaw = request.getParameter("minPrice");
-        String maxPriceRaw = request.getParameter("maxPrice");
-        String filterType = request.getParameter("filterType");
-
-        double minPrice = 0;
-        double maxPrice = Double.MAX_VALUE;
-
-        if (minPriceRaw != null && !minPriceRaw.isEmpty()) {
-            try {
-                minPrice = Double.parseDouble(minPriceRaw);
-            } catch (NumberFormatException e) {
-                minPrice = 0;
-            }
-        }
-
-        if (maxPriceRaw != null && !maxPriceRaw.isEmpty()) {
-            try {
-                maxPrice = Double.parseDouble(maxPriceRaw);
-            } catch (NumberFormatException e) {
-                maxPrice = Double.MAX_VALUE;
-            }
-        }
-
-        StoreProductDAO dao = new StoreProductDAO();
-        List<StoreProduct> productList = new ArrayList<>();
-
-        if ("in".equals(filterType)) {
-            productList = dao.filterByPriceIn(minPrice, maxPrice, storeId);
-        } else if ("out".equals(filterType)) {
-            productList = dao.filterByPriceOut(minPrice, maxPrice, storeId);
-        } else {
-            productList = dao.getAllStoreProduct(storeId);
-        }
-
         StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
-        List<StoreCategory> categoryList = categoryDAO.getAllStoreCategory(storeId);
+        List<StoreCategory> listStoreCategory = categoryDAO.getAllStoreCategory(storeId);
+        request.setAttribute("listStoreCategory", listStoreCategory);
 
-        request.setAttribute("listStoreCategory", categoryList);
-        request.setAttribute("storeProduct", productList);
-        request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
+        String idRaw = request.getParameter("id");
+        Integer categoryId = null;
+        if (idRaw != null && !idRaw.isEmpty()) {
+            categoryId = Integer.parseInt(idRaw);
+        }
 
+        StoreProductDAO productDAO = new StoreProductDAO();
+        List<StoreProduct> listProduct;
+
+        if (categoryId != null) {
+            listProduct = productDAO.getStoreProductByCategory(storeId, categoryId);
+        } else {
+            listProduct = productDAO.getAllStoreProduct(storeId);
+        }
+
+        for (StoreCategory c : listStoreCategory) {
+            int quantity = 0;
+            for (StoreProduct sp : productDAO.getAllStoreProduct(storeId)) {
+                if (sp.getStoreCategoryId() == c.getStoreCategoryId()) {
+                    quantity += sp.getQuantity();
+                }
+            }
+            c.setQuantity(quantity);
+        }
+
+        request.setAttribute("storeProduct", listProduct);
+        request.setAttribute("tag", categoryId);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("store_product_list.jsp");
+        dispatcher.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

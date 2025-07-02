@@ -1,22 +1,18 @@
-<!DOCTYPE html>
+<%-- 
+    Document   : category_list
+    Created on : Jun 17, 2025, 10:36:30 AM
+    Author     : ADMIN
+--%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="java.util.List" %>
-<%@ page import="model.OrderDetails" %>
 
-
-<html lang="vi">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
     <head>
-        <meta charset="UTF-8">
-        <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-        <link rel="stylesheet" href="assets/css/filter-icon.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Danh sách sản phẩm - Quản lý kho</title>
         <style>
-            * {
-                box-sizing: border-box;
-            }
             body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
@@ -33,10 +29,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                background-color: #82CAFA; /* Màu chủ đạo */
+                background-color: #82CAFA;
                 color: white;
                 padding: 12px 24px;
                 position: relative;
+
             }
             .header-left {
                 display: flex;
@@ -51,6 +48,8 @@
                 display: flex;
                 gap: 12px;
                 margin-left: 40px;
+                position: relative;
+
             }
             .nav a {
                 color: white;
@@ -59,6 +58,13 @@
                 font-weight: 600;
                 transition: background-color 0.3s ease;
                 white-space: nowrap;
+                display: flex;
+                align-items: center;
+            }
+            .nav a i {
+                margin-right: 8px;
+                min-width: 16px;
+                text-align: center;
             }
             .nav a:hover,
             .nav a.active {
@@ -70,9 +76,7 @@
                 align-items: center;
                 gap: 20px;
             }
-            /*            .search-box {
-                            position: relative;
-                        }*/
+
             .search-box input[type="search"] {
                 padding: 6px 28px 6px 12px;
                 border-radius: 20px;
@@ -165,10 +169,12 @@
                 border-color: #FDF9DA;
                 outline: none;
             }
+
             .user-menu nav.dropdown-menu {
                 position: absolute;
                 top: 50px;
-                right: 0;
+                left: -50%;
+                transform: translateX(-50%);
                 background: white;
                 color: #333;
                 border-radius: 8px;
@@ -178,7 +184,11 @@
                 overflow: hidden;
                 display: none;
                 z-index: 1000;
+                max-height: 240px;
+                overflow-y: auto;
+                scrollbar-width: none;
             }
+
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
             }
@@ -195,57 +205,15 @@
             .user-menu nav.dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
-            .container {
-                max-width: 800px;
-                margin: 32px auto;
-                padding: 24px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 0 16px rgba(0,0,0,0.1);
-            }
-            form label {
-                display: block;
-                margin: 12px 0 6px;
-                font-weight: 600;
-                color: #333;
-            }
-            form input[type="text"],
-            form input[type="number"] {
-                width: 100%;
-                padding: 10px 12px;
-                font-size: 1rem;
-                border-radius: 6px;
-                border: 1.8px solid #ccc;
-                transition: border-color 0.3s ease;
-            }
-            form input[type="text"]:focus,
-            form input[type="number"]:focus {
-                outline: none;
-                border-color: #82CAFA;
-                box-shadow: 0 0 5px #82CAFAaa;
-            }
-            form input[type="submit"] {
-                margin-top: 10px;
-                width: 300px;
-                padding: 12px;
-                font-size: 1.1rem;
-                font-weight: 700;
-                border: none;
-                color: white;
-                background-color: #82CAFA;
-                border-radius: 6px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-            }
-            form input[type="submit"]:hover {
-                background-color: #21a5fc;
-            }
+
             table {
-                width: 100%;
+                width: 70%;
                 border-collapse: collapse;
                 margin-top: 28px;
                 table-layout: fixed;
+
             }
+
             th, td {
                 border: 1px solid #ddd;
                 padding: 5px;
@@ -266,24 +234,15 @@
             tbody tr:hover {
                 background-color: #FDF9DA;
             }
-            .button-container {
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-            }
-            .action-column {
-                width: 120px;
-            }
+
+
             @media (max-width: 600px) {
                 .header {
                     flex-wrap: wrap;
                     gap: 10px;
                     padding: 12px 12px;
                 }
-                .header-left {
-                    flex-basis: 100%;
-                    justify-content: center;
-                }
+
                 .nav {
                     margin-left: 0;
                     flex-wrap: wrap;
@@ -294,46 +253,99 @@
                     flex-basis: 100%;
                     justify-content: center;
                     gap: 12px;
-                }
-                .search-box input[type="search"] {
-                    width: 120px;
-                }
-                .search-box input[type="search"]:focus {
-                    width: 180px;
-                }
-            }
 
-            .product-select {
-                height: 37px;
-                width: 170px;
-                padding: 10px 15px;
-                border: 2px solid #82CAFA;
-                border-radius: 9px;
-                font-size: 11px;
-                outline: none;
+                }
 
             }
-            .form-group {
+
+            .dropdown {
                 position: relative;
-                width: 200px;
             }
-            .form-control{
-                border: none;
-                outline: none;
+            .dropdown input[type="checkbox"] {
+                display: none;
             }
-            .form-group .search-icon {
+            .dropdown-label {
+                cursor: pointer;
+                padding: 8px 16px;
+                border-radius: 4px;
+                transition: background-color 0.3s ease;
+                color: white;
+                display: flex;
+                align-items: center;
+                font-weight: 600;
+            }
+            .dropdown-label i {
+                margin-right: 8px;
+                min-width: 16px;
+                text-align: center;
+            }
+            .dropdown-label:hover {
+                background-color: #787ff6;
+                color: white;
+            }
+            .dropdown-menu {
                 position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #aaa;
-                pointer-events: none;
+                top: 100%;
+                left: 0;
+                background: white;
+                color: #333;
+                border-radius: 8px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                min-width: 200px;
+                display: none;
+                flex-direction: column;
+                z-index: 1000;
+
             }
-            .fas.fa-search.search-icon{
+            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
+                display: flex;
+            }
+            .dropdown-menu a {
+                padding: 12px 16px;
+                border-bottom: 1px solid #eee;
+                font-weight: 600;
+                white-space: nowrap;
+                color: #333;
+                display: block;
+            }
+            .dropdown-menu a:last-child {
+                border-bottom: none;
+            }
+            .dropdown-menu a:hover {
+                background-color: #FDF9DA;
+            }
+            .container {
+                max-width: 100%;
+                padding: 24px;
+                background: white;
+                margin-left: 10px;
+
+            }
+            th:nth-child(1), td:nth-child(1) {
+                width: 7%;
+            }
+
+            th:nth-child(2), td:nth-child(4) {
+                width: 40%;
+            }
+            th:nth-child(3), td:nth-child(3) {
+                width: 20%;
+            }
+            .table-wrapper {
+                display: flex;
+                justify-content: center;
+            }
+            .btn-add {
+                padding: 8px 16px;
+                background-color: #82CAFA;
+                color: white;
                 border: none;
-                outline: none;
-                color: #89D0F0;
-                background-color: white;
+                border-radius: 6px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            .btn-add:hover {
+                background-color: #787FF6;
             }
 
         </style>
@@ -341,12 +353,41 @@
     <body>
         <div class="header">
             <div class="header-left">
-                <h1>Quản lý sản phẩm</h1>
+                <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="product_list" class="active">Sản phẩm</a>
-                    <a href="import_goods.html">Nhập kho</a>
-                    <a href="export_goods.html">Xuất kho</a>
-                    <a href="stats.html">Thống kê</a>
+                    <a href="dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <div class="dropdown">
+                        <input type="checkbox" id="product-dropdown" />
+                        <label for="product-dropdown" class="dropdown-label">
+                            <i class="fas fa-box"></i> Sản phẩm
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+
+                            <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+
+                        </div>
+                    </div>
+                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+
+
+
+                    <div class="dropdown">
+                        <input type="checkbox" id="store-dropdown" />
+                        <label for="store-dropdown" class="dropdown-label">
+                            <i class="fas fa-store"></i> <span style="font-weight:600">Cửa hàng</span>
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="header-right">
@@ -367,52 +408,56 @@
                     <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
                         <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
-                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
-                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
-                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
+                    <nav class="dropdown-menu" id="user-menu-dropdown">
+                        <a href="myprofile.html">My Profile</a>
+                        <a href="change_password.html">Change Password</a>
+                        <a href="login.html">Log Out</a>
                     </nav>
                 </div>
             </div>
         </div>
 
+        <div class="container">
 
-        <div class="container" style="text-align: center">
-            <h2>Chi tiết đơn hàng</h2>
-
-            <table>
-                <tbody>
-                    <tr>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Đơn vị</th>
-                        <th>Giá</th>
-                        <th>Thành tiền</th>
-                    </tr>
-                    <c:set var="total" value="0" />
-                    <c:forEach var="od" items="${orderDetailsList}">
+            <div class="header-wrapper" style="display: flex;  justify-content: space-between;">
+                <h3>Quản lí phân loại:</h3>
+                <form action="store_category_add.jsp">
+                    <input type="submit" class="btn-add" value="Add Category" />
+                </form>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
                         <tr>
-                            <td><strong>${od.productName}</strong></td>
-                            <td>${od.quantity}</td>
-                            <td>${od.unit}</td>
-                            <td>${od.price}</td>
-                            <td>
-                                <c:set var="subtotal" value="${od.quantity * od.price}" />
-                                ${subtotal}
-                                <c:set var="total" value="${total + subtotal}" />
-                            </td>
+                            <th>Stt</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
                         </tr>
+                    </thead> 
+                    <tbody>
+                        <c:forEach items="${listStoreCategory}" var="c"  varStatus="stt">
+                            <tr>
+                                <td>${stt.index + 1}</td>
 
-                    </c:forEach>
-                    <tr>
-                        <td colspan="4" style="text-align:right;"><strong>Tổng cộng:</strong></td>
-                        <td><strong>${total}</strong></td>
-                    </tr>
+                                <td>${c.categoryName}</td>
+                                <td>${c.quantity}</td>
+                                <td class="action-icons">
+                                    <a href="store_product_list?id=${c.storeCategoryId}" class="fas fa-list" style="color: #787FF6;"></a>
+                                    <a href="loadCategory?id=${c.storeCategoryId}" class="fas fa-pencil-alt" style="color: #787FF6;padding: 13px;"></a>
+                                    <a href="deletecategory?id=${c.storeCategoryId}" class="fas fa-trash"
+                                       style="color: #787FF6;"
+                                       onclick="return confirm('Bạn có chắc muốn xóa category có ID = ${c.storeCategoryId} không?');">
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
 
-                </tbody>
-            </table>
 
+
+                    </tbody>
+                </table> 
+            </div>
         </div>
-
     </body>
 </html>

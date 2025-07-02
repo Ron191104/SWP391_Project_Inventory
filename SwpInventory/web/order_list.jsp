@@ -380,54 +380,51 @@
         <div class="container" style="text-align: center">
             <h2>Danh sách đơn hàng đã gửi</h2>
 
-            <c:if test="${empty orderDisplayList}">
-                <p>Chưa có đơn hàng nào.</p>
-            </c:if>
-
-            <c:forEach var="od" items="${orderDisplayList}">
-                <a href="order_details?orderId=${od.orderId}" style="text-decoration: none; color: inherit;">
-                    <div style="
-                         border: 2px solid #82CAFA;
-                         border-radius: 12px;
-                         margin: 20px auto;
-                         max-width: 600px;
-                         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                         background-color: #f9fcff;
-                         font-family: 'Segoe UI', sans-serif;
-                         transition: transform 0.2s ease;
-                         " onmouseover="this.style.transform = 'scale(1.02)'" onmouseout="this.style.transform = 'scale(1)'">
-                        <h3 style="color: #0b5ed7;">Đơn hàng #${od.orderId}</h3>
-                        <p><strong>Nhà cung cấp:</strong> ${od.supplierName}</p>
-                        <p><strong>Ngày đặt:</strong> ${od.orderDate}</p>
-                        <p><strong>Số sản phẩm:</strong> ${od.productCount}</p>
-                        <c:if test="${not empty od.note}">
-                            <p><strong>Ghi chú:</strong> ${od.note}</p>
-                        </c:if>
-                        <p><strong>Trạng thái:</strong>
-                            <c:choose>
-                                <c:when test="${od.status == 0}">
-                                    <span style="color: gray;">Đang chờ xác nhận</span>
-                                </c:when>
-                                <c:when test="${od.status == 1}">
-                                    <span style="color: blue;">Đã xác nhận</span>
-                                </c:when>
-                                <c:when test="${od.status == 2}">
-                                    <span style="color: red;">Đã từ chối</span>
-                                </c:when>
-                                <c:when test="${od.status == 3}">
-                                    <span style="color: green;">Đã hoàn thành</span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span style="color: black;">Không rõ</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </p>
-                    </div>
-                </a>
-            </c:forEach>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn vị</th>
+                        <th>Giá</th>
+                        <th>Ghi chú</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="od" items="${orderDetailsList}">
+                        <tr>
+                            <td>${od.orderId}</td>
+                            <td>${od.productName}</td>
+                            <td>${od.quantity}</td>
+                            <td>${od.unit}</td>
+                            <td>${od.price}</td>
+                            <td>${od.note}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${od.status == 0}">
+                                        <span style="color: gray;">Đang chờ xác nhận</span>
+                                    </c:when>
+                                    <c:when test="${od.status == 1}">
+                                        <span style="color: blue;">Đã xác nhận</span>
+                                    </c:when>
+                                    <c:when test="${od.status == 2}">
+                                        <span style="color: red;">Đã từ chối</span>
+                                    </c:when>
+                                    <c:when test="${od.status == 3}">
+                                        <span style="color: green;">Đã hoàn thành</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span style="color: black;">Không rõ</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
         </div>
-
-
 
     </body>
 </html>

@@ -6,6 +6,7 @@
     <head>
         <meta charset="UTF-8" />
         <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Chi tiết sản phẩm</title>
@@ -40,7 +41,6 @@
                 display: inline-flex;
                 align-items: center;
                 cursor: pointer;
-                box-shadow: 0 3px 8px rgb(33 150 243 / 0.4);
                 transition: background-color 0.3s ease;
                 margin-bottom: 28px;
                 width: fit-content;
@@ -50,13 +50,11 @@
                 text-decoration: none;
                 color: white;
             }
-            .back-button svg {
+
+            .back-button i {
                 margin-right: 6px;
-                width: 16px;
-                height: 16px;
-                stroke: white;
-                stroke-width: 2;
             }
+
 
             h1.product-name {
                 font-size: 2rem;
@@ -112,14 +110,9 @@
                 border-radius: 6px;
                 background-color: white;
                 color: #333;
-                 width: 280px;
+                width: 280px;
                 height: 20px;
             }
-
-
-
-
-
 
             .description {
                 background-color: #eef9ff;
@@ -128,8 +121,8 @@
                 padding: 12px;
                 font-size: 0.95rem;
                 color: #305c7a;
-               height: 100px;
-               width: 100%;
+                height: 100px;
+                width: 100%;
                 line-height: 1.4;
             }
 
@@ -161,47 +154,44 @@
     <body>
 
         <div class="container" role="main" aria-label="Thông tin chi tiết sản phẩm">
-            <a href="javascript:history.back()" class="back-button" aria-label="Quay lại">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg>
+            <a href="store_product_list" class="back-button">            
+                <i class="fas fa-arrow-left "></i>
                 Quay lại
             </a>
+
+
             <h1 class="title">Chi tiết sản phẩm</h1>
 
-            <h1 class="product-name" tabindex="0">${detail.name}</h1>
+            <h1 class="product-name" tabindex="0">${detail.product.name}</h1>
             <div class="product-detail">
                 <div class="product-image" role="img" aria-label="Ảnh sản phẩm">
-                    <img src="assets/image/${detail.image}" alt="Ảnh của Tên sản phẩm nổi bật" />
+                    <img src="assets/image/${detail.product.image}" alt="Ảnh sản phẩm" />
                 </div>
                 <div class="product-info">
                     <div class="info-row">
                         <div class="info-label">ID:</div>
-                        <div class="info-value">${detail.id}</div>
+                        <div class="info-value">${detail.product.id}</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">Barcode:</div>
-                        <div class="info-value">${detail.barcode}</div>
+                        <div class="info-value">${detail.product.barcode}</div>
                     </div>
-                    <c:forEach items="${listC}" var="c">
-                        <c:if test="${c.id == detail.category_id}">
+                    <c:forEach items="${listStoreCategory}" var="c">
+                        <c:if test="${c.storeCategoryId == detail.storeCategoryId}">
                             <div class="info-row">
                                 <div class="info-label">Category :</div> 
-                                <div class="info-value">${c.name}</div>
+                                <div class="info-value">${c.categoryName}</div>
                             </div>
                         </c:if>
                     </c:forEach>
 
-
-                    <div class="info-row">
-                        <div class="info-label">Supplier ID:</div>
-                        <div class="info-value">${detail.supplier_id}</div>
-                    </div>
                     <div class="info-row">
                         <div class="info-label">Price In:</div>
-                        <div class="info-value">${detail.price_in}</div>
+                        <div class="info-value">${detail.product.price}</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">Price Out:</div>
-                        <div class="info-value">${detail.price_out}</div>
+                        <div class="info-value">${detail.priceOut}</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">Quantity:</div>
@@ -209,31 +199,25 @@
                     </div>
                     <div class="info-row">
                         <div class="info-label">Unit:</div>
-                        <div class="info-value">${detail.unit}</div>
+                        <div class="info-value">${detail.product.unit}</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">Manufacture Date:</div>
-                        <div class="info-value">${detail.manufacture_date}</div>
+                        <div class="info-value">${detail.product.manufacture_date}</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">Expired Date:</div>
-                        <div class="info-value">${detail.expired_date}</div>
-                    </div>
-                    <div class="info-row" style="align-items: center;">
-                        <div class="info-label">Status:</div>
-                        <label class="switch" title="Trạng thái sản phẩm">
-                            <input type="checkbox" checked disabled aria-checked="true" />
-                            <span class="slider"></span>
-                        </label>
+                        <div class="info-value">${detail.product.expired_date}</div>
                     </div>
                     <div class="info-row" style="flex-direction: column; border-bottom: none;">
                         <div class="info-label" style="margin-bottom: 6px;">Description:</div>
-                        <div class="info-value description" >
-                            ${detail.description}       
+                        <div class="info-value description">
+                            ${detail.product.description}
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
     </body>
