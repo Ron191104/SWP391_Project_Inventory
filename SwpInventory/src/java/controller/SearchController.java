@@ -4,8 +4,8 @@
  */
 package controller;
 
+import dao.CategoryDAO;
 import dao.ProductDAO;
-import dao.StoreCategoryDAO;
 import dao.StoreProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,8 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Categories;
 import model.Product;
-import model.StoreCategory;
 import model.StoreProduct;
 
 /**
@@ -52,15 +52,11 @@ public class SearchController extends HttpServlet {
 
         StoreProductDAO dao = new StoreProductDAO();
         List<StoreProduct> list = dao.searchByName(txtSearch, storeId);
+        CategoryDAO cdao = new CategoryDAO();
+        List<Categories> listStoreCategory = cdao.getAllCategories();
 
-        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
-        List<StoreCategory> listC = categoryDAO.getAllStoreCategory(storeId);
-
-        String categoriesID = request.getParameter("id");
-        request.setAttribute("tag", categoriesID);
-
+        request.setAttribute("listStoreCategory", listStoreCategory);
         request.setAttribute("storeProduct", list);
-        request.setAttribute("listStoreCategory", listC);
 
         request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
     }

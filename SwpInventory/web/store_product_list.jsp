@@ -456,7 +456,7 @@
                     <select id="product-type" name="id" class="product-select" onchange="this.form.submit()">
                         <option value="" ${empty tag ? "selected" : ""}>Tất cả sản phẩm</option>
                         <c:forEach items="${listStoreCategory}" var="c">
-                            <option value="${c.storeCategoryId}" ${c.storeCategoryId  == tag ? "selected" : ""}>${c.categoryName}</option>
+                            <option value="${c.id}" ${c.id  == tag ? "selected" : ""}>${c.name}</option>
                         </c:forEach>
                     </select>
 

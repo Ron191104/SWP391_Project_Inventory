@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.StoreCategoryDAO;
+import dao.CategoryDAO;
 import dao.StoreProductDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -16,7 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.StoreCategory;
+import model.Categories;
+import model.Category;
 import model.StoreProduct;
 
 /**
@@ -46,10 +47,6 @@ public class StoreProductListController extends HttpServlet {
             response.sendRedirect("choose_store");
             return;
         }
-        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
-        List<StoreCategory> listStoreCategory = categoryDAO.getAllStoreCategory(storeId);
-        request.setAttribute("listStoreCategory", listStoreCategory);
-
         String idRaw = request.getParameter("id");
         Integer categoryId = null;
         if (idRaw != null && !idRaw.isEmpty()) {
@@ -58,25 +55,17 @@ public class StoreProductListController extends HttpServlet {
 
         StoreProductDAO productDAO = new StoreProductDAO();
         List<StoreProduct> listProduct;
-
+        CategoryDAO cdao = new CategoryDAO();
+        List<Categories> listStoreCategory = cdao.getAllCategories();
         if (categoryId != null) {
             listProduct = productDAO.getStoreProductByCategory(storeId, categoryId);
         } else {
             listProduct = productDAO.getAllStoreProduct(storeId);
         }
 
-        for (StoreCategory c : listStoreCategory) {
-            int quantity = 0;
-            for (StoreProduct sp : productDAO.getAllStoreProduct(storeId)) {
-                if (sp.getStoreCategoryId() == c.getStoreCategoryId()) {
-                    quantity += sp.getQuantity();
-                }
-            }
-            c.setQuantity(quantity);
-        }
-
         request.setAttribute("storeProduct", listProduct);
         request.setAttribute("tag", categoryId);
+        request.setAttribute("listStoreCategory", listStoreCategory);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("store_product_list.jsp");
         dispatcher.forward(request, response);

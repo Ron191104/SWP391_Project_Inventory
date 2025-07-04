@@ -32,7 +32,7 @@ public class StoreProductDAO {
                 + "p.image, "
                 + "p.product_name, "
                 + "p.barcode, "
-                + "sp.store_category_id, "
+                + "p.category_id, "
                 + "p.unit, "
                 + "p.price, "
                 + "sp.price_out, "
@@ -49,22 +49,22 @@ public class StoreProductDAO {
             while (rs.next()) {
 
                 Product p = new Product();
-                p.setId(rs.getInt(3));
-                p.setImage(rs.getString(4));
-                p.setName(rs.getString(5));
-                p.setBarcode(rs.getString(6));
-                p.setUnit(rs.getString(8));
-                p.setPrice(rs.getDouble(9));
-                p.setManufacture_date(rs.getDate(12));
-                p.setExpired_date(rs.getDate(13));
+                p.setId(rs.getInt("product_id"));
+                p.setImage(rs.getString("image"));
+                p.setName(rs.getString("product_name"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setCategory_id(rs.getInt("category_id"));
+                p.setUnit(rs.getString("unit"));
+                p.setPrice(rs.getDouble("price"));
+                p.setManufacture_date(rs.getDate("manufacture_date"));
+                p.setExpired_date(rs.getDate("expired_date"));
 
                 StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt(1));
-                sp.setStoreId(rs.getInt(2));
+                sp.setStoreProductId(rs.getInt("store_product_id"));
+                sp.setStoreId(rs.getInt("store_id"));
                 sp.setProduct(p);
-                sp.setStoreCategoryId(rs.getInt(7));
-                sp.setPriceOut(rs.getDouble(10));
-                sp.setQuantity(rs.getInt(11));
+                sp.setPriceOut(rs.getDouble("price_out"));
+                sp.setQuantity(rs.getInt("quantity"));
                 list.add(sp);
             }
         } catch (Exception e) {
@@ -77,20 +77,20 @@ public class StoreProductDAO {
     public List<StoreProduct> getStoreProductByCategory(int storeId, int storeCategoryId) {
         List<StoreProduct> list = new ArrayList<>();
         String query = "SELECT "
-                + "    sp.store_product_id, "
-                + "    sp.store_id, "
-                + "    p.product_id, "
-                + "    p.image, "
-                + "    p.product_name, "
-                + "    p.barcode, "
-                + "    sp.store_category_id, "
-                + "    p.unit, "
-                + "    p.price, "
-                + "    sp.price_out, "
-                + "    sp.quantity, "
-                + "    p.manufacture_date, "
-                + "    p.expired_date "
-                + "FROM store_products sp JOIN products p ON sp.product_id = p.product_id WHERE sp.store_id = ? AND sp.store_category_id = ?";
+                + "sp.store_product_id, "
+                + "sp.store_id, "
+                + "p.product_id, "
+                + "p.image, "
+                + "p.product_name, "
+                + "p.barcode, "
+                + "p.category_id, "
+                + "p.unit, "
+                + "p.price, "
+                + "sp.price_out, "
+                + "sp.quantity, "
+                + "p.manufacture_date, "
+                + "p.expired_date "
+                + "FROM store_products sp JOIN products p ON sp.product_id = p.product_id WHERE sp.store_id = ? AND p.category_id=?;";
         try {
             con = DBConnect.getConnection();
             ps = con.prepareStatement(query);
@@ -99,22 +99,22 @@ public class StoreProductDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
-                p.setId(rs.getInt(3));
-                p.setImage(rs.getString(4));
-                p.setName(rs.getString(5));
-                p.setBarcode(rs.getString(6));
-                p.setUnit(rs.getString(8));
-                p.setPrice(rs.getDouble(9));
-                p.setManufacture_date(rs.getDate(12));
-                p.setExpired_date(rs.getDate(13));
+                p.setId(rs.getInt("product_id"));
+                p.setImage(rs.getString("image"));
+                p.setName(rs.getString("product_name"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setCategory_id(rs.getInt("category_id"));
+                p.setUnit(rs.getString("unit"));
+                p.setPrice(rs.getDouble("price"));
+                p.setManufacture_date(rs.getDate("manufacture_date"));
+                p.setExpired_date(rs.getDate("expired_date"));
 
                 StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt(1));
-                sp.setStoreId(rs.getInt(2));
+                sp.setStoreProductId(rs.getInt("store_product_id"));
+                sp.setStoreId(rs.getInt("store_id"));
                 sp.setProduct(p);
-                sp.setStoreCategoryId(rs.getInt(7));
-                sp.setPriceOut(rs.getDouble(10));
-                sp.setQuantity(rs.getInt(11));
+                sp.setPriceOut(rs.getDouble("price_out"));
+                sp.setQuantity(rs.getInt("quantity"));
                 list.add(sp);
             }
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class StoreProductDAO {
                 + "p.image, "
                 + "p.product_name, "
                 + "p.barcode, "
-                + "sp.store_category_id, "
+                + "p.category_id, "
                 + "p.unit, "
                 + "p.price, "
                 + "sp.price_out, "
@@ -151,22 +151,22 @@ public class StoreProductDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
-                p.setId(rs.getInt(3));
-                p.setImage(rs.getString(4));
-                p.setName(rs.getString(5));
-                p.setBarcode(rs.getString(6));
-                p.setUnit(rs.getString(8));
-                p.setPrice(rs.getDouble(9));
-                p.setManufacture_date(rs.getDate(12));
-                p.setExpired_date(rs.getDate(13));
+                p.setId(rs.getInt("product_id"));
+                p.setImage(rs.getString("image"));
+                p.setName(rs.getString("product_name"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setCategory_id(rs.getInt("category_id"));
+                p.setUnit(rs.getString("unit"));
+                p.setPrice(rs.getDouble("price"));
+                p.setManufacture_date(rs.getDate("manufacture_date"));
+                p.setExpired_date(rs.getDate("expired_date"));
 
                 StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt(1));
-                sp.setStoreId(rs.getInt(2));
+                sp.setStoreProductId(rs.getInt("store_product_id"));
+                sp.setStoreId(rs.getInt("store_id"));
                 sp.setProduct(p);
-                sp.setStoreCategoryId(rs.getInt(7));
-                sp.setPriceOut(rs.getDouble(10));
-                sp.setQuantity(rs.getInt(11));
+                sp.setPriceOut(rs.getDouble("price_out"));
+                sp.setQuantity(rs.getInt("quantity"));
                 list.add(sp);
 
             }
@@ -185,7 +185,7 @@ public class StoreProductDAO {
                 + "p.image, "
                 + "p.product_name, "
                 + "p.barcode, "
-                + "sp.store_category_id, "
+                + "p.category_id, "
                 + "p.unit, "
                 + "p.price, "
                 + "sp.price_out, "
@@ -202,22 +202,22 @@ public class StoreProductDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
-                p.setId(rs.getInt(3));
-                p.setImage(rs.getString(4));
-                p.setName(rs.getString(5));
-                p.setBarcode(rs.getString(6));
-                p.setUnit(rs.getString(8));
-                p.setPrice(rs.getDouble(9));
-                p.setManufacture_date(rs.getDate(12));
-                p.setExpired_date(rs.getDate(13));
+                p.setId(rs.getInt("product_id"));
+                p.setImage(rs.getString("image"));
+                p.setName(rs.getString("product_name"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setCategory_id(rs.getInt("category_id"));
+                p.setUnit(rs.getString("unit"));
+                p.setPrice(rs.getDouble("price"));
+                p.setManufacture_date(rs.getDate("manufacture_date"));
+                p.setExpired_date(rs.getDate("expired_date"));
 
                 StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt(1));
-                sp.setStoreId(rs.getInt(2));
+                sp.setStoreProductId(rs.getInt("store_product_id"));
+                sp.setStoreId(rs.getInt("store_id"));
                 sp.setProduct(p);
-                sp.setStoreCategoryId(rs.getInt(7));
-                sp.setPriceOut(rs.getDouble(10));
-                sp.setQuantity(rs.getInt(11));
+                sp.setPriceOut(rs.getDouble("price_out"));
+                sp.setQuantity(rs.getInt("quantity"));
                 list.add(sp);
 
             }
@@ -236,7 +236,7 @@ public class StoreProductDAO {
                 + "p.image, "
                 + "p.product_name, "
                 + "p.barcode, "
-                + "sp.store_category_id, "
+                + "p.category_id, "
                 + "p.unit, "
                 + "p.price, "
                 + "sp.price_out, "
@@ -252,22 +252,22 @@ public class StoreProductDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
-                p.setId(rs.getInt(3));
-                p.setImage(rs.getString(4));
-                p.setName(rs.getString(5));
-                p.setBarcode(rs.getString(6));
-                p.setUnit(rs.getString(8));
-                p.setPrice(rs.getDouble(9));
-                p.setManufacture_date(rs.getDate(12));
-                p.setExpired_date(rs.getDate(13));
+                p.setId(rs.getInt("product_id"));
+                p.setImage(rs.getString("image"));
+                p.setName(rs.getString("product_name"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setCategory_id(rs.getInt("category_id"));
+                p.setUnit(rs.getString("unit"));
+                p.setPrice(rs.getDouble("price"));
+                p.setManufacture_date(rs.getDate("manufacture_date"));
+                p.setExpired_date(rs.getDate("expired_date"));
 
                 StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt(1));
-                sp.setStoreId(rs.getInt(2));
+                sp.setStoreProductId(rs.getInt("store_product_id"));
+                sp.setStoreId(rs.getInt("store_id"));
                 sp.setProduct(p);
-                sp.setStoreCategoryId(rs.getInt(7));
-                sp.setPriceOut(rs.getDouble(10));
-                sp.setQuantity(rs.getInt(11));
+                sp.setPriceOut(rs.getDouble("price_out"));
+                sp.setQuantity(rs.getInt("quantity"));
                 list.add(sp);
             }
         } catch (Exception e) {
@@ -276,48 +276,37 @@ public class StoreProductDAO {
         return list;
     }
 
-    public StoreProduct getStoreProductById(int storeProductId) {
-        String query = "SELECT "
-                + "sp.store_product_id, "
-                + "sp.store_id, "
-                + "p.product_id, "
-                + "p.image, "
-                + "p.product_name, "
-                + "p.barcode, "
-                + "sp.store_category_id, "
-                + "p.unit, "
-                + "p.price, "
-                + "sp.price_out, "
-                + "sp.quantity, "
-                + "p.manufacture_date, "
-                + "p.expired_date, "
-                + " p.description "
-                + "FROM store_products sp JOIN products p ON sp.product_id = p.product_id WHERE sp.store_product_id = ?";
+    public StoreProduct getStoreProductById(int id) {
+        StoreProduct sp = null;
+        String query = "SELECT sp.store_product_id, sp.price_out, sp.quantity, "
+                + "p.product_id, p.product_name, p.barcode, p.unit, p.price, "
+                + "p.image, p.manufacture_date, p.expired_date, p.category_id, p.description "
+                + "FROM store_products sp JOIN products p ON sp.product_id = p.product_id "
+                + "WHERE sp.store_product_id = ?";
+
         try {
             con = DBConnect.getConnection();
             ps = con.prepareStatement(query);
-            ps.setInt(1, storeProductId);
-            rs = ps.executeQuery();
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
-                p.setId(rs.getInt(3));
-                p.setImage(rs.getString(4));
-                p.setName(rs.getString(5));
-                p.setBarcode(rs.getString(6));
-                p.setUnit(rs.getString(8));
-                p.setPrice(rs.getDouble(9));
-                p.setManufacture_date(rs.getDate(12));
-                p.setExpired_date(rs.getDate(13));
-                p.setDescription(rs.getString(14));
+                p.setId(rs.getInt("product_id"));
+                p.setName(rs.getString("product_name"));
+                p.setBarcode(rs.getString("barcode"));
+                p.setUnit(rs.getString("unit"));
+                p.setPrice(rs.getDouble("price"));
+                p.setImage(rs.getString("image"));
+                p.setManufacture_date(rs.getDate("manufacture_date"));
+                p.setExpired_date(rs.getDate("expired_date"));
+                p.setCategory_id(rs.getInt("category_id"));
+                p.setDescription(rs.getString("description"));
 
-                StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt(1));
-                sp.setStoreId(rs.getInt(2));
+                sp = new StoreProduct();
+                sp.setStoreProductId(rs.getInt("store_product_id"));
+                sp.setPriceOut(rs.getDouble("price_out"));
+                sp.setQuantity(rs.getInt("quantity"));
                 sp.setProduct(p);
-                sp.setStoreCategoryId(rs.getInt(7));
-                sp.setPriceOut(rs.getDouble(10));
-                sp.setQuantity(rs.getInt(11));
-                return sp;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -325,50 +314,19 @@ public class StoreProductDAO {
         return null;
     }
 
-    public void deleteStoreProduct(int storeProductId) {
-        String query = "delete from store_products where store_product_id = ?";
+    public void deleteStoreProduct(int storeId, int storeProductId) {
+        String query = "DELETE FROM store_products WHERE store_product_id = ? AND store_id = ?";
         try {
             con = DBConnect.getConnection();
             ps = con.prepareStatement(query);
             ps.setInt(1, storeProductId);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addStoreProduct(int storeId, int storeCategoryId, int productId, double priceOut, int quantity) {
-        String query = "INSERT INTO store_products (store_id, store_category_id, product_id, price_out, quantity) VALUES (?, ?, ?, ?, ?)";
-        try {
-            con = DBConnect.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, storeId);
-            ps.setInt(2, storeCategoryId);
-            ps.setInt(3, productId);
-            ps.setDouble(4, priceOut);
-            ps.setInt(5, quantity);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearProductsByStoreCategoryId(int storeId, int categoryId) {
-        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
-        int naCategoryId = categoryDAO.getNACategoryId(storeId);
-
-        String sql = "UPDATE store_products SET store_category_id = ? WHERE store_id = ? AND store_category_id = ?";
-        try {
-            con = DBConnect.getConnection();
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, naCategoryId);
             ps.setInt(2, storeId);
-            ps.setInt(3, categoryId);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public static void main(String[] args) {
         StoreProductDAO dao = new StoreProductDAO();
