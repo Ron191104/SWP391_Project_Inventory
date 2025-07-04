@@ -4,8 +4,8 @@
  */
 package controller;
 
+import dao.CategoryDAO;
 import dao.ProductDAO;
-import dao.StoreCategoryDAO;
 import dao.StoreProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,8 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.Categories;
+import model.Category;
 import model.Product;
-import model.StoreCategory;
 import model.StoreProduct;
 
 /**
@@ -46,7 +47,6 @@ public class StoreProductDetailController extends HttpServlet {
 
         int did = Integer.parseInt(didRaw);
         StoreProductDAO dao = new StoreProductDAO();
-        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
 
         StoreProduct detail = dao.getStoreProductById(did);
         if (detail == null) {
@@ -54,10 +54,11 @@ public class StoreProductDetailController extends HttpServlet {
             return;
         }
 
-        List<StoreCategory> listStoreCategory = categoryDAO.getAllStoreCategory(detail.getStoreId());
+        CategoryDAO cdao = new CategoryDAO();
+        List<Categories> listStoreCategory = cdao.getAllCategories();
+        request.setAttribute("listStoreCategory", listStoreCategory);
 
         request.setAttribute("detail", detail);
-        request.setAttribute("listStoreCategory", listStoreCategory);
         request.getRequestDispatcher("store_product_detail.jsp").forward(request, response);
     }
 

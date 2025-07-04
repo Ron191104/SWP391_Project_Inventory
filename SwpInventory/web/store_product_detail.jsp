@@ -177,10 +177,10 @@
                         <div class="info-value">${detail.product.barcode}</div>
                     </div>
                     <c:forEach items="${listStoreCategory}" var="c">
-                        <c:if test="${c.storeCategoryId == detail.storeCategoryId}">
+                        <c:if test="${c.id == detail.product.category_id}">
                             <div class="info-row">
                                 <div class="info-label">Category :</div> 
-                                <div class="info-value">${c.categoryName}</div>
+                                <div class="info-value">${c.name}</div>
                             </div>
                         </c:if>
                     </c:forEach>

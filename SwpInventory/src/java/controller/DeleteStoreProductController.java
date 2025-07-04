@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -32,12 +33,19 @@ public class DeleteStoreProductController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Integer storeId = (Integer) session.getAttribute("storeId");
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
+        }
+
         String iddelete = request.getParameter("id");
         if (iddelete != null) {
             try {
                 int id = Integer.parseInt(iddelete);
                 StoreProductDAO dao = new StoreProductDAO();
-                dao.deleteStoreProduct(id);
+                dao.deleteStoreProduct(storeId, id);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }

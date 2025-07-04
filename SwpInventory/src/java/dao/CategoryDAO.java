@@ -7,7 +7,10 @@ package dao;
 import dal.DBConnect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import model.Categories;
+import model.Category;
 
 /**
  *
@@ -19,71 +22,26 @@ public class CategoryDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public void addCategory(String name) {
-        String sql = "INSERT INTO categories (category_name) VALUES (?)";
+    public List<Categories> getAllCategories() {
+        List<Categories> list = new ArrayList<>();
+        String query = "SELECT category_id, category_name FROM categories";
+
         try {
             con = DBConnect.getConnection();
-            ps = con.prepareStatement(sql);
-            ps.setString(1, name);
-            ps.executeUpdate();
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Categories c = new Categories();
+                c.setId(rs.getInt("category_id"));
+                c.setName(rs.getString("category_name"));
+                list.add(c);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return list;
     }
-    
-    public void deleteCategory(int id) {
-    String sql = "DELETE FROM categories WHERE category_id = ?";
-    try {
-        con = DBConnect.getConnection();
-        ps = con.prepareStatement(sql);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
-    
-    public void clearProductsByCategoryId(int categoryId) {
-    String sql = "UPDATE products SET category_id = NULL WHERE category_id = ?";
-    try {
-        con = DBConnect.getConnection();
-        ps = con.prepareStatement(sql);
-        ps.setInt(1, categoryId);
-        ps.executeUpdate();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
-    
-    public Categories getCategoryById(int id) {
-    String sql = "SELECT * FROM categories WHERE category_id = ?";
-    try {
-        con = DBConnect.getConnection();
-        ps = con.prepareStatement(sql);
-        ps.setInt(1, id);
-        rs = ps.executeQuery();
-        if (rs.next()) {
-            int categoryId = rs.getInt("category_id");
-            String categoryName = rs.getString("category_name");
-            return new Categories(categoryId, categoryName);
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return null;
-}
-public void updateCategory(int id, String name) {
-    String sql = "UPDATE categories SET category_name = ? WHERE category_id = ?";
-    try {
-        con = DBConnect.getConnection();
-        ps = con.prepareStatement(sql);
-        ps.setString(1, name);
-        ps.setInt(2, id);
-        ps.executeUpdate();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
 
 
 

@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.StoreCategoryDAO;
+import dao.CategoryDAO;
 import dao.StoreProductDAO;
 import java.io.IOException;
 
@@ -17,8 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import model.Categories;
+import model.Category;
 import model.Product;
-import model.StoreCategory;
 import model.StoreProduct;
 
 
@@ -73,9 +74,9 @@ public class FilterByPriceController extends HttpServlet {
 
 
         StoreProductDAO dao = new StoreProductDAO();
-        List<StoreProduct> productList = new ArrayList<>();
-
-
+        List<StoreProduct> productList;
+        CategoryDAO cdao = new CategoryDAO();
+        List<Categories> listStoreCategory = cdao.getAllCategories();
         if ("in".equals(filterType)) {
             productList = dao.filterByPriceIn(minPrice, maxPrice, storeId);
         } else if ("out".equals(filterType)) {
@@ -84,10 +85,7 @@ public class FilterByPriceController extends HttpServlet {
             productList = dao.getAllStoreProduct(storeId);
         }
 
-        StoreCategoryDAO categoryDAO = new StoreCategoryDAO();
-        List<StoreCategory> categoryList = categoryDAO.getAllStoreCategory(storeId);
-
-        request.setAttribute("listStoreCategory", categoryList);
+        request.setAttribute("listStoreCategory", listStoreCategory);
         request.setAttribute("storeProduct", productList);
         request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
 
