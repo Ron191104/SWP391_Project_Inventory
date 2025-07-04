@@ -8,30 +8,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import model.OrderDisplay;
+import model.OrderDetailsDisplay;
 
-@WebServlet(name = "ViewOrderListServlet", urlPatterns = {"/order_list"})
-public class ViewOrderListServlet extends HttpServlet {
+@WebServlet(name = "OrderDetailServlet", urlPatterns = {"/order_details"})
+public class OrderDetailServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
         OrderDAO dao = new OrderDAO();
-        List<OrderDisplay> orderDisplayList = dao.getOrderDisplayList();
+        List<OrderDetailsDisplay> orderDetailsList = dao.getFullOrderDetails(orderId);
 
-        request.setAttribute("orderDisplayList", orderDisplayList);
-        request.getRequestDispatcher("order_list.jsp").forward(request, response);
+        request.setAttribute("orderDetailsList", orderDetailsList);
+        request.getRequestDispatcher("order_details.jsp").forward(request, response);
     }
+
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
     }
-
-    @Override
-    public String getServletInfo() {
-        return "View list of grouped orders";
-    }
-} 
+}
