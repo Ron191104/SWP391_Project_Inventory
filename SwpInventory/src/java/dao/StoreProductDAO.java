@@ -311,7 +311,7 @@ public class StoreProductDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return sp;
     }
 
     public void deleteStoreProduct(int storeId, int storeProductId) {

@@ -184,7 +184,7 @@
                             </div>
                         </c:if>
                     </c:forEach>
-
+                    
                     <div class="info-row">
                         <div class="info-label">Price In:</div>
                         <div class="info-value">${detail.product.price}</div>

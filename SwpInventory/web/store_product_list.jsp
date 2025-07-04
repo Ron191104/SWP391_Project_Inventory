@@ -283,7 +283,13 @@
                 width: 200px;
             }
             .form-control{
-                border: none;
+
+                height: 13px;
+                width: 130px;
+                padding: 10px 15px;
+                border: 2px solid #82CAFA;
+                border-radius: 9px;
+                font-size: 11px;
                 outline: none;
             }
             .form-group .search-icon {
@@ -355,6 +361,11 @@
             }
             .dropdown-menu a:hover {
                 background-color: #FDF9DA;
+            }
+
+            table td:nth-child(11),
+            table th:nth-child(11) {
+                width: 29px;
             }
 
             .form-control1 {
@@ -521,18 +532,28 @@
                             <td>${o.product.manufacture_date}</td>
                             <td>${o.product.expired_date}</td>
 
-                            <td>
+                     <td>
+    <div style="display: flex; gap: 4px;">
+        <a href="store_product_detail?did=${o.storeProductId}"
+           style="background: #787FF6; color: white; padding: 3px 5px; border-radius: 3px; font-size: 10px; display: inline-block; margin-right:  3px; margin-left: 4px">
+            Detail
+        </a>
 
-                                <form action="edit_product" method="get">
-                                    <input type="hidden" name="id" value="${o.storeProductId}" />
-                                    <input type="submit" value="Edit" style="margin-bottom: 5px;" />
-                                </form>
-                                <a href="delete?id=${o.storeProductId}"
-                                   onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm có ID=${o.storeProductId} không?')"
-                                   style="background: #787FF6; color: white; padding: 5px 10px; border-radius: 4px; font-size: 10px; height: 10px">
-                                    Delete
-                                </a>
-                            </td>
+        <form action="edit_product" method="get" style="margin: 0;">
+            <input type="hidden" name="id" value="${o.storeProductId}" />
+            <input type="submit" value="Edit"
+                   style="background: #787FF6; color: white; padding: 5px 6px; border-radius: 3px; font-size: 10px; border: none; cursor: pointer;margin-right:  3px;" />
+        </form>
+
+        <a href="delete?id=${o.storeProductId}"
+           onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm có ID=${o.storeProductId} không?')"
+           style="background: #787FF6; color: white; padding: 3px 5px; border-radius: 3px; font-size: 10px; display: inline-block;">
+            Delete
+        </a>
+    </div>
+</td>
+
+
                         </tr>
                     </c:forEach>
 
