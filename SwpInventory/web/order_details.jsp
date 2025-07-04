@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.OrderDetails" %>
+
 
 <html lang="vi">
     <head>
@@ -222,8 +225,8 @@
                 box-shadow: 0 0 5px #82CAFAaa;
             }
             form input[type="submit"] {
-                margin-top: 20px;
-                width: 100%;
+                margin-top: 10px;
+                width: 300px;
                 padding: 12px;
                 font-size: 1.1rem;
                 font-weight: 700;
@@ -372,36 +375,44 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-            <h3>Cập nhật sản phẩm:</h3>
 
-            <div class="container">
-                <form action="/update" method="post">
-                    <label for="id">Mã sản phẩm</label>
-                    <input type="text" id="id" name="id" value ="${o.id}" required>
 
-                    <label for="name">Tên sản phẩm</label>
-                    <input type="text" id="name" name="name" value ="${o.name}" required>
+        <div class="container" style="text-align: center">
+            <h2>Chi tiết đơn hàng</h2>
 
-                    <label for="category">Loại sản phẩm</label>
-                    <input type="text" id="category" name="category" value ="${o.category_id}" required>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn vị</th>
+                        <th>Giá</th>
+                        <th>Thành tiền</th>
+                    </tr>
+                    <c:set var="total" value="0" />
+                    <c:forEach var="od" items="${orderDetailsList}">
+                        <tr>
+                            <td><strong>${od.productName}</strong></td>
+                            <td>${od.quantity}</td>
+                            <td>${od.unit}</td>
+                            <td>${od.price}</td>
+                            <td>
+                                <c:set var="subtotal" value="${od.quantity * od.price}" />
+                                ${subtotal}
+                                <c:set var="total" value="${total + subtotal}" />
+                            </td>
+                        </tr>
 
-                    <label for="price">Giá nhập (VN?)</label>
-                    <input type="number" id="price" name="priceIn" value ="${o.price_in}" required>
-                    
-                    <label for="price">Giá bán (VN?)</label>
-                    <input type="number" id="price" name="priceOut" value ="${o.price_out}" required>
+                    </c:forEach>
+                    <tr>
+                        <td colspan="4" style="text-align:right;"><strong>Tổng cộng:</strong></td>
+                        <td><strong>${total}</strong></td>
+                    </tr>
 
-                    <label for="quantity">Số lượng tồn</label>
-                    <input type="number" id="quantity" name="quantity" value ="${o.quantity}" min ="0" required>
-
-                    <div class="form-actions">
-                        <input type="submit" value="Lưu">
-                        <a href="product_list.jsp"><button type="button">Hủy</button></a>
-                    </div>
-                </form>
-            </div>
+                </tbody>
             </table>
+
         </div>
+
     </body>
 </html>
