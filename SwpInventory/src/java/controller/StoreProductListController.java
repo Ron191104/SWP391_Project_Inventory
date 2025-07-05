@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CategoryDAO;
+import dao.StoreDAO;
 import dao.StoreProductDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Categories;
 import model.Category;
+import model.Store;
 import model.StoreProduct;
 
 /**
@@ -41,6 +43,7 @@ public class StoreProductListController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession();
+
         Integer storeId = (Integer) session.getAttribute("storeId");
 
         if (storeId == null) {
@@ -53,23 +56,49 @@ public class StoreProductListController extends HttpServlet {
             categoryId = Integer.parseInt(idRaw);
         }
 
+        int page = 1;
+        int itemPerPage = 8;
+        String pageRaw = request.getParameter("page");
+        if (pageRaw != null && !pageRaw.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageRaw);
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+        int totalPage;
         StoreProductDAO productDAO = new StoreProductDAO();
         List<StoreProduct> listProduct;
         CategoryDAO cdao = new CategoryDAO();
         List<Categories> listStoreCategory = cdao.getAllCategories();
+        int offset = (page - 1) * itemPerPage;
+
         if (categoryId != null) {
-            listProduct = productDAO.getStoreProductByCategory(storeId, categoryId);
+            listProduct = productDAO.getStoreProductByCategoryWithPaging(storeId, categoryId, offset, itemPerPage);
+            totalPage = productDAO.countStoreProductByCategory(storeId, categoryId);
         } else {
-            listProduct = productDAO.getAllStoreProduct(storeId);
+            listProduct = productDAO.getStoreProductByPage(storeId, offset, itemPerPage);
+            totalPage = productDAO.getTotalStoreProductCount(storeId);
         }
 
+        int totalPages = (int) Math.ceil(totalPage * 1.0 / itemPerPage);
+
+        StoreDAO dao = new StoreDAO();
+        List<Store> list = dao.getAllStore();
+
+        request.setAttribute("listStore", list);
         request.setAttribute("storeProduct", listProduct);
         request.setAttribute("tag", categoryId);
         request.setAttribute("listStoreCategory", listStoreCategory);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("store_product_list.jsp");
-        dispatcher.forward(request, response);
+        
+            request.getRequestDispatcher("store_product_list.jsp").forward(request, response); 
     }
+
+    
+
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
