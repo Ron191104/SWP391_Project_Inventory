@@ -199,11 +199,79 @@ public class OrderDAO {
     }
 
 //Lấy đơn hàng theo nhà cung cấp
-    public List<Order> getOrdersBySupplier(int supplierId) {
+    public List<Order> getOrdersBySupplierId(int supplierId) {
         List<Order> list = new ArrayList<>();
+        // DEBUG: In toàn bộ đơn hàng từ JDBC
+        try (Connection conn = DBConnect.getConnection(); Statement st = conn.createStatement(); ResultSet rs = st.executeQuery("SELECT * FROM orders")) {
+            System.out.println("=== TOÀN BỘ ĐƠN HÀNG TRONG DB KẾT NỐI QUA JDBC ===");
+            while (rs.next()) {
+                System.out.println("Order ID: " + rs.getInt("order_id") + ", Supplier ID: " + rs.getInt("supplier_id"));
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi đọc toàn bộ đơn hàng để debug.");
+            e.printStackTrace();
+        }
+
         String sql = "SELECT * FROM orders WHERE supplier_id = ?";
+        System.out.println("⚙️ SQL Query: " + sql + " | supplier_id = " + supplierId);
+
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, supplierId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderId(rs.getInt("order_id"));
+                o.setSupplierId(rs.getInt("supplier_id"));
+                o.setEmployeeId(rs.getInt("employee_id"));
+                o.setOrderDate(rs.getTimestamp("order_date").toLocalDateTime());
+                o.setStatus(rs.getInt("status"));
+                o.setNote(rs.getString("note"));
+                list.add(o);
+            }
+
+            System.out.println("📦 Số đơn hàng tìm thấy trong DAO: " + list.size());
+
+        } catch (Exception e) {
+            System.out.println("❌ Lỗi khi lấy đơn hàng theo supplier_id:");
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean updateOrderStatus(int orderId, int status) {
+        String sql = "UPDATE orders SET status = ? WHERE order_id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, status);
+            ps.setInt(2, orderId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int getOrderStatus(int orderId) {
+        String sql = "SELECT status FROM orders WHERE order_id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("status");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1; // hoặc giá trị mặc định khác
+    }
+// Lấy đơn hàng theo supplierId và trạng thái (status)
+
+    public List<Order> getOrdersBySupplierIdAndStatus(int supplierId, int status) {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE supplier_id = ? AND status = ? ORDER BY order_date DESC";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, supplierId);
+            ps.setInt(2, status);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Order o = new Order();
@@ -221,39 +289,46 @@ public class OrderDAO {
         return list;
     }
 
-    public boolean updateOrderStatus(int orderId, int status) {
-        String sql = "UPDATE orders SET status = ? WHERE order_id = ?";
-        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, status);
-            ps.setInt(2, orderId);
-            return ps.executeUpdate() > 0;
+    public void deleteOrder(int orderId) {
+        String deleteOrderDetailsSql = "DELETE FROM order_details WHERE order_id = ?";
+        String deleteOrderSql = "DELETE FROM orders WHERE order_id = ?";
+
+        Connection conn = null;
+        try {
+            conn = DBConnect.getConnection();
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement psDetails = conn.prepareStatement(deleteOrderDetailsSql); PreparedStatement psOrder = conn.prepareStatement(deleteOrderSql)) {
+
+                psDetails.setInt(1, orderId);
+                psDetails.executeUpdate();
+
+                psOrder.setInt(1, orderId);
+                psOrder.executeUpdate();
+
+                conn.commit();
+            }
         } catch (Exception e) {
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
             e.printStackTrace();
-            return false;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
-    
-    public void deleteOrder(int orderId) {
-    String deleteOrderDetailsSql = "DELETE FROM order_details WHERE order_id = ?";
-    String deleteOrderSql = "DELETE FROM orders WHERE order_id = ?";
-
-    try (Connection conn = DBConnect.getConnection();
-         PreparedStatement psDetails = conn.prepareStatement(deleteOrderDetailsSql);
-         PreparedStatement psOrder = conn.prepareStatement(deleteOrderSql)) {
-
-        conn.setAutoCommit(false);
-
-        psDetails.setInt(1, orderId);
-        psDetails.executeUpdate();
-
-        psOrder.setInt(1, orderId);
-        psOrder.executeUpdate();
-
-        conn.commit();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
-
 
 }
