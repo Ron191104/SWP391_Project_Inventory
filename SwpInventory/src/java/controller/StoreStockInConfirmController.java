@@ -5,6 +5,7 @@
 
 package controller;
 
+import dao.StoreStockInDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.StoreOrderDetails;
+import model.StoreStockIn;
 
 /**
  *
@@ -23,75 +25,79 @@ import model.StoreOrderDetails;
 @WebServlet(name="StoreStockInConfirmController", urlPatterns={"/store_stock_in_confirm"})
 public class StoreStockInConfirmController extends HttpServlet {
    
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet StoreStockInConfirmController</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet StoreStockInConfirmController at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        response.setContentType("text/html;charset=UTF-8"); 
     } 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+  
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
     } 
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-   HttpSession session = request.getSession();
+//   HttpSession session = request.getSession();
+//    Integer storeId = (Integer) session.getAttribute("storeId");
+//
+//    if (storeId == null) {
+//        request.getRequestDispatcher("store_stock_in_confirm.jsp").forward(request, response);
+//        return;
+//    }
+//
+//    String cartKey = "cart_" + storeId;
+//    List<StoreOrderDetails> cart = (List<StoreOrderDetails>) session.getAttribute(cartKey);
+//    String note = request.getParameter("note");
+//
+//    if (cart == null || cart.isEmpty()) {
+//        request.setAttribute("errorMessage", "Giỏ hàng null");
+//    } else {
+//        request.setAttribute("successMessage", "Tạo đơn nhập hàng thành công" + storeId);
+//        session.removeAttribute(cartKey);
+//    }
+//
+//    request.getRequestDispatcher("store_stock_in_confirm.jsp").forward(request, response);   
+    
+      HttpSession session = request.getSession();
     Integer storeId = (Integer) session.getAttribute("storeId");
 
-    if (storeId == null) {
-        request.getRequestDispatcher("store_stock_in_confirm.jsp").forward(request, response);
-        return;
-    }
-
+    // Lấy giỏ hàng riêng theo chi nhánh
     String cartKey = "cart_" + storeId;
     List<StoreOrderDetails> cart = (List<StoreOrderDetails>) session.getAttribute(cartKey);
     String note = request.getParameter("note");
 
-    if (cart == null || cart.isEmpty()) {
-        request.setAttribute("errorMessage", "Giỏ hàng null");
-    } else {
-        request.setAttribute("successMessage", "Tạo đơn nhập hàng thành công" + storeId);
-        session.removeAttribute(cartKey);
+    // Kiểm tra dữ liệu đầu vào
+    if (storeId == null || cart == null || cart.isEmpty()) {
+        request.setAttribute("errorMessage", "Thiếu thông tin, không thể tạo đơn.");
+        request.getRequestDispatcher("store_stock_in_confirm.jsp").forward(request, response);
+        return;
     }
 
-    request.getRequestDispatcher("store_stock_in_confirm.jsp").forward(request, response);    }
+    // Tạo đơn nhập chính
+    StoreStockInDAO dao = new StoreStockInDAO();
+    StoreStockIn stockIn = new StoreStockIn();
+    stockIn.setStoreId(storeId);
+    stockIn.setNote(note);
+    stockIn.setStatus(0); // Trạng thái mặc định: đang xử lý
 
+    // Lưu đơn nhập vào DB
+    int stockInId = dao.insertStockIn(stockIn); // DAO sẽ return id tự tăng
+
+    // Thêm chi tiết đơn nhập
+    for (StoreOrderDetails d : cart) {
+        dao.insertStockInDetail(stockInId, d);
+    }
+
+    // Xoá giỏ hàng
+    session.removeAttribute(cartKey);
+
+    // Thông báo thành công
+    request.setAttribute("successMessage", "Đã tạo đơn nhập #" + stockInId);
+    request.getRequestDispatcher("store_stock_in_confirm.jsp").forward(request, response);
+}
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
