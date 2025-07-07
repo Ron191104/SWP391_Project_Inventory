@@ -551,7 +551,7 @@
             <div style="margin-top: 20px; text-align: center;">
                 <c:forEach begin="1" end="${totalPages}" var="i">
                     <a href="store_product_list?page=${i}"
-                       style="padding: 6px 12px; margin: 7px;background-color: ${i == currentPage ? '#82CAFA' : '#eee'};
+                       style="display: inline-block; width: 20px; padding: 6px ; margin: 7px;background-color: ${i == currentPage ? '#82CAFA' : '#eee'};
                        color: ${i == currentPage ? 'white' : '#333'}; text-decoration: none; border-radius: 4px;">
                         ${i}
                     </a>

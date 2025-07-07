@@ -14,15 +14,17 @@ public class Store {
     private String storeName;
     private String address;
     private String phone;
+    private String email;
 
     public Store() {
     }
 
-    public Store(int storeId, String storeName, String address, String phone) {
+    public Store(int storeId, String storeName, String address, String phone, String email) {
         this.storeId = storeId;
         this.storeName = storeName;
         this.address = address;
         this.phone = phone;
+        this.email=email;
     }
 
     public int getStoreId() {
@@ -56,6 +58,15 @@ public class Store {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
 
     @Override
     public String toString() {

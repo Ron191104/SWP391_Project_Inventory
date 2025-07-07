@@ -232,9 +232,9 @@
                 font-weight: 700;
             }
             table th:first-child,
-table td:first-child {
-    width: 10px; 
-}
+            table td:first-child {
+                width: 10px;
+            }
 
             tbody tr:nth-child(even) {
                 background-color: #f9f9f9;
@@ -333,6 +333,31 @@ table td:first-child {
             }
 
 
+            .btn-view {
+                background-color: #82CAFA;
+                color: white;
+                border: none;
+                height: 23px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+
+.status-processing {
+    font-weight: bold;
+}
+
+.status-approved {
+    font-weight: bold;
+    color: green;
+}
+
+.status-rejected {
+    font-weight: bold;
+    color: red;
+}
+
+
         </style>
     </head>
     <body>
@@ -406,14 +431,13 @@ table td:first-child {
 
             <c:if test="${not empty stockInList}">
                 <table border="1" width="100%">
-                    <tr>
-                        <th>Mã đơn</th>
-                        <th>Ngày</th>
-                        <th>Giờ</th>
-                        <th>Trạng thái</th>
-
-                        <th>Ghi chú</th>
-                        <th>Hành động</th>
+                    <tr style="height: 35px">
+                        <th>MÃ ĐƠN</th>
+                        <th>NGÀY</th>
+                        <th>THỜI GIAN</th>
+                        <th>TRẠNG THÁI</th>
+                        <th>GHI CHÚ</th>
+                        <th>ACTION</th>
                     </tr>
 
                     <c:forEach items="${stockInList}" var="si">
@@ -422,16 +446,26 @@ table td:first-child {
                             <td><fmt:formatDate value="${si.importDate}" pattern="dd/MM/yyyy" /></td>
                             <td><fmt:formatDate value="${si.importDate}" pattern="HH:mm:ss" /></td>
                             <td>
-                               <c:choose>
-                                    <c:when test="${si.status == 0}">Đang xử lý</c:when>
-                                    <c:when test="${si.status == 1}">Đã duyệt</c:when>
-                                    <c:when test="${si.status == 2}">Từ chối</c:when>
-                                    <c:otherwise>Không rõ</c:otherwise>
+                                <c:choose>
+                                    <c:when test="${si.status == 0}">
+                                        <span class="status-processing">Đang xử lý</span>
+                                    </c:when>
+                                    <c:when test="${si.status == 1}">
+                                        <span class="status-approved">Đã duyệt</span>
+                                    </c:when>
+                                    <c:when test="${si.status == 2}">
+                                        <span class="status-rejected">Từ chối</span>
+                                    </c:when>
                                 </c:choose>
                             </td>
                             <td>${si.note}</td>
 
-                            <td><a href="stre_stock_in_detail?id=${si.id}">Xem chi tiết</a></td>
+                            <td>
+                                <form action="store_stock_in_detail" style="margin: 0;">
+                                    <input type="hidden" name="id" value="${si.id}">
+                                    <button type="submit" class="btn-view">Xem chi tiết</button>
+                                </form>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>

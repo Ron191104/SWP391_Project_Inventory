@@ -24,7 +24,6 @@ public class StoreStockInDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    // ✅ Lấy danh sách các đơn nhập theo storeId
     public List<StoreStockIn> getAllByStoreId(int storeId) {
         List<StoreStockIn> list = new ArrayList<>();
         String query = "SELECT * FROM store_stock_in WHERE store_id = ? ORDER BY import_date DESC";
