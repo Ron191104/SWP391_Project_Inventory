@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dao.ProductDAO;
@@ -23,19 +22,19 @@ import model.StoreOrderDetails;
  *
  * @author ADMIN
  */
-@WebServlet(name="StoreStockInController", urlPatterns={"/store_stock_in"})
+@WebServlet(name = "StoreStockInController", urlPatterns = {"/store_stock_in"})
 public class StoreStockInController extends HttpServlet {
-   
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-   
-    } 
+
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
- ProductDAO dao = new ProductDAO();
+            throws ServletException, IOException {
+        ProductDAO dao = new ProductDAO();
         request.setAttribute("listP", dao.getAllProduct());
         HttpSession session = request.getSession();
         Integer storeId = (Integer) session.getAttribute("storeId");
@@ -45,12 +44,13 @@ public class StoreStockInController extends HttpServlet {
             List<StoreOrderDetails> cart = (List<StoreOrderDetails>) session.getAttribute(cartKey);
             request.setAttribute("cart", cart);
         }
-        request.getRequestDispatcher("store_stock_in.jsp").forward(request, response);    } 
+        request.getRequestDispatcher("store_stock_in.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-         HttpSession session = request.getSession();
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
         Integer storeId = (Integer) session.getAttribute("storeId");
 
         if (storeId == null) {
@@ -58,12 +58,12 @@ public class StoreStockInController extends HttpServlet {
             request.getRequestDispatcher("store_stock_in.jsp").forward(request, response);
             return;
         }
-    String productIdStr = request.getParameter("productId");
-    int quantity = Integer.parseInt(request.getParameter("quantity"));
+        String productIdStr = request.getParameter("productId");
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-    ProductDAO dao = new ProductDAO();
-    Product p = dao.getProductByID(productIdStr); 
-int productId = Integer.parseInt(productIdStr);
+        ProductDAO dao = new ProductDAO();
+        Product p = dao.getProductByID(productIdStr);
+        int productId = Integer.parseInt(productIdStr);
 
         String cartKey = "cart_" + storeId;
         List<StoreOrderDetails> cart = (List<StoreOrderDetails>) session.getAttribute(cartKey);
@@ -89,16 +89,14 @@ int productId = Integer.parseInt(productIdStr);
         }
 
         session.setAttribute(cartKey, cart);
-
-        // Để hiển thị lại danh sách sản phẩm và giỏ hàng
         request.setAttribute("listP", dao.getAllProduct());
         request.setAttribute("cart", cart);
         request.getRequestDispatcher("store_stock_in.jsp").forward(request, response);
     }
 
-
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

@@ -1,23 +1,18 @@
-<%-- 
-    Document   : store_dashboard
-    Created on : Jun 17, 2025, 3:00:09 PM
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jul 8, 2025, 3:53:23 PM
     Author     : ADMIN
---%>
+*/
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ body {
 
-        <title>JSP Page</title>
-        <style>
-            body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
-                background-color: #f4f4f4;
+                background-color: white;
                 color: #333;
             }
             a {
@@ -205,60 +200,8 @@
             .user-menu nav.dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
-
-            table {
-                width: 50%;
-                border-collapse: collapse;
-                margin-top: 28px;
-                table-layout: fixed;
-
-            }
-
-            th, td {
-                border: 1px solid #ddd;
-                padding: 5px;
-                text-align: left;
-                width: 20px;
-                font-size: 0.85rem;
-                text-align: center;
-
-            }
-            th {
-                background-color: #82CAFA;
-                color: white;
-                font-weight: 700;
-            }
-            tbody tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-            tbody tr:hover {
-                background-color: #FDF9DA;
-            }
-
-
-            @media (max-width: 600px) {
-                .header {
-                    flex-wrap: wrap;
-                    gap: 10px;
-                    padding: 12px 12px;
-                }
-
-                .nav {
-                    margin-left: 0;
-                    flex-wrap: wrap;
-                    justify-content: center;
-                    gap: 6px;
-                }
-                .header-right {
-                    flex-basis: 100%;
-                    justify-content: center;
-                    gap: 12px;
-
-                }
-
-            }
-
-            .dropdown {
+            
+               .dropdown {
                 position: relative;
             }
             .dropdown input[type="checkbox"] {
@@ -272,6 +215,8 @@
                 color: white;
                 display: flex;
                 align-items: center;
+
+                font-weight: 600;
             }
             .dropdown-label i {
                 margin-right: 8px;
@@ -313,59 +258,3 @@
             .dropdown-menu a:hover {
                 background-color: #FDF9DA;
             }
-        </style>
-    </head>
-    <body>
-        <div class="header">
-            <div class="header-left">
-                <h1>Tên kho</h1>
-                <div class="nav">
-                    <a href="dashboard.html">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                    <div class="dropdown">
-                        <input type="checkbox" id="product-dropdown" />
-                        <label for="product-dropdown" class="dropdown-label">
-                            <i class="fas fa-box"></i> Sản phẩm
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
-
-                            <a href="addproduct"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
-
-                        </div>
-                    </div>
-                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
-                    <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
-                </div>
-            </div>
-            <div class="header-right">
-
-                <div class="notification-wrapper" tabindex="0" aria-label="Thông báo" role="button">
-                    <svg class="notification-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M12 22c1.1 0 1.99-.9 1.99-2H10c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z"/>
-                    </svg>
-                    <span class="notification-badge" aria-label="Số thông báo">3</span>
-                    <div class="notification-dropdown" tabindex="-1" aria-hidden="true" aria-label="Danh sách thông báo">
-                        <div>Bạn có đơn hàng mới cần xử lý.</div>
-                        <div>Sản phẩm SP002 sắp hết hàng.</div>
-                        <div>Báo cáo tháng 5 đã được cập nhật.</div>
-                    </div>
-                </div>
-                <div class="user-menu">
-                    <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
-                        <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
-                    </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown">
-                        <a href="myprofile.html">My Profile</a>
-                        <a href="change_password.html">Change Password</a>
-                        <a href="login.html">Log Out</a>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
