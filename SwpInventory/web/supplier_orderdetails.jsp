@@ -143,7 +143,7 @@
     <body>
         <div class="header">
             <div class="header-left">
-                <h1>Dashboard Nhà Cung Cấp</h1>
+                <h1> Nhà Cung Cấp</h1>
                 <div class="nav">
                     <a href="supplier_order">Đơn hàng</a>
                     <a href="supplier-dashboard?view=approved">Đã cung cấp</a>
