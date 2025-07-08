@@ -44,6 +44,10 @@ public class SupplierOrderServlet extends HttpServlet {
             orderList = orderDAO.getOrdersBySupplierId(supplierId);
         }
 
+        // === Dòng này là để lấy danh sách đơn hàng mới cho thông báo ===
+        List<Order> newOrders = orderDAO.getOrdersBySupplierIdAndStatus(supplierId, 0);
+        request.setAttribute("newOrders", newOrders);
+
         request.setAttribute("orderList", orderList);
         request.getRequestDispatcher("supplier_order.jsp").forward(request, response);
     }
