@@ -22,7 +22,7 @@ import model.User;
  *
  * @author LENOVO
  */
-@WebServlet("/supplier-dashboard")
+@WebServlet("/supplier_dashboard")
 public class SupplierDashboardServlet extends HttpServlet {
 
     private OrderDAO orderDAO = new OrderDAO();
@@ -35,12 +35,20 @@ public class SupplierDashboardServlet extends HttpServlet {
         Supplier supplier = (Supplier) session.getAttribute("supplier");
 
         if (supplier == null) {
-            response.sendRedirect("supplier_login.jsp");
+            response.sendRedirect("supplier_login");
             return;
         }
-
+        
+        int suppplierID = supplier.getSupplier_id();
+        
+        //Lấy tất cả các đơn hàng của supplier
         List<Order> orders = orderDAO.getOrdersBySupplierId(supplier.getSupplier_id());
         request.setAttribute("orders", orders);
-        request.getRequestDispatcher("supplier_dashboard.jsp").forward(request, response);
+        
+        //Lấy danh sách đơn hàng mới cho thông báo
+        List<Order> newOrders = orderDAO.getOrdersBySupplierIdAndStatus(suppplierID, 0);
+        request.setAttribute("newOrders", newOrders);
+        
+        request.getRequestDispatcher("supplier_dashboard").forward(request, response);
     }
 }

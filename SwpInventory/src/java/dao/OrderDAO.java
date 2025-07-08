@@ -331,4 +331,27 @@ public class OrderDAO {
         }
     }
 
+    //hiển thị thông báo có đơn hàng mới cho nhà cung cấp
+    public List<Order> getNewOrdersBySupplierId(int supplierId) {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE supplier_id = ? AND status = 0";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, supplierId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderId(rs.getInt("order_id"));
+                o.setSupplierId(rs.getInt("supplier_id"));
+                o.setEmployeeId(rs.getInt("employee_id"));
+                o.setOrderDate(rs.getTimestamp("order_date").toLocalDateTime());
+                o.setStatus(rs.getInt("status"));
+                o.setNote(rs.getString("note"));
+                list.add(o);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

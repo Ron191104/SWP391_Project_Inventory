@@ -6,7 +6,7 @@
 <html lang="vi">
     <head>
         <meta charset="UTF-8" />
-        <title>Dashboard Nhà Cung Cấp</title>
+        <title>Nhà Cung Cấp</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
@@ -29,6 +29,10 @@
                 font-weight: 700;
                 margin: 0;
             }
+            .nav {
+                display: flex;
+                align-items: center;
+            }
             .nav a {
                 color: white;
                 padding: 8px 16px;
@@ -41,6 +45,73 @@
             }
             .nav a:hover {
                 background-color: #787ff6;
+            }
+            /* Notification styles */
+            .notification-dropdown-wrapper {
+                position: relative;
+                display: inline-block;
+                margin-left: 16px;
+            }
+            .notification-bell {
+                cursor: pointer;
+                position: relative;
+                color: white;
+                font-size: 1.3rem;
+                border: none;
+                background: none;
+                outline: none;
+            }
+            .notification-badge {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: red;
+                color: white;
+                border-radius: 50%;
+                font-size: 0.8em;
+                padding: 2px 7px;
+                font-weight: bold;
+            }
+            .notification-dropdown-box {
+                display: none;
+                position: absolute;
+                top: 30px;
+                right: 0;
+                background: #fff;
+                color: #333;
+                box-shadow: 0 0 8px #aaa;
+                border-radius: 6px;
+                min-width: 250px;
+                max-width: 350px;
+                z-index: 999;
+                max-height: 320px;
+                overflow-y: auto;
+                flex-direction: column;
+            }
+            .notification-dropdown-box .notification-title {
+                padding: 8px 12px;
+                border-bottom: 1px solid #eee;
+                font-weight: 600;
+                background: #f4f4f4;
+            }
+            .notification-dropdown-box .notify-item {
+                display: block;
+                padding: 10px 12px;
+                text-decoration: none;
+                color: #333;
+                border-bottom: 1px solid #f4f4f4;
+                font-size: 0.95em;
+            }
+            .notification-dropdown-box .notify-item:last-child {
+                border-bottom: none;
+            }
+            .notification-dropdown-box .notify-item:hover {
+                background: #f2f8ff;
+            }
+            .notification-dropdown-box .no-notify {
+                padding: 14px;
+                color: #888;
+                text-align: center;
             }
             .container {
                 max-width: 1000px;
@@ -98,10 +169,35 @@
     </head>
     <body>
         <div class="header">
-            <h1>Dashboard Nhà Cung Cấp</h1>
+            <h1>Nhà Cung Cấp</h1>
             <div class="nav">
                 <a href="supplier_order"><i class="fas fa-box"></i> Đơn hàng</a>
                 <a href="supplier-dashboard?view=approved"><i class="fas fa-check"></i> Đã cung cấp</a>
+                <!-- Notification bell dropdown -->
+                <div class="notification-dropdown-wrapper">
+                    <button class="notification-bell" id="notifyBell" title="Thông báo đơn hàng mới">
+                        <i class="fas fa-bell"></i>
+                        <c:if test="${not empty newOrders}">
+                            <span class="notification-badge">${fn:length(newOrders)}</span>
+                        </c:if>
+                    </button>
+                    <div class="notification-dropdown-box" id="notifyBox">
+                        <div class="notification-title">Thông báo đơn hàng mới</div>
+                        <c:choose>
+                            <c:when test="${not empty newOrders}">
+                                <c:forEach var="order" items="${newOrders}">
+                                    <a class="notify-item" href="supplier_orderdetails?orderId=${order.orderId}">
+                                        Đơn hàng mới #${order.orderId} từ NV ${order.employeeId}
+                                        <div style="font-size:0.9em;color:#888;">${order.orderDate}</div>
+                                    </a>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="no-notify">Không có đơn hàng mới</div>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
                 <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
             </div>
         </div>
@@ -161,5 +257,24 @@
                 </tbody>
             </table>
         </div>
+        <script>
+            // Toggle notification dropdown on bell click
+            const bell = document.getElementById('notifyBell');
+            const box = document.getElementById('notifyBox');
+            if (bell && box) {
+                bell.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+                });
+                // Click outside closes dropdown
+                window.addEventListener('click', function () {
+                    box.style.display = 'none';
+                });
+                // Prevent closing when clicking inside box
+                box.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                });
+            }
+        </script>
     </body>
 </html>
