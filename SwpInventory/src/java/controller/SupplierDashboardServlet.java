@@ -49,6 +49,6 @@ public class SupplierDashboardServlet extends HttpServlet {
         List<Order> newOrders = orderDAO.getOrdersBySupplierIdAndStatus(suppplierID, 0);
         request.setAttribute("newOrders", newOrders);
         
-        request.getRequestDispatcher("supplier_dashboard").forward(request, response);
+        request.getRequestDispatcher("supplier_dashboard.jsp").forward(request, response);
     }
 }
