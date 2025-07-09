@@ -39,7 +39,7 @@
 <body>
 <div class="login-box">
     <h2>Đăng nhập Nhà Cung Cấp</h2>
-    <form method="post" action="supplier-login">
+    <form method="post" action="${pageContext.request.contextPath}/supplier_login">
         <label for="supplierId">Chọn nhà cung cấp:</label>
         <select name="supplierId" required>
             <c:forEach var="s" items="${supplierList}">
