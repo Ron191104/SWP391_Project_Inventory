@@ -402,6 +402,9 @@
 
                         </div>
                     </div>
+                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
+                    <i class="fas fa-warehouse"></i> Kho Hàng
+                </a>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
                     <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>

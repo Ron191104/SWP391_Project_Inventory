@@ -197,7 +197,7 @@
                         <a href="add_product.html"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
                     </div>
                 </div>
-                <a href="${pageContext.request.contextPath}/inventory_dashboard.jsp">
+                <a href="${pageContext.request.contextPath}/inventory_dashboard">
                     <i class="fas fa-warehouse"></i> Kho Hàng
                 </a>
                 <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
