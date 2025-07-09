@@ -76,7 +76,7 @@
                 <i class="fas fa-plus-circle card-icon"></i>
                 <h3>Tạo đơn đặt hàng</h3>
                 <p>Tạo một đơn đặt hàng mới để gửi đến nhà cung cấp.</p>
-                <a href="#">Tạo đơn hàng</a>
+                <a href="create_order">Tạo đơn hàng</a>
             </div>
             <div class="dashboard-card">
                  <i class="fas fa-list-alt card-icon"></i>
@@ -91,7 +91,7 @@
             <c:choose>
                 <c:when test="${not empty inventoryList}">
                     <table>
-                        <thead><tr><th>ID Sản phẩm</th><th>Tên sản phẩm</th><th>Danh mục</th><th>Số lượng trong kho</th><th>Ngày cập nhật</th></tr></thead>
+                        <thead><tr><th>ID Sản phẩm</th><th>Tên sản phẩm</th><th>Danh mục</th><th>Số lượng trong kho</th></tr></thead>
                         <tbody>
                             <c:forEach var="item" items="${inventoryList}">
                                 <tr>
@@ -99,9 +99,6 @@
                                     <td>${item.productName}</td>
                                     <td>${item.categoryName}</td>
                                     <td>${item.inventoryQuantity}</td>
-                                    <td>
-                                        <fmt:formatDate value="${item.updatedAt}" pattern="dd/MM/yyyy HH:mm:ss" />
-                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>

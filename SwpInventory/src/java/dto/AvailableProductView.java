@@ -1,14 +1,11 @@
 package dto;
 
-import java.util.Date;
-
 public class AvailableProductView {
     private int productId;
     private String productName;
     private int inventoryQuantity;
     private String categoryName;
     private String supplierName;
-    private Date updatedAt;
 
     public AvailableProductView() {}
 
@@ -30,6 +27,4 @@ public class AvailableProductView {
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
     public String getSupplierName() { return supplierName; }
     public void setSupplierName(String supplierName) { this.supplierName = supplierName; }
-    public Date getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Date updatedAt) { this.updatedAt = updatedAt; }
 }

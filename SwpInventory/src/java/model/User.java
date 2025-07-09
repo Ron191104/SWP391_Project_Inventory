@@ -24,6 +24,18 @@ public class User {
         this.image = image;
         this.isApproved = isApproved;
     }
+ public User(String username, String password, String name, String email, String phone, String address, int role, String image) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+        this.image = image;
+    }
+
+
 
     // Default constructor (nên có nếu dùng Bean hoặc ResultSet mapping)
     public User() {}

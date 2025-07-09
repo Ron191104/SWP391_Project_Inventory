@@ -17,6 +17,10 @@ public class Categories {
         this.name = name;
     }
 
+    public Categories() {
+    }
+    
+
     public int getId() {
         return id;
     }
@@ -32,6 +36,8 @@ public class Categories {
     public void setName(String name) {
         this.name = name;
     }
+
+
 
     @Override
     public String toString() {

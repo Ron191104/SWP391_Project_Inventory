@@ -1,6 +1,6 @@
 package controller;
 
-import dal.UserDAO;
+import dao.UserDAO;
 import model.User;
 
 import jakarta.servlet.*;
@@ -23,7 +23,7 @@ public class AdminLoginServlet extends HttpServlet {
         // Kiểm tra: tài khoản tồn tại, đúng mật khẩu, là admin (role=4), đã duyệt
         if (user == null || !user.getPassword().equals(password) || user.getRole() != 4 || user.getIsApproved() != 1) {
             request.setAttribute("error", "Sai thông tin đăng nhập hoặc bạn không có quyền admin!");
-            request.getRequestDispatcher("admin_login.jsp").forward(request, response);
+            request.getRequestDispatcher("dashboard_admin.jsp").forward(request, response);
             return;
         }
 
@@ -33,13 +33,13 @@ public class AdminLoginServlet extends HttpServlet {
         session.setAttribute("userRole", user.getRole());
 
         // Chuyển tới dashboard admin
-        response.sendRedirect("admin_dashboard.jsp");
+        response.sendRedirect("dashboard_admin.jsp");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         // Hiển thị trang đăng nhập admin
-        request.getRequestDispatcher("admin_login.jsp").forward(request, response);
+        request.getRequestDispatcher("dashboard_admin.jsp").forward(request, response);
     }
 }

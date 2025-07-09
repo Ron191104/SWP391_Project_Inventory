@@ -6,7 +6,7 @@ import dao.ProductDAO;
 import dao.InventoryDAO; // Using the separated DAO for inventory-related data
 import dao.StockInDAO;
 import model.Product;
-import model.Supplier;
+import model.SupplierAdmin;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -44,7 +44,7 @@ public class StockInController extends HttpServlet {
             // Fetch all products (assuming you want to be able to stock-in any product)
             List<Product> productList = productDAO.getAllProduct();
             // Fetch all suppliers for the dropdown menu
-            List<Supplier> supplierList = inventoryDAO.getAllSuppliers();
+            List<SupplierAdmin> supplierList = inventoryDAO.getAllSuppliers();
             
             // Set the lists as request attributes so the JSP can access them
             request.setAttribute("productList", productList);

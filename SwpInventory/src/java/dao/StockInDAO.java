@@ -22,7 +22,7 @@ public class StockInDAO {
                                     "USING (VALUES (?)) AS source (product_id) " +
                                     "ON (target.product_id = source.product_id) " +
                                     "WHEN MATCHED THEN " +
-                                    "    UPDATE SET quantity = target.quantity + ?, updated_at = GETDATE() " +
+                                    "    UPDATE SET quantity = target.quantity + ? " +
                                     "WHEN NOT MATCHED THEN " +
                                     "    INSERT (product_id, quantity) VALUES (?, ?);";
         String syncProductTableSQL = "UPDATE p SET p.quantity = inv.quantity FROM products p JOIN inventory inv ON p.product_id = inv.product_id WHERE p.product_id = ?;";

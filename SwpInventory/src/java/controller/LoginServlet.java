@@ -1,51 +1,75 @@
 package controller;
 
-import dal.UserDAO;
+import dao.UserDAO;
 import model.User;
+import dao.SystemLogDAO;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import jakarta.servlet.annotation.WebServlet;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
+        String login = request.getParameter("login"); // lấy email hoặc username
         String password = request.getParameter("password");
 
         UserDAO dao = new UserDAO();
-        User user = dao.getUserByEmailAndPassword(email, password);
+        User user;
 
+        // Nếu login chứa '@' thì đăng nhập bằng email, ngược lại bằng username
+        if (login != null && login.contains("@")) {
+            user = dao.getUserByEmailAndPassword(login, password);
+        } else {
+            user = dao.getUserByUsernameAndPassword(login, password);
+        }
         if (user == null) {
-            // Không tìm thấy user hoặc sai mật khẩu
-            request.setAttribute("errorMessage", "Email hoặc mật khẩu không đúng!");
-            request.getRequestDispatcher("signin.jsp").forward(request, response);
+            // Sai tài khoản hoặc mật khẩu
+            request.setAttribute("errorMessage", "Sai tài khoản hoặc mật khẩu!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
 
-        if (user.getIsApproved() != 1) {
-            // Tài khoản chưa được duyệt
-            request.setAttribute("errorMessage", "Tài khoản của bạn chưa được admin duyệt!");
-            request.getRequestDispatcher("signin.jsp").forward(request, response);
+        // CHỈ kiểm tra duyệt với user KHÔNG PHẢI admin
+        if (user.getRole() != 4  && user.getIsApproved() == 0) {
+            request.setAttribute("errorMessage", "Tài khoản của bạn chưa được duyệt. Vui lòng liên hệ quản trị viên.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
 
-        // Đăng nhập thành công (cả admin lẫn user thường)
+        // Đã được duyệt, cho đăng nhập như bình thường
         HttpSession session = request.getSession();
-        session.setAttribute("userName", user.getUsername()); // dùng username để nhất quán
+        session.setAttribute("userName", user.getName());
         session.setAttribute("userRole", user.getRole());
         session.setAttribute("userImage", user.getImage());
         session.setAttribute("userEmail", user.getEmail());
-        response.sendRedirect("dashboard.jsp"); // đổi thành dashboard/home tùy bạn
-    }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // Hiển thị trang đăng nhập khi truy cập GET
-        request.getRequestDispatcher("signin.jsp").forward(request, response);
+        // Ghi LOG đăng nhập thành công
+        SystemLogDAO logDao = new SystemLogDAO();
+        logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");
+
+        // Điều hướng theo role (int)
+        int role = user.getRole(); // role là int
+        switch (role) {
+            case 1:
+                response.sendRedirect("inventory_dashboard.jsp");
+                break;
+            case 2:
+                response.sendRedirect("store_dashboard.jsp");
+                break;
+            case 3:
+                response.sendRedirect("supplier_dashboard.jsp");
+                break;
+            case 4:
+                response.sendRedirect("admin_dashboard.jsp");
+                break;
+            default:
+                response.sendRedirect("general_dashboard.jsp");
+                break;
+        }
     }
 }
