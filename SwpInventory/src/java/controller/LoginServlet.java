@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("store_dashboard.jsp");
                 break;
             case 3:
-                response.sendRedirect("supplier_dashboard.jsp");
+                response.sendRedirect("supplier_login");
                 break;
             case 4:
                 response.sendRedirect("admin_dashboard.jsp");
