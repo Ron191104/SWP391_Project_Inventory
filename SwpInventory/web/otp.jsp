@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -13,7 +14,7 @@
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
-                background-color: #f4f4f4;
+                background-color: #eaf6ff;
                 color: #333;
             }
             /* Container */
@@ -71,15 +72,12 @@
     </head>
     <body>
         <div class="container">
-            <h2 class="breadcrumb-title">Forgot Password?</h2>
-            <p>Change your password in three easy steps. This will help you to secure your password!</p>
-            <p>1. Enter your email address below</p>
-            <p>2. Our system will send you an OTP to your email</p>
-            <p>3. Enter the OTP code</p>
+            <h2 class="breadcrumb-title">Quên mật khẩu</h2>
+            <p>Nhập mã OTP được gửi đến email của bạn</p>
             <form action="OtpController" method="post">
                 <div>
-                    <label>Enter OTP code sent to your email</label>
-                    <input type="text" id ="inputOtp" name="inputOtp" required>
+                    <label>OTP:</label>
+                    <input type="text" id ="inputOtp" name="inputOtp" placeholder="Nhập mã OTP" maxlength="100" required>
                 </div>
                 <!--error if encountered-->
                 <%
@@ -92,7 +90,7 @@
 
 
                 <div>
-                    <input type="submit" value="Get new password">
+                    <input type="submit" value="Đổi mật khẩu">
                 </div>
             </form>
         </div>

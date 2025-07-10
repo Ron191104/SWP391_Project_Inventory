@@ -468,6 +468,7 @@
                             </td>
                             <td>
                                 <form action="remove_from_cart" method="post" style="margin:0;">
+                                    <input type="hidden" name="supplierId" value="${param.supplierId}" />
                                     <input type="hidden" name="productId" value="${od.productId}" />
                                     <input type="submit" value="Xóa" style="all: unset; cursor: pointer; color: red; text-decoration: underline;" />
                                 </form>

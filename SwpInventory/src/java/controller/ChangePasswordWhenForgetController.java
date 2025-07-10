@@ -72,25 +72,39 @@ public class ChangePasswordWhenForgetController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        //get session
-        HttpSession session = request.getSession();
-        //get email
-        String email = (String) session.getAttribute("email");
-        //get input password
-        String password = request.getParameter("password");
-        UserDAO userDao = new UserDAO();
-        try {
-            //change password in db 
-            userDao.changePasswordWhenForget(email, password);
-            session.invalidate();
-            //redirect to login
-            response.sendRedirect("login.jsp");
-        } catch (Exception ex) {
-            //exception
-            Logger.getLogger(ChangePasswordWhenForgetController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        throws ServletException, IOException {
+    HttpSession session = request.getSession();
+    String email = (String) session.getAttribute("email");
+    String password = request.getParameter("newPassword"); 
+    String confirmPassword = request.getParameter("confirmPassword");
+
+    // validate độ dài và ký tự
+    if (password == null || password.length() < 6 || 
+        !password.matches(".*[a-zA-Z].*") || !password.matches(".*\\d.*")) {
+        request.setAttribute("error", "Mật khẩu phải có ít nhất 6 ký tự, bao gồm cả chữ và số");
+        doGet(request, response);
+        return;
     }
+
+    // kiểm tra xác nhận mật khẩu
+    if (!password.equals(confirmPassword)) {
+        request.setAttribute("error", "Mật khẩu xác nhận không khớp");
+        doGet(request, response);
+        return;
+    }
+    
+
+    UserDAO userDao = new UserDAO();
+    try {
+        userDao.changePasswordWhenForget(email, password);
+        session.invalidate();
+        response.sendRedirect("login.jsp");
+    } catch (Exception ex) {
+        Logger.getLogger(ChangePasswordWhenForgetController.class.getName()).log(Level.SEVERE, null, ex);
+        request.setAttribute("error", "Có lỗi xảy ra, vui lòng thử lại");
+        request.getRequestDispatcher("forgetpassword.jsp").forward(request, response);
+    }
+}
 
     /**
      * Returns a short description of the servlet.

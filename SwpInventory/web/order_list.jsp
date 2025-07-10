@@ -416,7 +416,7 @@
                                     <span style="color: red;">Đã từ chối</span>
                                 </c:when>
                                 <c:when test="${od.status == 3}">
-                                    <span style="color: green;">Đã hoàn thành</span>
+                                    <span style="color: green;">Đã giao hàng</span>
                                 </c:when>
                                 <c:otherwise>
                                     <span style="color: black;">Không rõ</span>
