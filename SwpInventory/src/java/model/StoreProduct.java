@@ -16,6 +16,8 @@ public class StoreProduct {
     private Product product;
     private double priceOut;
     private int quantity;
+    private String baseUnitName;
+    private double priceIn;
 
     public StoreProduct() {
     }
@@ -27,6 +29,16 @@ public class StoreProduct {
         this.product = product;
         this.priceOut = priceOut;
         this.quantity = quantity;
+    }
+
+    public StoreProduct(int storeProductId, int storeId, int storeCategoryId, Product product, double priceOut, int quantity, String baseUnitName) {
+        this.storeProductId = storeProductId;
+        this.storeId = storeId;
+        this.storeCategoryId = storeCategoryId;
+        this.product = product;
+        this.priceOut = priceOut;
+        this.quantity = quantity;
+        this.baseUnitName = baseUnitName;
     }
 
     public int getStoreProductId() {
@@ -75,6 +87,22 @@ public class StoreProduct {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getBaseUnitName() {
+        return baseUnitName;
+    }
+
+    public void setBaseUnitName(String baseUnitName) {
+        this.baseUnitName = baseUnitName;
+    }
+
+    public double getPriceIn() {
+        return priceIn;
+    }
+
+    public void setPriceIn(double priceIn) {
+        this.priceIn = priceIn;
     }
 
     @Override
