@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -13,7 +14,7 @@
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 0;
-                background-color: #f4f4f4;
+                background-color: #eaf6ff;
                 color: #333;
             }
             /* Container */
@@ -71,17 +72,13 @@
     </head>
     <body>
         <div class="container">
-            <h2 class="breadcrumb-title">Forgot Password?</h2>
-            <p>Change your password in three easy steps. This will help you to secure your password!</p>
-            <p>1. Enter your email address below</p>
-            <p>2. Our system will send you an OTP to your email</p>
-            <p>3. Enter the OTP code</p>
+            <h2 class="breadcrumb-title">Quên mật khẩu</h2>
+            <p>Vui lòng nhập mật khẩu mới!</p>
             <form action="changepasswordwhenforget" method="post">
-                <div class="form-group">
-                    <label>Enter new password</label>
-                    <input type="text" name="password" required="">
-                </div>
-                <!--error if encountered-->
+                <label>Mật khẩu:</label>
+                <input type="password" name="newPassword" placeholder="Nhập mật khẩu mới" maxlength="100" required />
+                <label>Xác nhận mật khẩu:</label>
+                <input type="password" name="confirmPassword" placeholder="Nhập lại mật khẩu mới" maxlength="100" required />
                 <%
                     String error = (String) request.getAttribute("error");
                     if (error != null) {
@@ -92,8 +89,9 @@
 
 
                 <div>
-                    <input type="submit" value="Get new password">
+                    <input type="submit" value="Đổi mật khẩu">
                 </div>
+            </form>
         </div>
     </body>
 </html>

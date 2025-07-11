@@ -75,6 +75,7 @@ public class RemoveFromCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String supplierId = request.getParameter("supplierId");
         String pid = request.getParameter("productId");
         HttpSession session = request.getSession();
         List<OrderDetails> cart = (List<OrderDetails>) session.getAttribute("cart");
@@ -85,7 +86,7 @@ public class RemoveFromCartServlet extends HttpServlet {
             session.setAttribute("cart", cart);
         }
 
-        response.sendRedirect("create_order");
+        response.sendRedirect("create_order?supplierId=" + supplierId);
     }
 
     /**
