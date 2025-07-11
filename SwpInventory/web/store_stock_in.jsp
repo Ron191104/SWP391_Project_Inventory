@@ -1,6 +1,7 @@
 
 <%@ page import="java.util.*, model.StoreOrderDetails" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
     List<StoreOrderDetails> cart = (List<StoreOrderDetails>) session.getAttribute("cart");
@@ -15,7 +16,7 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-          table {
+            table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-top: 28px;
@@ -41,7 +42,7 @@
                 width: 10px;
             }
 
-           
+
             tbody tr:hover {
                 background-color: #FDF9DA;
             }
@@ -68,8 +69,8 @@
                 border-radius: 6px;
                 outline: none;
             }
-            
-          
+
+
             select {
                 width: 270px;
                 padding: 8px 12px;
@@ -108,20 +109,35 @@
 
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
-                    <a href="store_product_list"><i class="fas fa-box"></i>Sản phẩm</a>
-
-                    <div class="dropdown">
+                     <div class="dropdown">
                         <input type="checkbox" id="store-dropdown" />
                         <label for="store-dropdown" class="dropdown-label">
+                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
+                            <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <input type="checkbox" id="stock-dropdown" />
+                        <label for="stock-dropdown" class="dropdown-label">
                             <i class="fas fa-truck-loading"></i> <span style="font-weight:600">Nhập hàng</span>
                         </label>
                         <div class="dropdown-menu">
                             <a href="store_stock_in"><i class="fas fa-plus-circle"></i>Tạo đơn</a>
-                            <a href="store_stock_in_list"><i class="fas fa-file-alt"></i> Danh sách đơn</a>
+                            <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
-                    </div>                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
-
-                    <a href="choose_store"><i class="fas fa-store"></i>Chi nhánh</a>
+                    </div>           
+                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    <c:if test="${not empty sessionScope.storeId}">
+                        <c:forEach var="store" items="${listStore}">
+                            <c:if test="${store.storeId == sessionScope.storeId}">
+                                <a href="choose_store"><i class="fas fa-store"></i>${store.storeName}</a>
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
                 </div>
             </div>
             <div class="header-right">
@@ -158,10 +174,6 @@
 
             <div style="width: 100%;">
                 <h2>Nhập hàng từ kho</h2>
-
-                <c:if test="${not empty sessionScope.storeId}">
-                    <p><b>Chi nhánh hiện tại:</b> ${sessionScope.storeId}</p>
-                </c:if>
                 <div style="width: 30%; display: inline-block; vertical-align: top; padding-left: 60px;">
                     <h3>Chọn sản phẩm</h3>
                     <form action="store_stock_in" method="post">
@@ -202,11 +214,12 @@
                                                 </c:if>
                                             </c:forEach>
                                         </td>
-                                        <td>${od.price}</td>
+                                        <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+
                                         <td>${od.quantity}</td>
                                         <td>
                                             <c:set var="subtotal" value="${od.quantity * od.price}" />
-                                            ${subtotal}
+                                            <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>
                                             <c:set var="total" value="${total + subtotal}" />
                                         </td>
                                         <td>
@@ -227,7 +240,9 @@
 
                         <tr>
                             <td colspan="4"><b>Tổng:</b></td>
-                            <td><b>${total}</b></td>
+                            <td><b><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></b></td>
+                                                                        
+
                         </tr>
                     </table>
 

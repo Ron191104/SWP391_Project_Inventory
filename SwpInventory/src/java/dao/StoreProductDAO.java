@@ -327,62 +327,62 @@ public class StoreProductDAO {
         }
     }
 
-    public List<StoreProduct> getStoreProductByPage(int storeId, int offset, int limit) {
-        List<StoreProduct> list = new ArrayList<>();
-        String query = "SELECT "
-                + "sp.store_product_id, "
-                + "sp.store_id, "
-                + "p.product_id, "
-                + "p.image, "
-                + "p.product_name, "
-                + "p.barcode, "
-                + "p.category_id, "
-                + "p.unit, "
-                + "p.price, "
-                + "sp.price_out, "
-                + "sp.quantity, "
-                + "p.manufacture_date, "
-                + "p.expired_date "
-                + "FROM store_products sp "
-                + "JOIN products p ON sp.product_id = p.product_id "
-                + "WHERE sp.store_id = ? "
-                + "ORDER BY sp.store_product_id "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-
-        try {
-            con = DBConnect.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, storeId);
-            ps.setInt(2, offset);
-            ps.setInt(3, limit);
-
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getInt("product_id"));
-                p.setImage(rs.getString("image"));
-                p.setName(rs.getString("product_name"));
-                p.setBarcode(rs.getString("barcode"));
-                p.setCategory_id(rs.getInt("category_id"));
-                p.setUnit(rs.getString("unit"));
-                p.setPrice(rs.getDouble("price"));
-                p.setManufacture_date(rs.getDate("manufacture_date"));
-                p.setExpired_date(rs.getDate("expired_date"));
-
-                StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt("store_product_id"));
-                sp.setStoreId(rs.getInt("store_id"));
-                sp.setProduct(p);
-                sp.setPriceOut(rs.getDouble("price_out"));
-                sp.setQuantity(rs.getInt("quantity"));
-
-                list.add(sp);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+//    public List<StoreProduct> getStoreProductByPage(int storeId, int offset, int limit) {
+//        List<StoreProduct> list = new ArrayList<>();
+//        String query = "SELECT "
+//                + "sp.store_product_id, "
+//                + "sp.store_id, "
+//                + "p.product_id, "
+//                + "p.image, "
+//                + "p.product_name, "
+//                + "p.barcode, "
+//                + "p.category_id, "
+//                + "p.unit, "
+//                + "p.price, "
+//                + "sp.price_out, "
+//                + "sp.quantity, "
+//                + "p.manufacture_date, "
+//                + "p.expired_date "
+//                + "FROM store_products sp "
+//                + "JOIN products p ON sp.product_id = p.product_id "
+//                + "WHERE sp.store_id = ? "
+//                + "ORDER BY sp.store_product_id "
+//                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+//
+//        try {
+//            con = DBConnect.getConnection();
+//            ps = con.prepareStatement(query);
+//            ps.setInt(1, storeId);
+//            ps.setInt(2, offset);
+//            ps.setInt(3, limit);
+//
+//            rs = ps.executeQuery();
+//            while (rs.next()) {
+//                Product p = new Product();
+//                p.setId(rs.getInt("product_id"));
+//                p.setImage(rs.getString("image"));
+//                p.setName(rs.getString("product_name"));
+//                p.setBarcode(rs.getString("barcode"));
+//                p.setCategory_id(rs.getInt("category_id"));
+//                p.setUnit(rs.getString("unit"));
+//                p.setPrice(rs.getDouble("price"));
+//                p.setManufacture_date(rs.getDate("manufacture_date"));
+//                p.setExpired_date(rs.getDate("expired_date"));
+//
+//                StoreProduct sp = new StoreProduct();
+//                sp.setStoreProductId(rs.getInt("store_product_id"));
+//                sp.setStoreId(rs.getInt("store_id"));
+//                sp.setProduct(p);
+//                sp.setPriceOut(rs.getDouble("price_out"));
+//                sp.setQuantity(rs.getInt("quantity"));
+//
+//                list.add(sp);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
 
     public int getTotalStoreProductCount(int storeId) {
         String query = "SELECT COUNT(*) FROM store_products WHERE store_id = ?";
@@ -421,61 +421,165 @@ public class StoreProductDAO {
         return 0;
     }
 
-    public List<StoreProduct> getStoreProductByCategoryWithPaging(int storeId, int categoryId, int offset, int limit) {
-        List<StoreProduct> list = new ArrayList<>();
-        String query = "SELECT sp.store_product_id, sp.store_id, p.product_id, p.image, p.product_name, p.barcode, "
-                + "p.category_id, p.unit, p.price, sp.price_out, sp.quantity, p.manufacture_date, p.expired_date "
-                + "FROM store_products sp "
-                + "JOIN products p ON sp.product_id = p.product_id "
-                + "WHERE sp.store_id = ? AND p.category_id = ? "
-                + "ORDER BY sp.store_product_id "
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+//    public List<StoreProduct> getStoreProductByCategoryWithPaging(int storeId, int categoryId, int offset, int limit) {
+//        List<StoreProduct> list = new ArrayList<>();
+//        String query = "SELECT sp.store_product_id, sp.store_id, p.product_id, p.image, p.product_name, p.barcode, "
+//                + "p.category_id, p.unit, p.price, sp.price_out, sp.quantity, p.manufacture_date, p.expired_date "
+//                + "FROM store_products sp "
+//                + "JOIN products p ON sp.product_id = p.product_id "
+//                + "WHERE sp.store_id = ? AND p.category_id = ? "
+//                + "ORDER BY sp.store_product_id "
+//                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+//
+//        try {
+//            con = DBConnect.getConnection();
+//            ps = con.prepareStatement(query);
+//            ps.setInt(1, storeId);
+//            ps.setInt(2, categoryId);
+//            ps.setInt(3, offset);
+//            ps.setInt(4, limit);
+//
+//            rs = ps.executeQuery();
+//            while (rs.next()) {
+//                Product p = new Product();
+//                p.setId(rs.getInt("product_id"));
+//                p.setImage(rs.getString("image"));
+//                p.setName(rs.getString("product_name"));
+//                p.setBarcode(rs.getString("barcode"));
+//                p.setCategory_id(rs.getInt("category_id"));
+//                p.setUnit(rs.getString("unit"));
+//                p.setPrice(rs.getDouble("price"));
+//                p.setManufacture_date(rs.getDate("manufacture_date"));
+//                p.setExpired_date(rs.getDate("expired_date"));
+//
+//                StoreProduct sp = new StoreProduct();
+//                sp.setStoreProductId(rs.getInt("store_product_id"));
+//                sp.setStoreId(rs.getInt("store_id"));
+//                sp.setProduct(p);
+//                sp.setPriceOut(rs.getDouble("price_out"));
+//                sp.setQuantity(rs.getInt("quantity"));
+//
+//                list.add(sp);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
+    
+    public List<StoreProduct> getStoreProductByPage(int storeId, int offset, int limit) {
+    List<StoreProduct> list = new ArrayList<>();
+    String query = "SELECT sp.store_product_id, sp.store_id, p.product_id, p.image, p.product_name, p.barcode, "
+            + "p.category_id, p.unit, p.price, sp.price_out, sp.quantity, p.manufacture_date, p.expired_date, "
+            + "pu.unit_name, (p.price / pl.conversion_value) AS price_in "
+            + "FROM store_products sp "
+            + "JOIN products p ON sp.product_id = p.product_id "
+            + "JOIN product_units pu ON p.product_id = pu.product_id AND pu.is_base_unit = 1 "
+            + "JOIN product_units pl ON p.product_id = pl.product_id AND pl.unit_name = p.unit "
+            + "WHERE sp.store_id = ? "
+            + "ORDER BY sp.store_product_id "
+            + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-        try {
-            con = DBConnect.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, storeId);
-            ps.setInt(2, categoryId);
-            ps.setInt(3, offset);
-            ps.setInt(4, limit);
+    try {
+        con = DBConnect.getConnection();
+        ps = con.prepareStatement(query);
+        ps.setInt(1, storeId);
+        ps.setInt(2, offset);
+        ps.setInt(3, limit);
 
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Product p = new Product();
-                p.setId(rs.getInt("product_id"));
-                p.setImage(rs.getString("image"));
-                p.setName(rs.getString("product_name"));
-                p.setBarcode(rs.getString("barcode"));
-                p.setCategory_id(rs.getInt("category_id"));
-                p.setUnit(rs.getString("unit"));
-                p.setPrice(rs.getDouble("price"));
-                p.setManufacture_date(rs.getDate("manufacture_date"));
-                p.setExpired_date(rs.getDate("expired_date"));
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Product p = new Product();
+            p.setId(rs.getInt("product_id"));
+            p.setImage(rs.getString("image"));
+            p.setName(rs.getString("product_name"));
+            p.setBarcode(rs.getString("barcode"));
+            p.setCategory_id(rs.getInt("category_id"));
+            p.setUnit(rs.getString("unit"));
+            p.setPrice(rs.getDouble("price"));
+            p.setManufacture_date(rs.getDate("manufacture_date"));
+            p.setExpired_date(rs.getDate("expired_date"));
 
-                StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt("store_product_id"));
-                sp.setStoreId(rs.getInt("store_id"));
-                sp.setProduct(p);
-                sp.setPriceOut(rs.getDouble("price_out"));
-                sp.setQuantity(rs.getInt("quantity"));
+            StoreProduct sp = new StoreProduct();
+            sp.setStoreProductId(rs.getInt("store_product_id"));
+            sp.setStoreId(rs.getInt("store_id"));
+            sp.setProduct(p);
+            sp.setPriceOut(rs.getDouble("price_out"));
+            sp.setQuantity(rs.getInt("quantity"));
+            sp.setBaseUnitName(rs.getString("unit_name"));
+            sp.setPriceIn(rs.getDouble("price_in"));
 
-                list.add(sp);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            list.add(sp);
         }
-        return list;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return list;
+}
+
+    
+    public List<StoreProduct> getStoreProductByCategoryWithPaging(int storeId, int categoryId, int offset, int limit) {
+    List<StoreProduct> list = new ArrayList<>();
+    String query = "SELECT sp.store_product_id, sp.store_id, p.product_id, p.image, p.product_name, p.barcode, "
+            + "p.category_id, p.unit, p.price, sp.price_out, sp.quantity, p.manufacture_date, p.expired_date, "
+            + "pu.unit_name, (p.price / pl.conversion_value) AS price_in "
+            + "FROM store_products sp "
+            + "JOIN products p ON sp.product_id = p.product_id "
+            + "JOIN product_units pu ON p.product_id = pu.product_id AND pu.is_base_unit = 1 "
+            + "JOIN product_units pl ON p.product_id = pl.product_id AND pl.unit_name = p.unit "
+            + "WHERE sp.store_id = ? AND p.category_id = ? "
+            + "ORDER BY sp.store_product_id "
+            + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+    try {
+        con = DBConnect.getConnection();
+        ps = con.prepareStatement(query);
+        ps.setInt(1, storeId);
+        ps.setInt(2, categoryId);
+        ps.setInt(3, offset);
+        ps.setInt(4, limit);
+
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Product p = new Product();
+            p.setId(rs.getInt("product_id"));
+            p.setImage(rs.getString("image"));
+            p.setName(rs.getString("product_name"));
+            p.setBarcode(rs.getString("barcode"));
+            p.setCategory_id(rs.getInt("category_id"));
+            p.setUnit(rs.getString("unit"));
+            p.setPrice(rs.getDouble("price"));
+            p.setManufacture_date(rs.getDate("manufacture_date"));
+            p.setExpired_date(rs.getDate("expired_date"));
+
+            StoreProduct sp = new StoreProduct();
+            sp.setStoreProductId(rs.getInt("store_product_id"));
+            sp.setStoreId(rs.getInt("store_id"));
+            sp.setProduct(p);
+            sp.setPriceOut(rs.getDouble("price_out"));
+            sp.setQuantity(rs.getInt("quantity"));
+            sp.setBaseUnitName(rs.getString("unit_name"));
+            sp.setPriceIn(rs.getDouble("price_in"));
+
+            list.add(sp);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
 
     public List<StoreProduct> getProductsByStoreId(int storeId) {
         List<StoreProduct> list = new ArrayList<>();
         String query = "SELECT sp.store_product_id, sp.store_id, sp.product_id, "
-                + "       p.product_name, p.image, sp.price_out, sp.quantity, "
+                + "       p.product_name,p.barcode, p.image, sp.price_out, sp.quantity, "
                 + "       pu.unit_name, "
-                + "       (p.price * 1.0 / pu.conversion_value) AS price_in "
+                + "       (p.price / pl.conversion_value) AS price_in "
                 + "FROM store_products sp "
                 + "JOIN products p ON sp.product_id = p.product_id "
-                + "JOIN product_units pu ON p.product_id = pu.product_id "
+                + "JOIN product_units pu ON p.product_id = pu.product_id AND pu.is_base_unit = 1 "
+                + "JOIN product_units pl ON p.product_id = pl.product_id AND pl.unit_name = p.unit "
                 + "WHERE sp.store_id = ?";
         try {
             con = DBConnect.getConnection();
@@ -491,6 +595,7 @@ public class StoreProductDAO {
                 Product p = new Product();
                 p.setId(rs.getInt("product_id"));
                 p.setName(rs.getString("product_name"));
+                p.setBarcode(rs.getString("barcode"));
                 p.setImage(rs.getString("image"));
                 sp.setProduct(p);
                 sp.setPriceOut(rs.getDouble("price_out"));

@@ -44,9 +44,6 @@
                 width: 10px;
             }
 
-            tbody tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
             tbody tr:hover {
                 background-color: #FDF9DA;
             }
@@ -97,21 +94,36 @@
 
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
-                    <a href="store_product_list"><i class="fas fa-box"></i>Sản phẩm</a>
-
                     <div class="dropdown">
                         <input type="checkbox" id="store-dropdown" />
                         <label for="store-dropdown" class="dropdown-label">
+                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
+                            <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <input type="checkbox" id="stock-dropdown" />
+                        <label for="stock-dropdown" class="dropdown-label">
                             <i class="fas fa-truck-loading"></i> <span style="font-weight:600">Nhập hàng</span>
                         </label>
                         <div class="dropdown-menu">
                             <a href="store_stock_in"><i class="fas fa-plus-circle"></i>Tạo đơn</a>
-                            <a href="store_stock_in_list"><i class="fas fa-file-alt"></i> Danh sách đơn</a>
+                            <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
-                    </div>                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    </div>                
+                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
 
-                    <a href="choose_store"><i class="fas fa-store"></i>Chi nhánh</a>
-
+                    <c:if test="${not empty sessionScope.storeId}">
+                        <c:forEach var="store" items="${listStore}">
+                            <c:if test="${store.storeId == sessionScope.storeId}">
+                                <a href="choose_store"><i class="fas fa-store"></i>${store.storeName}</a>
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
 
 
 

@@ -31,7 +31,7 @@ public class SearchController extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -49,6 +49,7 @@ public class SearchController extends HttpServlet {
         }
 
         String txtSearch = request.getParameter("txt");
+        String type = request.getParameter("type");
 
         StoreProductDAO dao = new StoreProductDAO();
         List<StoreProduct> list = dao.searchByName(txtSearch, storeId);
@@ -58,7 +59,11 @@ public class SearchController extends HttpServlet {
         request.setAttribute("listStoreCategory", listStoreCategory);
         request.setAttribute("storeProduct", list);
 
-        request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
+        if ("inventory".equals(type)) {
+            request.getRequestDispatcher("store_inventory.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,8 +77,6 @@ public class SearchController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-
-
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -81,8 +84,8 @@ public class SearchController extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-
-
+     *
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs

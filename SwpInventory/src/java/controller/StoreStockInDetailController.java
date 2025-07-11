@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.NumberToWord;
 import model.Store;
 import model.StoreStockIn;
 import model.StoreStockInDetail;
@@ -42,7 +41,7 @@ public class StoreStockInDetailController extends HttpServlet {
         String idRaw = request.getParameter("id");
 
         if (idRaw == null || idRaw.isEmpty()) {
-            response.sendRedirect("store_stock_in_list"); 
+            response.sendRedirect("store_stock_in_list");
             return;
         }
 
@@ -53,23 +52,18 @@ public class StoreStockInDetailController extends HttpServlet {
             StoreStockIn stockIn = dao.getStockInById(stockInId);
             List<StoreStockInDetail> details = dao.getStockInDetails(stockInId);
             StoreDAO sdao = new StoreDAO();
-            List<Store> list = sdao.getAllStore();
+            List<Store> listStore = sdao.getAllStore();
 
-            
             double totalAmount = 0;
-for (StoreStockInDetail d : details) {
-    totalAmount += d.getQuantity() * d.getPriceIn();
-}
-request.setAttribute("totalAmount", totalAmount);
+            for (StoreStockInDetail d : details) {
+                totalAmount += d.getQuantity() * d.getPriceIn();
+            }
 
-String amountInWords = NumberToWord.convert((long) totalAmount);
-request.setAttribute("amountInWords", amountInWords);
-
-
-            request.setAttribute("listStore", list);
+            request.setAttribute("listStore", listStore);
+            request.setAttribute("totalAmount", totalAmount);
+            request.setAttribute("listStore", listStore);
             request.setAttribute("stockIn", stockIn);
             request.setAttribute("details", details);
-
             request.getRequestDispatcher("store_stock_in_detail.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {

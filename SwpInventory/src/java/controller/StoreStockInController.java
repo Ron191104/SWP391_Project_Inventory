@@ -5,6 +5,7 @@
 package controller;
 
 import dao.ProductDAO;
+import dao.StoreDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Product;
+import model.Store;
 import model.StoreOrderDetails;
 
 /**
@@ -44,6 +46,10 @@ public class StoreStockInController extends HttpServlet {
             List<StoreOrderDetails> cart = (List<StoreOrderDetails>) session.getAttribute(cartKey);
             request.setAttribute("cart", cart);
         }
+        StoreDAO sdao = new StoreDAO();
+        List<Store> listStore = sdao.getAllStore();
+        request.setAttribute("listStore", listStore);
+
         request.getRequestDispatcher("store_stock_in.jsp").forward(request, response);
     }
 
@@ -87,6 +93,9 @@ public class StoreStockInController extends HttpServlet {
             od.setPrice(p.getPrice());
             cart.add(od);
         }
+        StoreDAO sdao = new StoreDAO();
+        List<Store> listStore = sdao.getAllStore();
+        request.setAttribute("listStore", listStore);
 
         session.setAttribute(cartKey, cart);
         request.setAttribute("listP", dao.getAllProduct());

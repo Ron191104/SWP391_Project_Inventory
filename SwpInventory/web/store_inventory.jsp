@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
     <head>
         <link rel="stylesheet" href="assets/css/menu.css">
@@ -8,21 +8,30 @@
 
         <title>Hàng Tồn Cửa Hàng</title>
         <style>
+            .container {
+                max-width: 100%;
+                padding: 10px 24px 24px 24px;
+                background: white;
+                margin-left: 10px;
+                margin-top: 0px;
+            }
             table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-top: 28px;
                 table-layout: fixed;
+                margin-top: 10px;
             }
 
             th, td {
                 border: 1px solid #ddd;
                 padding: 5px;
+                text-align: left;
+                width: 20px;
                 font-size: 0.85rem;
                 text-align: center;
                 height: 40px;
             }
-
             th {
                 background-color: #82CAFA;
                 color: white;
@@ -31,18 +40,55 @@
             tbody tr:hover {
                 background-color: #FDF9DA;
             }
-            .container {
-                max-width: 100%;
-                padding: 10px 24px 24px 24px;
-                background: white;
-                margin-left: 10px;
-                margin-top: 0px;
+
+            .action-column {
+                width: 120px;
             }
 
-            th:first-child, td:first-child {
-                width: 35px;
+            .product-select {
+                height: 37px;
+                width: 170px;
+                padding: 10px 15px;
+                border: 2px solid #82CAFA;
+                border-radius: 9px;
+                font-size: 11px;
+                outline: none;
+
+            }
+            .form-group {
+                position: relative;
+                width: 200px;
+            }
+            .form-control{
+
+                height: 37px;
+                width: 163px;
+                padding: 10px 15px;
+                border: 2px solid #82CAFA;
+                border-radius: 9px;
+                font-size: 11px;
+                outline: none;
             }
 
+            .fas.fa-search.search-icon{
+                border: none;
+                outline: none;
+                color: #89D0F0;
+                background-color: white;
+            }
+
+
+
+            table td:nth-child(2),
+            table th:nth-child(2) {
+                width: 40px;
+            }
+            table td:first-child,
+            table th:first-child {
+                width: 10px;
+            }
+        
+        
 
         </style>
     </head>
@@ -61,21 +107,21 @@
                             <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
                         </label>
                         <div class="dropdown-menu">
-                            <a href="store_product_list"><i class="fas fa-plus-circle"></i>Danh sách sản phẩm</a>
-                            <a href="store_inventory"><i class="fas fa-file-alt"></i> Danh sách hàng tồn</a>
+                            <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
+                            <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
                         </div>
                     </div>
 
                     <div class="dropdown">
-                        <input type="checkbox" id="store-dropdown" />
-                        <label for="store-dropdown" class="dropdown-label">
+                        <input type="checkbox" id="stock-dropdown" />
+                        <label for="stock-dropdown" class="dropdown-label">
                             <i class="fas fa-truck-loading"></i> <span style="font-weight:600">Nhập hàng</span>
                         </label>
                         <div class="dropdown-menu">
                             <a href="store_stock_in"><i class="fas fa-plus-circle"></i>Tạo đơn</a>
-                            <a href="store_stock_in_list"><i class="fas fa-file-alt"></i> Danh sách đơn</a>
+                            <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
-                    </div>                   
+                    </div>                     
                     <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
                     <c:if test="${not empty sessionScope.storeId}">
                         <c:forEach var="store" items="${listStore}">
@@ -116,17 +162,41 @@
         </div>
 
         <div class="container">
-            <h2>Danh sách hàng tồn cửa hàng</h2>
+                        <h3>Danh sách hàng tồn:</h3>
 
+            <div class="product-select-container" style="display: flex; align-items: center; justify-content: space-between;">
+                <form action="store_inventory">
+                    <select id="product-type" name="id" class="product-select" onchange="this.form.submit()">
+                        <option value="" ${empty tag ? "selected" : ""}>Tất cả sản phẩm</option>
+                        <c:forEach items="${listStoreCategory}" var="c">
+                            <option value="${c.id}" ${c.id  == tag ? "selected" : ""}>${c.name}</option>
+                        </c:forEach>
+                    </select>
+
+                </form>
+
+
+                <form action="search" method="get">
+                    <div class="form-group">
+
+                        <input type="hidden" name="type" value="inventory">
+                        <input type="text" name="txt" class="form-control" placeholder="Search...">
+                        <button type="submit" class="fas fa-search search-icon"></button>
+                    </div>
+                </form>
+
+
+
+            </div>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Đơn vị</th>
-                        <th>Giá nhập</th>
-                        <th>Giá bán</th>
-                        <th>Số lượng tồn</th>
+                        <th>TÊN SẢN PHẨM</th>
+                        <th>BARCODE</th>
+                        <th>ĐƠN VỊ</th>
+                        <th>GIÁ NHẬP</th>
+                        <th>SỐ LƯỢNG TỒN</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -134,14 +204,23 @@
                         <tr>
                             <td>${p.storeProductId}</td>
                             <td>${p.product.name}</td>
+                            <td>${p.product.barcode}</td>
                             <td>${p.baseUnitName}</td>
-                            <td>${p.priceIn}</td>
-                            <td>${p.priceOut}</td>
+                            <td><fmt:formatNumber value="${p.priceIn}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             <td>${p.quantity}</td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
+            <div style="margin-top: 20px; text-align: center;">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <a href="store_inventory?page=${i}"
+                       style="display: inline-block; width: 20px; padding: 6px ; margin: 7px;background-color: ${i == currentPage ? '#82CAFA' : '#eee'};
+                       color: ${i == currentPage ? 'white' : '#333'}; text-decoration: none; border-radius: 4px;">
+                        ${i}
+                    </a>
+                </c:forEach>
+            </div>
         </div>
     </body>
 </html>

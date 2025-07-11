@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
@@ -77,9 +77,11 @@
                 background-color: white;
             }
 
-            table td:nth-child(11),
-            table th:nth-child(11) {
-                width: 29px;
+
+
+            table td:nth-child(10),
+            table th:nth-child(10) {
+                width: 25px;
             }
             .form-control1 {
                 height: 13px;
@@ -107,7 +109,6 @@
                 <h1>Tên kho</h1>
                 <div class="nav">
                     <a href="store_dashboard.jsp">
-
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -116,19 +117,19 @@
                             <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
                         </label>
                         <div class="dropdown-menu">
-                            <a href="store_product_list"><i class="fas fa-plus-circle"></i>Danh sách sản phẩm</a>
-                            <a href="store_inventory"><i class="fas fa-file-alt"></i> Danh sách hàng tồn</a>
+                            <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
+                            <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
                         </div>
                     </div>
 
                     <div class="dropdown">
-                        <input type="checkbox" id="store-dropdown" />
-                        <label for="store-dropdown" class="dropdown-label">
+                        <input type="checkbox" id="stock-dropdown" />
+                        <label for="stock-dropdown" class="dropdown-label">
                             <i class="fas fa-truck-loading"></i> <span style="font-weight:600">Nhập hàng</span>
                         </label>
                         <div class="dropdown-menu">
                             <a href="store_stock_in"><i class="fas fa-plus-circle"></i>Tạo đơn</a>
-                            <a href="store_stock_in_list"><i class="fas fa-file-alt"></i> Danh sách đơn</a>
+                            <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
                     </div>                   
                     <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
@@ -216,7 +217,6 @@
                         <th style="width: 10px">Unit</th>
                         <th>Import price</th>
                         <th>Sale price</th>
-                        <th>Quantity</th>
                         <th>MFD</th>
                         <th>EXP</th>
                         <th>Action</th>
@@ -236,9 +236,8 @@
                             <td>${o.product.name}</td>
                             <td>${o.product.barcode}</td>
                             <td>${o.product.unit}</td>
-                            <td>${o.product.price}</td>
-                            <td>${o.priceOut}</td>
-                            <td>${o.quantity}</td>
+                            <td><fmt:formatNumber value="${o.product.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                            <td><fmt:formatNumber value="${o.priceOut}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             <td>${o.product.manufacture_date}</td>
                             <td>${o.product.expired_date}</td>
 
