@@ -3,7 +3,6 @@ package controller;
 import dao.UserDAO;
 import model.User;
 import dao.SystemLogDAO;
-
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
@@ -11,7 +10,6 @@ import jakarta.servlet.annotation.WebServlet;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -27,6 +25,7 @@ public class LoginServlet extends HttpServlet {
         } else {
             user = dao.getUserByUsernameAndPassword(login, password);
         }
+
         if (user == null) {
             // Sai tài khoản hoặc mật khẩu
             request.setAttribute("errorMessage", "Sai tài khoản hoặc mật khẩu!");
@@ -35,7 +34,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         // CHỈ kiểm tra duyệt với user KHÔNG PHẢI admin
-        if (user.getRole() != 4  && user.getIsApproved() == 0) {
+        if (user.getRole() != 4 && user.getIsApproved() == 0) {
             request.setAttribute("errorMessage", "Tài khoản của bạn chưa được duyệt. Vui lòng liên hệ quản trị viên.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
@@ -47,13 +46,14 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("userRole", user.getRole());
         session.setAttribute("userImage", user.getImage());
         session.setAttribute("userEmail", user.getEmail());
+        session.setAttribute("username", user.getUsername()); // ✅ THÊM DÒNG NÀY
 
         // Ghi LOG đăng nhập thành công
         SystemLogDAO logDao = new SystemLogDAO();
         logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");
 
         // Điều hướng theo role (int)
-        int role = user.getRole(); // role là int
+        int role = user.getRole();
         switch (role) {
             case 1:
                 response.sendRedirect("inventory_dashboard.jsp");

@@ -2,7 +2,6 @@ package controller;
 
 import dao.UserDAO;
 import model.User;
-
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -19,12 +18,10 @@ public class UserManagementServlet extends HttpServlet {
             response.sendRedirect("no_permission.jsp");
             return;
         }
+
         UserDAO userDAO = new UserDAO();
         List<User> userList = userDAO.getAllUsers();
-        System.out.println("userList size = " + userList.size()); // Kiểm tra log này khi truy cập trang
         request.setAttribute("userList", userList);
         request.getRequestDispatcher("user_management.jsp").forward(request, response);
     }
 }
-
-

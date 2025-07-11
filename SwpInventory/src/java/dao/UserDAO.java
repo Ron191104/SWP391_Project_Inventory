@@ -308,16 +308,37 @@ public class UserDAO {
 }
     
     // Change passWord do Admin làm
-public void updatePassword(String username, String newPassword) {
+public boolean updatePassword(String username, String newPassword) {
     String sql = "UPDATE users SET password = ? WHERE username = ?";
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, newPassword);
         ps.setString(2, username);
-        ps.executeUpdate();
+        int rowsUpdated = ps.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+ // Hàm kiểm tra mật khẩu cũ
+ public boolean checkPassword(String username, String oldPassword) {
+    String sql = "SELECT password FROM users WHERE username = ?";
+    try (Connection conn = DBConnect.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, username);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                String currentPassword = rs.getString("password");
+                // Debug kiểm tra giá trị thực tế
+                System.out.println("DB password: " + currentPassword + " | User nhập: " + oldPassword);
+                return currentPassword.equals(oldPassword);
+            }
+        }
     } catch (Exception e) {
         e.printStackTrace();
     }
+    return false;
 }
 // Hàm cho myprofile
  public User getUserByEmail(String email) {
@@ -366,4 +387,6 @@ public void updatePassword(String username, String newPassword) {
         return false;
     }
     
+
+   
 }

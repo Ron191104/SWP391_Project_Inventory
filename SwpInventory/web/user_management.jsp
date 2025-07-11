@@ -53,12 +53,15 @@
                 </td>
                 <td>
                     <a href="edit-user?username=${u.username}" class="action">Sửa</a> |
-                    <a href="delete-user?username=${u.username}" class="action" onclick="return confirm('Xóa người dùng này?');">Xóa</a>|
-                     <a href="change-password-admin?username=${user.username}">Đổi mật khẩu</a> 
+                    <a href="delete-user?username=${u.username}" class="action" onclick="return confirm('Xóa người dùng này?');">Xóa</a> |
+                    <a href="admin-reset-password?username=${u.username}" class="action">Đổi mật khẩu</a>
                 </td>
             </tr>
         </c:forEach>
+            
         </tbody>
+        
     </table>
+   
 </body>
 </html>

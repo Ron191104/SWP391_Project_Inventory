@@ -117,6 +117,9 @@
             <input type="text" name="isApproved" value="${user.isApproved == 1 ? 'Đã duyệt' : 'Chưa duyệt'}" readonly />
 
             <button type="submit">Cập nhật</button>
+            <a href="admin_dashboard.jsp" style="display: inline-block; margin-top: 10px; color: #555; text-decoration: none;">
+                    ← Dashboard
+                </a>
         </form>
     </div>
 </body>
