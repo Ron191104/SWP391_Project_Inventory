@@ -65,12 +65,12 @@
         <c:if test="${not empty sessionScope.errorMessage}"><p class="message error-message"><c:out value="${sessionScope.errorMessage}"/></p><c:remove var="errorMessage" scope="session"/></c:if>
         <c:if test="${not empty errorMessage}"><p class="message error-message"><c:out value="${errorMessage}"/></p></c:if>
 
-        <div class="dashboard-grid">
-             <div class="dashboard-card">
-                <i class="fas fa-truck-loading card-icon"></i>
-                <h3>Nhập hàng vào kho</h3>
-                <p>Tạo phiếu nhập kho và cập nhật số lượng hàng hóa khi nhận hàng từ nhà cung cấp.</p>
-                <a href="${pageContext.request.contextPath}/stock_in">Tạo phiếu nhập</a>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <i class="fas fa-truck-loading card-icon"></i>
+                    <h3>Nhập hàng vào kho</h3>
+                    <p>Tạo phiếu nhập kho và cập nhật số lượng hàng hóa khi nhận hàng từ nhà cung cấp.</p>
+                    <a href="${pageContext.request.contextPath}/stock_in">Tạo phiếu nhập</a>
             </div>
             <div class="dashboard-card">
                 <i class="fas fa-plus-circle card-icon"></i>
@@ -79,10 +79,16 @@
                 <a href="create_order">Tạo đơn hàng</a>
             </div>
             <div class="dashboard-card">
-                 <i class="fas fa-list-alt card-icon"></i>
+                <i class="fas fa-list-alt card-icon"></i>
                 <h3>Danh sách đơn đặt hàng</h3>
                 <p>Xem và quản lý tất cả các đơn đặt hàng đã tạo.</p>
-                <a href="#">Xem danh sách</a>
+                <a href="order_list">Xem danh sách</a>
+            </div>
+            <div class="dashboard-card">
+                <i class="fas fa-truck-loading card-icon"></i>
+                <h3>Duyệt đơn nhập hàng từ cửa hàng</h3>
+                <p>Xem và duyệt đơn nhập hàng từ cửa hàng</p>
+                <a href="inventory_order">Xem danh sách</a>
             </div>
         </div>
 

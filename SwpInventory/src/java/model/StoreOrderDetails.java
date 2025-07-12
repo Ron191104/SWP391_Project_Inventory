@@ -12,14 +12,24 @@ public class StoreOrderDetails {
      private int productId;
     private int quantity;
     private double price;
+    private String unit;
 
     public StoreOrderDetails() {
     }
 
-    public StoreOrderDetails(int productId, int quantity, double price) {
+    public StoreOrderDetails(int productId, int quantity, double price, String unit) {
         this.productId = productId;
         this.quantity = quantity;
         this.price = price;
+        this.unit=unit;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public int getProductId() {

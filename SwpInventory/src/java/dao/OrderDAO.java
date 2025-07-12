@@ -208,7 +208,6 @@ public class OrderDAO {
                 System.out.println("Order ID: " + rs.getInt("order_id") + ", Supplier ID: " + rs.getInt("supplier_id"));
             }
         } catch (Exception e) {
-            System.out.println("Lỗi khi đọc toàn bộ đơn hàng để debug.");
             e.printStackTrace();
         }
 

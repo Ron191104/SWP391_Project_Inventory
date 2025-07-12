@@ -15,10 +15,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import model.Product;
 import model.Store;
 import model.StoreOrderDetails;
+import model.StoreStockInDetail;
 
 /**
  *
@@ -88,9 +91,11 @@ public class StoreStockInController extends HttpServlet {
 
         if (!exists) {
             StoreOrderDetails od = new StoreOrderDetails();
+            StoreStockInDetail si = new StoreStockInDetail();
             od.setProductId(productId);
             od.setQuantity(quantity);
             od.setPrice(p.getPrice());
+            od.setUnit(p.getUnit());         
             cart.add(od);
         }
         StoreDAO sdao = new StoreDAO();
