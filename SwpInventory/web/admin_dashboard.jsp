@@ -304,6 +304,7 @@
         </style>
     </head>
     <body>
+        <form action="AddCustomerServlet" method="post">
         <div class="header">
             <div class="header-left">
                 <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
@@ -374,28 +375,29 @@
         <!-- Main content -->
         <main class="main-content">
             <section class="cards">
-                <article class="card orange">
 
-                    <p>100</p>
-                    <p>Customers</p>
-                    <i class="fas fa-user"></i>
-                </article>
-                <article class="card cyan">
-                    <p>100</p>
-                    <p>Suppliers</p>
-                    <i class="fas fa-user-check"></i>
-                </article>
-                <article class="card indigo">
-                    <p>100</p>
-                    <p>Purchase Invoice</p>
-                    <i class="fas fa-file-alt"></i>
-                </article>
-                <article class="card green">
-                    <p>105</p>
-                    <p>Sales Invoice</p>
-                    <i class="fas fa-file-invoice-dollar"></i>
-                </article>
-            </section>
+    <article class="card orange">
+        <p>${customerCount}</p>
+        <p>Customers</p>
+        <i class="fas fa-user"></i>
+    </article>
+    <article class="card cyan">
+        <p>${supplierCount}</p>
+        <p>Suppliers</p>
+        <i class="fas fa-user-check"></i>
+    </article>
+    <article class="card indigo">
+        <p>${purchaseInvoiceCount}</p>
+        <p>Purchase Invoice</p>
+        <i class="fas fa-file-alt"></i>
+    </article>
+    <article class="card green">
+        <p>${salesInvoiceCount}</p>
+        <p>Sales Invoice</p>
+        <i class="fas fa-file-invoice-dollar"></i>
+    </article>
+</section>
+
         </main>
     </body>
 </html>
