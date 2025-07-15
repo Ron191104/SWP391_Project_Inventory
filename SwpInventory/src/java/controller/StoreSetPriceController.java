@@ -4,11 +4,8 @@
  */
 package controller;
 
-import dao.CategoryDAO;
-import dao.ProductDAO;
 import dao.StoreProductDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,17 +13,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Categories;
-import model.Category;
-import model.Product;
+import java.util.Map;
 import model.StoreProduct;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "DetailController", urlPatterns = {"/store_product_detail"})
-public class StoreProductDetailController extends HttpServlet {
+@WebServlet(name = "StoreSetPriceController", urlPatterns = {"/store_set_price"})
+public class StoreSetPriceController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,37 +35,8 @@ public class StoreProductDetailController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-          HttpSession session = request.getSession();
 
-        Integer storeId = (Integer) session.getAttribute("storeId");
-
-        if (storeId == null) {
-            response.sendRedirect("choose_store");
-            return;
-        }
-        String didRaw = request.getParameter("did");
-        if (didRaw == null || didRaw.isEmpty()) {
-            response.sendRedirect("store_product_list.jsp");
-            return;
-        }
-
-        int did = Integer.parseInt(didRaw);
-        StoreProductDAO dao = new StoreProductDAO();
-
-        StoreProduct detail = dao.getStoreProductById(storeId,did);
-        if (detail == null) {
-            response.sendRedirect("store_product_list.jsp");
-            return;
-        }
-
-        CategoryDAO cdao = new CategoryDAO();
-        List<Categories> listStoreCategory = cdao.getAllCategories();
-        request.setAttribute("listStoreCategory", listStoreCategory);
-
-        request.setAttribute("detail", detail);
-        request.getRequestDispatcher("store_product_detail.jsp").forward(request, response);
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -84,7 +50,19 @@ public class StoreProductDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        Integer storeId = (Integer) session.getAttribute("storeId");
+
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
+        }
+
+        StoreProductDAO dao = new StoreProductDAO();
+        List<StoreProduct> productList = dao.getAllStoreProduct(storeId);
+
+        request.setAttribute("storeProduct", productList);
+        request.getRequestDispatcher("store_set_price.jsp").forward(request, response);
     }
 
     /**
@@ -98,7 +76,29 @@ public class StoreProductDetailController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        Integer storeId = (Integer) session.getAttribute("storeId");
+
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
+        }
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        StoreProductDAO dao = new StoreProductDAO();
+
+        for (String key : parameterMap.keySet()) {
+            if (key.startsWith("newPrices[")) {
+                try {
+                    int storeProductId = Integer.parseInt(key.substring(10, key.length() - 1));
+                    double newPrice = Double.parseDouble(request.getParameter(key));
+                    dao.updatePriceOut(storeProductId, newPrice, storeId);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        response.sendRedirect("store_set_price?updated=true");
     }
 
     /**

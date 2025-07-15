@@ -276,18 +276,19 @@ public class StoreProductDAO {
         return list;
     }
 
-    public StoreProduct getStoreProductById(int id) {
+    public StoreProduct getStoreProductById(int storeId, int id) {
         StoreProduct sp = null;
-        String query = "SELECT sp.store_product_id, sp.price_out, sp.quantity, "
+        String query = "SELECT sp.store_product_id, sp.store_id, sp.price_out, sp.quantity, "
                 + "p.product_id, p.product_name, p.barcode, p.unit, p.price, "
                 + "p.image, p.manufacture_date, p.expired_date, p.category_id, p.description "
                 + "FROM store_products sp JOIN products p ON sp.product_id = p.product_id "
-                + "WHERE sp.store_product_id = ?";
+                + "WHERE sp.store_id = ? AND sp.product_id = ?";
 
         try {
             con = DBConnect.getConnection();
             ps = con.prepareStatement(query);
-            ps.setInt(1, id);
+            ps.setInt(1, storeId);
+        ps.setInt(2, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Product p = new Product();
@@ -304,6 +305,7 @@ public class StoreProductDAO {
 
                 sp = new StoreProduct();
                 sp.setStoreProductId(rs.getInt("store_product_id"));
+                sp.setStoreId(rs.getInt("store_id"));
                 sp.setPriceOut(rs.getDouble("price_out"));
                 sp.setQuantity(rs.getInt("quantity"));
                 sp.setProduct(p);
@@ -608,6 +610,24 @@ public class StoreProductDAO {
         }
         return list;
     }
+    
+   
+    public void updatePriceOut(int storeProductId, double newPrice, int storeId) {
+    String query = "UPDATE store_products SET price_out = ? WHERE store_product_id = ? AND store_id = ?";
+    try {
+        con = DBConnect.getConnection();
+        ps = con.prepareStatement(query);
+        ps.setDouble(1, newPrice);
+        ps.setInt(2, storeProductId);
+        ps.setInt(3, storeId);
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
+    
 
     public static void main(String[] args) {
         try {
