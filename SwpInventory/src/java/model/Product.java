@@ -22,7 +22,7 @@ public class Product {
     private String name;
     private String barcode;
     private int category_id;
-    private int supplier_id;
+    private int supplierId;
     private double price;
     private int quantity;
     private String unit;
@@ -41,7 +41,7 @@ public class Product {
         this.name = name;
         this.barcode = barcode;
         this.category_id = category_id;
-        this.supplier_id = supplier_id;
+        this.supplierId = supplierId;
         this.price = price;
         this.quantity = quantity;
         this.unit = unit;
@@ -83,12 +83,12 @@ public class Product {
         this.category_id = category_id;
     }
 
-    public int getSupplier_id() {
-        return supplier_id;
+    public int getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier_id(int supplier_id) {
-        this.supplier_id = supplier_id;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
     public double getPrice() {
@@ -151,7 +151,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "id=" + id + ", name=" + name + ", barcode=" + barcode + ", category_id=" + category_id + ", supplier_id=" + supplier_id + ", price=" + price + ", quantity=" + quantity + ", unit=" + unit + ", manufacture_date=" + manufacture_date + ", expired_date=" + expired_date + ", image=" + image + ", description=" + description + ", status=" + '}';
+        return "Product{" + "id=" + id + ", name=" + name + ", barcode=" + barcode + ", category_id=" + category_id + ", supplier_id=" + supplierId + ", price=" + price + ", quantity=" + quantity + ", unit=" + unit + ", manufacture_date=" + manufacture_date + ", expired_date=" + expired_date + ", image=" + image + ", description=" + description + ", status=" + '}';
     }
 }
 

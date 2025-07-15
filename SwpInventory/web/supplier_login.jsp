@@ -71,7 +71,7 @@
         <label for="supplierId">Chọn nhà cung cấp:</label>
         <select name="supplierId" required>
             <c:forEach var="s" items="${supplierList}">
-                <option value="${s.supplier_id}">${s.supplier_name}</option>
+                <option value="${s.supplierId}">${s.supplierName}</option>
             </c:forEach>
         </select>
         <button type="submit">Đăng nhập</button>

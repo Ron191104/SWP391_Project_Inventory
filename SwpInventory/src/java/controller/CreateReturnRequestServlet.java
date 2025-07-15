@@ -1,6 +1,6 @@
-
 package controller;
 
+import dao.ProductDAO;
 import dao.ReturnRequestDAO;
 import model.ReturnRequest;
 import model.ReturnRequestDetail;
@@ -11,20 +11,46 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Supplier;
+import dao.SupplierDAO;
+import dao.ProductDAO;
+import model.Product;
+
 
 @WebServlet("/create_return_request")
 public class CreateReturnRequestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
+
+        String supplierIdRaw = request.getParameter("supplierId");
+        int supplierId = -1;
+        if (supplierIdRaw != null && !supplierIdRaw.isEmpty()) {
+            supplierId = Integer.parseInt(supplierIdRaw);
+            request.setAttribute("selectedSupplierId", supplierId);
+        }
+
+        // Lấy danh sách nhà cung cấp
+        SupplierDAO supplierDAO = new SupplierDAO();
+        List<Supplier> listSuppliers = supplierDAO.getAllSuppliers();
+        request.setAttribute("listSuppliers", listSuppliers);
+
+        // Lấy danh sách sản phẩm
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> productList = new ArrayList<>();
+        if (supplierId != -1) {
+            productList = productDAO.getProductsBySupplierId(String.valueOf(supplierId));
+        }
+
+        request.setAttribute("productList", productList);
 
         request.getRequestDispatcher("create_return_request.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         int supplierId = Integer.parseInt(request.getParameter("supplierId"));
         int employeeId = 1; // giả định ID nhân viên từ session hoặc cố định

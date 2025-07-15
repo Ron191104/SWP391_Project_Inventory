@@ -477,10 +477,12 @@
 
                             <a href="product_add.jsp"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
                         </div>
+
+
                     </div>
-                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
-                    <i class="fas fa-warehouse"></i> Kho Hàng
-                </a>
+                    <a href="${pageContext.request.contextPath}/inventory_dashboard.jsp">
+                        <i class="fas fa-warehouse"></i> Kho Hàng
+                    </a>
                     <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
                     <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
@@ -502,12 +504,19 @@
                 <div class="user-menu">
                     <input type="checkbox" id="user-menu-toggle" />
                     <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
-                        <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
+                        <img src="<%= request.getContextPath() + "/" + 
+        (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() 
+            ? session.getAttribute("userImage") 
+            : "images/default-avatar.png") %>" 
+                             alt="Avatar người dùng" class="user-avatar" />
                     </label>
                     <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
-                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
-                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
-                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
+                        <span style="padding:12px 16px; color:#e53935; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="myprofile" role="menuitem" tabindex="0">My Profile</a>
+                        <a href="change_password_admin.jsp" role="menuitem" tabindex="0">Change Password</a>
+                        <a href="login.jsp" role="menuitem" tabindex="0">Log Out</a>
                     </nav>
                 </div>
             </div>

@@ -29,7 +29,7 @@ public class SupplierOrderServlet extends HttpServlet {
             return;
         }
 
-        int supplierId = supplier.getSupplier_id();
+        int supplierId = supplier.getSupplierId();
         String statusParam = request.getParameter("status");
         List<Order> orderList;
 

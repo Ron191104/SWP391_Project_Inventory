@@ -235,7 +235,6 @@
                     <p>Gửi yêu cầu trả hàng theo từng sản phẩm đến nhà cung cấp nếu có vấn đề.</p>
                     <a href="create_return_request">Tạo yêu cầu trả hàng</a>
                 </div>
-
             </div>
 
             <div class="inventory-section">
