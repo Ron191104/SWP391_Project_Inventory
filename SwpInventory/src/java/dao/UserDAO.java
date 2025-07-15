@@ -386,7 +386,6 @@ public boolean updatePassword(String username, String newPassword) {
         } catch(Exception e) { e.printStackTrace(); }
         return false;
     }
-    
-
+ 
    
 }
