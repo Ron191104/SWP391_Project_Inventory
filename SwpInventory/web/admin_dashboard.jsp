@@ -310,6 +310,8 @@
                 <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
                 <span class="admin-role-label">(Administrator)</span>
                 <div class="nav">
+                    <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản ký kho</a>
+                    <a href="store_dashboard.jsp"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
                     <a href="supplier_dashboard"><i class="fas fa-truck"></i> Nhà cung cấp</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
                     <a href="login.jsp"><i class="fas fa-cash-register"></i> POS</a>
