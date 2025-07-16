@@ -205,7 +205,7 @@
         <div class="container">
             <h2>Danh sách đơn hàng từ cửa hàng</h2>
             <p style="color:red;">Tổng số đơn hàng: ${fn:length(orderList)}</p>
-            <p style="color:blue;">Supplier ID đang đăng nhập: ${sessionScope.supplier.supplier_id}</p>
+            <p style="color:blue;">Supplier ID đang đăng nhập: ${sessionScope.supplier.supplierId}</p>
             <p style="color:green;">Số đơn hàng tìm thấy: ${fn:length(orderList)}</p>
             <!-- Bộ lọc trạng thái đơn hàng -->
             <form method="get" action="supplier_order" style="display:inline-block; margin-bottom: 20px;">

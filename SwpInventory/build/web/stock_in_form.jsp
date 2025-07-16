@@ -87,7 +87,7 @@
             <input type="submit" class="submit-btn" value="Xác nhận Nhập kho">
         </form>
     </div>
-                    c
+
     <table style="display:none;"><tr id="product-row-template">
         <td><select name="productId" class="product-select" required><option value="">-- Chọn sản phẩm --</option><c:forEach var="product" items="${productList}"><option value="${product.id}">${product.name}</option></c:forEach></select></td>
         <td><input type="number" name="quantity" min="1" value="1" class="quantity-input" required></td>

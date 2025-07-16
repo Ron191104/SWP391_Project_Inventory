@@ -39,10 +39,10 @@ public class SupplierDashboardServlet extends HttpServlet {
             return;
         }
         
-        int suppplierID = supplier.getSupplier_id();
+        int suppplierID = supplier.getSupplierId();
         
         //Lấy tất cả các đơn hàng của supplier
-        List<Order> orders = orderDAO.getOrdersBySupplierId(supplier.getSupplier_id());
+        List<Order> orders = orderDAO.getOrdersBySupplierId(supplier.getSupplierId());
         request.setAttribute("orders", orders);
         
         //Lấy danh sách đơn hàng mới cho thông báo

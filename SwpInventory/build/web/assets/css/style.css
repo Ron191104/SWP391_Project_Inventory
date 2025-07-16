@@ -133,4 +133,5 @@ tr:nth-child(even) {
 @media (max-width: 700px) {
     .nav-dropdown, .dropbtn { width: 100%; }
     .dropdown-content { min-width: 100%; left: 0; right: 0;}
+
 }
