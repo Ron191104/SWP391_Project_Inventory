@@ -133,7 +133,7 @@
                             <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
                     </div>                   
-                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    <a href="sales"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
                     <c:if test="${not empty sessionScope.storeId}">
                         <c:forEach var="store" items="${listStore}">
                             <c:if test="${store.storeId == sessionScope.storeId}">
