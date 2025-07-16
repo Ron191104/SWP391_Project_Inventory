@@ -1,42 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.util.Date;
 
 public class ReturnRequest {
-    private int returnId;
+
+    private int id; 
     private int supplierId;
     private int employeeId;
     private String reason;
     private String note;
+    private Date createdDate;
     private int status;
-    private Date createdAt;
 
     public ReturnRequest() {
     }
 
-    
-    public ReturnRequest(int returnId, int supplierId, int employeeId, String reason, String note, int status, Date createdAt) {
-        this.returnId = returnId;
-        this.supplierId = supplierId;
-        this.employeeId = employeeId;
-        this.reason = reason;
-        this.note = note;
-        this.status = status;
-        this.createdAt = createdAt;
+    // 
+    public int getId() {
+        return id;
     }
 
-    public int getReturnId() {
-        return returnId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setReturnId(int returnId) {
-        this.returnId = returnId;
-    }
-
+    // 
     public int getSupplierId() {
         return supplierId;
     }
@@ -69,6 +57,14 @@ public class ReturnRequest {
         this.note = note;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -76,15 +72,4 @@ public class ReturnRequest {
     public void setStatus(int status) {
         this.status = status;
     }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    
-    
 }

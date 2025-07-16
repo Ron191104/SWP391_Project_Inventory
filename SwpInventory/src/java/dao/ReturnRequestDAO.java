@@ -5,6 +5,7 @@ import model.ReturnRequestDetail;
 import dal.DBConnect;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReturnRequestDAO {
@@ -51,7 +52,9 @@ public class ReturnRequestDAO {
 
         } catch (Exception e) {
             try {
-                if (conn != null) conn.rollback();
+                if (conn != null) {
+                    conn.rollback();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -60,25 +63,91 @@ public class ReturnRequestDAO {
 
         } finally {
             try {
-                if (rs != null) rs.close();
+                if (rs != null) {
+                    rs.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             try {
-                if (psMain != null) psMain.close();
+                if (psMain != null) {
+                    psMain.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             try {
-                if (psDetail != null) psDetail.close();
+                if (psDetail != null) {
+                    psDetail.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             try {
-                if (conn != null) conn.close();
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    // Lấy danh sách yêu cầu trả hàng theo nhà cung cấp
+    public List<ReturnRequest> getReturnRequestsBySupplierId(int supplierId) {
+        List<ReturnRequest> list = new ArrayList<>();
+        String sql = "SELECT * FROM return_requests WHERE supplier_id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, supplierId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ReturnRequest r = new ReturnRequest();
+                r.setId(rs.getInt("return_id"));  // ✅ Sửa lại tên cột
+                r.setSupplierId(rs.getInt("supplier_id"));
+                r.setEmployeeId(rs.getInt("employee_id"));
+                r.setReason(rs.getString("reason"));
+                r.setNote(rs.getString("note"));
+                r.setCreatedDate(rs.getTimestamp("created_at"));  // ✅ Sửa lại tên cột
+                r.setStatus(rs.getInt("status"));
+                list.add(r);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Cập nhật trạng thái yêu cầu (1 = duyệt, 2 = từ chối)
+    public boolean updateRequestStatus(int id, int status) {
+        String sql = "UPDATE return_requests SET status = ? WHERE id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, status);
+            ps.setInt(2, id);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // (Tuỳ chọn) Lấy chi tiết các sản phẩm trong 1 yêu cầu
+    public List<ReturnRequestDetail> getReturnRequestDetails(int returnId) {
+        List<ReturnRequestDetail> list = new ArrayList<>();
+        String sql = "SELECT * FROM return_request_details WHERE return_id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, returnId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ReturnRequestDetail d = new ReturnRequestDetail();
+                d.setReturnId(rs.getInt("return_id"));
+                d.setProductId(rs.getInt("product_id"));
+                d.setQuantity(rs.getInt("quantity"));
+                list.add(d);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
