@@ -1,3 +1,4 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
@@ -460,10 +461,10 @@
                                     </c:if>
                                 </c:forEach>
                             </td>
-                            <td>${od.price}</td>
+                            <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             <td>
                                 <c:set var="subtotal" value="${od.quantity * od.price}" />
-                                ${subtotal}
+                                <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>
                                 <c:set var="total" value="${total + subtotal}" />
                             </td>
                             <td>
@@ -477,7 +478,7 @@
                     </c:forEach>
                     <tr>
                         <td colspan="5" style="text-align:right;"><strong>Tổng cộng:</strong></td>
-                        <td><strong>${total}</strong></td>
+                        <td><strong><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></strong></td>
                     </tr>
                 </table>
             </c:if>
