@@ -30,7 +30,7 @@
                 width: 70%;
             }
             .cart-container {
-                width: 40%;
+                width: 45%;
                 background: white;
                 padding: 16px;
                 border-radius: 12px;
@@ -51,8 +51,8 @@
             }
 
             .product img {
-                width: 70px;
-                height: 70px;
+                width: 65px;
+                height: 65px;
                 border-radius: 4px;
             }
             .product p {
@@ -167,6 +167,9 @@
                 font-weight: bold;
             }
 
+            .cart-container tbody td {
+                font-size: 11px;
+            }
 
         </style>
     </head>
@@ -274,8 +277,10 @@
                                         <div><img src="assets/image/${o.product.image}"></div>
                                         <div style="font-weight: 600;">${o.product.name}</div>
                                         <div style="color: red">${o.product.barcode}</div>
-                                        <div><p>${o.priceOut}</p></div>
+                                        <div><p></p><fmt:formatNumber value="${o.priceOut_unit}" type="currency" currencySymbol="₫" groupingUsed="true"/></div>
                                         <input type="hidden" name="productId" value="${o.product.id}">
+                                        <input type="hidden" name="price" value="${o.priceOut_unit}">
+
                                         <button type="submit">Add</button>
                                     </form>
                                 </td>
@@ -302,11 +307,11 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%;">STT</th>
-                                <th style="width: 30%;">Tên sản phẩm</th>
-                                <th style="width: 20%;">Số lượng</th>
-                                <th style="width: 20%;">Đơn giá</th>
-                                <th style="width: 20%;">Thành tiền</th>
-                                <td></td>
+                                <th style="width: 25%;">Tên sản phẩm</th>
+                                <th style="width: 15%;">Số lượng</th>
+                                <th style="width: 15%;">Đơn giá</th>
+                                <th style="width: 30%;">Thành tiền</th>
+                                <th></th>
                             </tr>
                         </thead>
 
@@ -340,17 +345,16 @@
                                             </form>
                                         </div>
                                     </td>
-                                    <td>$<fmt:formatNumber value="${od.price}" type="number" minFractionDigits="2"/></td>
+                                    <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                                     <td>
                                         <c:set var="subtotal" value="${od.price * od.quantity}" />
-                                        $<fmt:formatNumber value="${subtotal}" type="number" minFractionDigits="2"/>
-                                        <c:set var="total" value="${total + subtotal}" />
+                                        <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>                                        <c:set var="total" value="${total + subtotal}" />
                                     </td>
                                     <td>
                                         <form action="sales" method="post" style="display:inline;">
                                             <input type="hidden" name="productId" value="${od.productId}" />
                                             <input type="hidden" name="action" value="remove" />
-                                            <button type="submit" style="color:red; background: none; border: none; font-size: 12px">Xóa</button>
+                                            <button type="submit" style="color:red; background: none; border: none; font-size: 10px">Xóa</button>
                                         </form>
                                     </td>
 
@@ -360,18 +364,18 @@
                             <tr><td colspan="6" style="height: 20px;"></td></tr>
 
                             <tr>
-                                <td colspan="5" style="text-align: left; font-weight: bold;">Thành tiền:</td>
-                                <td colspan="2" style="font-weight: bold;">$<fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                <td colspan="4" style="text-align: left; font-weight: bold;">Thành tiền:</td>
+                                <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             </tr>
 
                             <tr>
-                                <td colspan="5" style="text-align: left; font-weight: bold;">Tax:</td>
-                                <td colspan="2" style="font-weight: bold;">$<fmt:formatNumber value="${total*0.1}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                <td colspan="4" style="text-align: left; font-weight: bold;">Tax:</td>
+                                <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total*0.1}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             </tr>
 
                             <tr>
-                                <td colspan="5" style="text-align: left; font-weight: bold;">Tổng tiền:</td>
-                                <td colspan="2" style="font-weight: bold;">$<fmt:formatNumber value="${total*1.1}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                <td colspan="4" style="text-align: left; font-weight: bold;">Tổng tiền:</td>
+                                <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total*1.1}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             </tr>
                         </tbody>
                     </table>

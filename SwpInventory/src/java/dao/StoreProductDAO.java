@@ -370,7 +370,7 @@ public class StoreProductDAO {
         List<StoreProduct> list = new ArrayList<>();
         String query = "SELECT sp.store_product_id, sp.store_id, p.product_id, p.image, p.product_name, p.barcode, "
                 + "p.category_id, p.unit, p.price, sp.price_out, sp.quantity, p.manufacture_date, p.expired_date, "
-                + "pu.unit_name, (p.price / pl.conversion_value) AS price_in "
+                + "pu.unit_name, (p.price / pl.conversion_value) AS price_in , (sp.price_out/pl.conversion_value) AS price_out_unit "
                 + "FROM store_products sp "
                 + "JOIN products p ON sp.product_id = p.product_id "
                 + "JOIN product_units pu ON p.product_id = pu.product_id AND pu.is_base_unit = 1 "
@@ -407,6 +407,7 @@ public class StoreProductDAO {
                 sp.setQuantity(rs.getInt("quantity"));
                 sp.setBaseUnitName(rs.getString("unit_name"));
                 sp.setPriceIn(rs.getDouble("price_in"));
+                sp.setPriceOut_unit(rs.getDouble("price_out_unit"));
 
                 list.add(sp);
             }
@@ -420,7 +421,7 @@ public class StoreProductDAO {
         List<StoreProduct> list = new ArrayList<>();
         String query = "SELECT sp.store_product_id, sp.store_id, p.product_id, p.image, p.product_name, p.barcode, "
                 + "p.category_id, p.unit, p.price, sp.price_out, sp.quantity, p.manufacture_date, p.expired_date, "
-                + "pu.unit_name, (p.price / pl.conversion_value) AS price_in "
+                + "pu.unit_name, (p.price / pl.conversion_value) AS price_in, (sp.price_out/pl.conversion_value) AS price_out_unit "
                 + "FROM store_products sp "
                 + "JOIN products p ON sp.product_id = p.product_id "
                 + "JOIN product_units pu ON p.product_id = pu.product_id AND pu.is_base_unit = 1 "
@@ -458,7 +459,7 @@ public class StoreProductDAO {
                 sp.setQuantity(rs.getInt("quantity"));
                 sp.setBaseUnitName(rs.getString("unit_name"));
                 sp.setPriceIn(rs.getDouble("price_in"));
-
+                sp.setPriceOut_unit(rs.getDouble("price_out_unit"));
                 list.add(sp);
             }
         } catch (Exception e) {
@@ -472,7 +473,7 @@ public class StoreProductDAO {
         String query = "SELECT sp.store_product_id, sp.store_id, sp.product_id, "
                 + "       p.product_name,p.barcode, p.image, sp.price_out, sp.quantity, "
                 + "       pu.unit_name, "
-                + "       (p.price / pl.conversion_value) AS price_in "
+                + "       (p.price / pl.conversion_value) AS price_in, (sp.price_out/pl.conversion_value) AS price_out_unit  "
                 + "FROM store_products sp "
                 + "JOIN products p ON sp.product_id = p.product_id "
                 + "JOIN product_units pu ON p.product_id = pu.product_id AND pu.is_base_unit = 1 "
@@ -488,6 +489,7 @@ public class StoreProductDAO {
                 sp.setStoreProductId(rs.getInt("store_product_id"));
                 sp.setStoreId(rs.getInt("store_id"));
                 sp.setPriceIn(rs.getDouble("price_in"));
+                sp.setPriceOut_unit(rs.getDouble("price_out_unit"));
 
                 Product p = new Product();
                 p.setId(rs.getInt("product_id"));
