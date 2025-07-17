@@ -18,6 +18,7 @@ public class StoreProduct {
     private int quantity;
     private String baseUnitName;
     private double priceIn;
+    private double priceOut_unit;
 
     public StoreProduct() {
     }
@@ -40,6 +41,7 @@ public class StoreProduct {
         this.quantity = quantity;
         this.baseUnitName = baseUnitName;
     }
+    
 
     public int getStoreProductId() {
         return storeProductId;
@@ -103,6 +105,14 @@ public class StoreProduct {
 
     public void setPriceIn(double priceIn) {
         this.priceIn = priceIn;
+    }
+
+    public double getPriceOut_unit() {
+        return priceOut_unit;
+    }
+
+    public void setPriceOut_unit(double priceOut_unit) {
+        this.priceOut_unit = priceOut_unit;
     }
 
     @Override

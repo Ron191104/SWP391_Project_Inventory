@@ -38,7 +38,7 @@ public class SubmitOrderServlet extends HttpServlet {
         int productId = cart.get(0).getProductId();
         ProductDAO productDAO = new ProductDAO();
         Product product = productDAO.getProductByID(String.valueOf(productId));
-        int supplierId = product.getSupplier_id();
+        int supplierId = product.getSupplierId();
 
         // tạo đơn hàng
         Order order = new Order();

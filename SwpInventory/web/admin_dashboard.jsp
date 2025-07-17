@@ -304,15 +304,15 @@
         </style>
     </head>
     <body>
+        <form action="AddCustomerServlet" method="post">
         <div class="header">
             <div class="header-left">
                 <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
                 <span class="admin-role-label">(Administrator)</span>
                 <div class="nav">
-                    <a href="dashboard.jsp" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản ký kho</a>
                     <a href="store_dashboard.jsp"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
-                    <a href="supplier_dashboard.jsp"><i class="fas fa-truck"></i> Nhà cung cấp</a>
+                    <a href="supplier_dashboard"><i class="fas fa-truck"></i> Nhà cung cấp</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
                     <a href="login.jsp"><i class="fas fa-cash-register"></i> POS</a>
                     <div class="dropdown">
@@ -374,28 +374,29 @@
         <!-- Main content -->
         <main class="main-content">
             <section class="cards">
-                <article class="card orange">
 
-                    <p>100</p>
-                    <p>Customers</p>
-                    <i class="fas fa-user"></i>
-                </article>
-                <article class="card cyan">
-                    <p>100</p>
-                    <p>Suppliers</p>
-                    <i class="fas fa-user-check"></i>
-                </article>
-                <article class="card indigo">
-                    <p>100</p>
-                    <p>Purchase Invoice</p>
-                    <i class="fas fa-file-alt"></i>
-                </article>
-                <article class="card green">
-                    <p>105</p>
-                    <p>Sales Invoice</p>
-                    <i class="fas fa-file-invoice-dollar"></i>
-                </article>
-            </section>
+    <article class="card orange">
+        <p>${customerCount}</p>
+        <p>Customers</p>
+        <i class="fas fa-user"></i>
+    </article>
+    <article class="card cyan">
+        <p>${supplierCount}</p>
+        <p>Suppliers</p>
+        <i class="fas fa-user-check"></i>
+    </article>
+    <article class="card indigo">
+        <p>${purchaseInvoiceCount}</p>
+        <p>Purchase Invoice</p>
+        <i class="fas fa-file-alt"></i>
+    </article>
+    <article class="card green">
+        <p>${salesInvoiceCount}</p>
+        <p>Sales Invoice</p>
+        <i class="fas fa-file-invoice-dollar"></i>
+    </article>
+</section>
+
         </main>
     </body>
 </html>

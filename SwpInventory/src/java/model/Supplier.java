@@ -2,14 +2,11 @@
 // (This file should be in your 'model' package)
 package model;
 
-/**
- * Represents a Supplier from the database.
- * This class maps to the 'suppliers' table.
- */
+
 public class Supplier {
 
-    private int supplier_id;
-    private String supplier_name;
+    private int supplierId;
+    private String supplierName;
     private String phone;
     private String email;
     private String address;
@@ -19,17 +16,17 @@ public class Supplier {
     }
 
     // Constructor with all fields
-    public Supplier(int supplier_id, String supplier_name, String phone, String email, String address) {
-        this.supplier_id = supplier_id;
-        this.supplier_name = supplier_name;
+    public Supplier(int supplierId, String supplierName, String phone, String email, String address) {
+        this.supplierId = supplierId;
+        this.supplierName = supplierName;
         this.phone = phone;
         this.email = email;
         this.address = address;
     }
     
     // Constructor without ID (for creating new suppliers)
-    public Supplier(String supplier_name, String phone, String email, String address) {
-        this.supplier_name = supplier_name;
+    public Supplier(String supplierName, String phone, String email, String address) {
+        this.supplierName = supplierName;
         this.phone = phone;
         this.email = email;
         this.address = address;
@@ -38,20 +35,20 @@ public class Supplier {
 
     // --- Getters and Setters for all fields ---
 
-    public int getSupplier_id() {
-        return supplier_id;
+    public int getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier_id(int supplier_id) {
-        this.supplier_id = supplier_id;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
-    public String getSupplier_name() {
-        return supplier_name;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public void setSupplier_name(String supplier_name) {
-        this.supplier_name = supplier_name;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     public String getPhone() {
@@ -81,8 +78,8 @@ public class Supplier {
     @Override
     public String toString() {
         return "Supplier{" +
-                "supplier_id=" + supplier_id +
-                ", supplier_name='" + supplier_name + '\'' +
+                "supplierId=" + supplierId +
+                ", supplierName='" + supplierName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +

@@ -216,6 +216,7 @@
             <h1>Nhà Cung Cấp</h1>
             <div class="nav">
                 <a href="supplier_order"><i class="fas fa-box"></i> Đơn hàng</a>
+                <a href="supplier_return_requests"><i class="fas fa-undo-alt"></i> Yêu cầu hoàn hàng</a>
                 <a href="supplier-dashboard?view=approved"><i class="fas fa-check"></i> Đã cung cấp</a>
                 <!-- Notification bell dropdown -->
                 <div class="notification-dropdown-wrapper">

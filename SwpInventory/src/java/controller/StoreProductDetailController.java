@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Categories;
 import model.Category;
@@ -39,6 +40,14 @@ public class StoreProductDetailController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+          HttpSession session = request.getSession();
+
+        Integer storeId = (Integer) session.getAttribute("storeId");
+
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
+        }
         String didRaw = request.getParameter("did");
         if (didRaw == null || didRaw.isEmpty()) {
             response.sendRedirect("store_product_list.jsp");
@@ -48,7 +57,7 @@ public class StoreProductDetailController extends HttpServlet {
         int did = Integer.parseInt(didRaw);
         StoreProductDAO dao = new StoreProductDAO();
 
-        StoreProduct detail = dao.getStoreProductById(did);
+        StoreProduct detail = dao.getStoreProductById(storeId,did);
         if (detail == null) {
             response.sendRedirect("store_product_list.jsp");
             return;
