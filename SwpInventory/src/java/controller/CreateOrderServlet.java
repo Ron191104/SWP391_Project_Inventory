@@ -8,9 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import dao.ProductDAO;
-import dao.SupplierAdminDAO;
+import dao.SupplierDAO;
 import model.Product;
-import model.SupplierAdmin;
+import model.Supplier;
 import model.OrderDetails;
 
 import java.io.IOException;
@@ -23,15 +23,20 @@ public class CreateOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        
 
         String supplierId = request.getParameter("supplierId");
+        if (supplierId != null && !supplierId.isEmpty()) {
+        session.setAttribute("supplierId", supplierId);
+}
 
-        // lấy danh sách supplier
-        SupplierAdminDAO s_dao = new SupplierAdminDAO();
-        List<SupplierAdmin> suppliers = s_dao.getAllSuppliers();
+
+        // láº¥y danh sÃ¡ch supplier
+        SupplierDAO s_dao = new SupplierDAO();
+        List<Supplier> suppliers = s_dao.getAllSuppliers();
         request.setAttribute("listS", suppliers);
 
-        // lấy danh sách sản phẩm theo supplier nếu có
         ProductDAO productDAO = new ProductDAO();
         List<Product> list;
 
@@ -98,7 +103,7 @@ public class CreateOrderServlet extends HttpServlet {
 
         session.setAttribute("cart", cart);
 
-        // redirect lại trang tạo đơn hàng với supplier đã chọn
-        response.sendRedirect("create_order?supplierId=" + supplierId + "&id=" + productId);
+        // redirect láº¡i trang táº¡o Ä‘Æ¡n hÃ ng vá»›i supplier Ä‘Ã£ chá» n
+        response.sendRedirect("create_order?supplierId=" + supplierId);
     }
 }

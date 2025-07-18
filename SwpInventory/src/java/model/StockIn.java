@@ -11,12 +11,22 @@ import java.util.Date;
 public class StockIn {
     private int stockInId;
     private int supplierId;
+    private String supplierName;
     private int employeeId;
     private Date stockInDate;
     private String note;
     private Date createdAt;
 
     public StockIn() {}
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+    
 
     public StockIn(int stockInId, int supplierId, int employeeId, java.util.Date stockInDate,
                    String note, java.util.Date createdAt) {
