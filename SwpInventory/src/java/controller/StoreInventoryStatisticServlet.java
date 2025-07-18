@@ -1,104 +1,54 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="java.util.*, model.StoreInventory" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Thống kê tồn kho từng chi nhánh</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f5f5f5;
-        }
+package controller;
 
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-        }
+import dao.StoreInventoryDAO;
+import model.StoreInventory;
 
-        .branch-header {
-            background: #007BFF;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            padding: 10px;
-            margin-top: 40px;
-            border-radius: 5px;
-        }
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 30px;
-            margin-top: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-            border-radius: 6px;
-            overflow: hidden;
-            background-color: white;
-        }
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.List;
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
+@WebServlet("/store-inventory-statistics")
+public class StoreInventoryStatisticServlet extends HttpServlet {
+    private static final String JDBC_URL = "jdbc:sqlserver://localhost:1433;databaseName=Inventory";
+    private static final String JDBC_USER = "sa";
+    private static final String JDBC_PASS = "2910";
 
-        th {
-            background: #f2f2f2;
-        }
+    private Connection conn;
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASS);
+        } catch (Exception e) {
+            throw new ServletException("Cannot connect to DB", e);
         }
+    }
 
-        tr:hover {
-            background-color: #f1f1f1;
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        StoreInventoryDAO dao = new StoreInventoryDAO(conn);
+        try {
+            // Sử dụng hàm getAllStoreInventories() thay vì getStoreInventoryStatistics()
+            List<StoreInventory> inventoryList = dao.getAllStoreInventories();
+            request.setAttribute("inventoryList", inventoryList);
+            request.getRequestDispatcher("store_inventory_statistics.jsp").forward(request, response);
+        } catch (Exception e) {
+            throw new ServletException(e);
         }
-    </style>
-</head>
-<body>
-    <h2>Thống kê tồn kho từng chi nhánh</h2>
-    <%
-        List<StoreInventory> inventoryList = (List<StoreInventory>) request.getAttribute("inventoryList");
-        String currentStore = "";
-        if (inventoryList != null && !inventoryList.isEmpty()) {
-            for (StoreInventory item : inventoryList) {
-                if (!item.getStoreName().equals(currentStore)) {
-                    if (!currentStore.equals("")) {
-    %>
-                        </table>
-    <%
-                    }
-                    currentStore = item.getStoreName();
-    %>
-                    <div class="branch-header">Chi nhánh: <%= currentStore %></div>
-                    <table>
-                        <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Danh mục</th>
-                            <th>Nhà cung cấp</th>
-                            <th>Số lượng tồn</th>
-                            <th>Đơn vị</th>
-                            <th>Giá nhập</th>
-                            <th>Giá bán</th>
-                        </tr>
-    <%
-                }
-    %>
-                <tr>
-                    <td><%= item.getProductName() %></td>
-                    <td><%= item.getCategoryName() %></td>
-                    <td><%= item.getSupplierName() %></td>
-                    <td><%= item.getStockQuantity() %></td>
-                    <td><%= item.getUnit() %></td>
-                    <td><%= item.getPrice() %></td>
-                    <td><%= item.getPriceOut() %></td>
-                </tr>
-    <%
-            }
-        }
-    %>
-    </table>
-</body>
-</html>
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        try {
+            if (conn != null && !conn.isClosed()) conn.close();
+        } catch (Exception ignored) {}
+    }
+}
