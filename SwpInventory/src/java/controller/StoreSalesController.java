@@ -91,9 +91,9 @@ public class StoreSalesController extends HttpServlet {
 
         if (barcode != null && !barcode.trim().isEmpty()) {
             listProduct = productDAO.findByBarcodeLike(storeId, barcode);
-            totalItems = listProduct.size(); // không phân trang khi tìm barcode
+            totalItems = listProduct.size(); 
             request.setAttribute("searchedBarcode", barcode);
-            request.setAttribute("paginationEnabled", false); // disable paging UI
+            request.setAttribute("paginationEnabled", false); 
         } else if (categoryId != -1) {
             listProduct = productDAO.getStoreProductByCategoryWithPaging(storeId, categoryId, offset, itemsPerPage);
             totalItems = productDAO.countStoreProductByCategory(storeId, categoryId);
@@ -186,7 +186,18 @@ public class StoreSalesController extends HttpServlet {
                         StoreOrderDetails newItem = new StoreOrderDetails();
                         newItem.setProductId(productId);
                         newItem.setQuantity(1);
-                        newItem.setPrice(storeProduct.getPriceOut());
+                        String priceParam = request.getParameter("price");
+    double price = storeProduct.getPriceOut(); // fallback
+//    if (priceParam != null && !priceParam.isEmpty()) {
+//        try {
+            price = Double.parseDouble(priceParam);
+//        } catch (NumberFormatException e) {
+//            // fallback giữ nguyên
+//        }
+//    }
+    newItem.setPrice(price);
+
+
                         newItem.setUnit(storeProduct.getProduct().getUnit());
                         cart.add(newItem);
                     }

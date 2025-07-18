@@ -195,76 +195,32 @@
 </head>
 <body>
     <div class="container">
-        <a href="inventory_order" class="links" >Quay lại</a>
-        <h2>Chi tiết đơn hàng #${stockIn.id}</h2>
-
-        <p><b>Ngày tạo:</b> <fmt:formatDate value="${stockIn.importDate}" pattern="dd-MM-yyyy HH:mm:ss"/></p>
-        <p><b>Ghi chú:</b> ${stockIn.note}</p>
-        <p><b>Trạng thái:</b>
-            <c:choose>
-                <c:when test="${stockIn.status == 0}">
-                    <span class="status-processing">Chờ duyệt</span>
-                </c:when>
-                <c:when test="${stockIn.status == 1}">
-                    <span class="status-approved">Đã duyệt</span>
-                </c:when>
-                <c:when test="${stockIn.status == 2}">
-                    <span class="status-rejected">Từ chối</span>
-                </c:when>
-            </c:choose>
-        </p>
+        <a href="stock_report" class="links" >Quay lại</a>
+        <h2>Chi tiết nhập kho ID=${stockIn.stockInId}</h2>
+     
         <table>
             <tr>
-                <th>Product ID</th>
+                <th>Mã sản phẩm</th>
                 <th>Tên sản phẩm</th>
                 <th>Số lượng</th>
                 <th>Giá nhập</th>
-                <th>Thành tiền</th>
+                <th>Ngày sản xuất</th>
+                <th>Ngày hết hạn</th>
             </tr>
 
-            <c:set var="totalAmount" value="0" />
             <c:forEach items="${details}" var="d">
                 <tr>
                     <td>${d.productId}</td>
                     <td>${d.productName}</td>
                     <td>${d.quantity}</td>
                     <td>${d.priceIn}</td>
-                    <td>${d.quantity * d.priceIn}</td>
+                    <td>${d.manufactureDate}</td>
+                    <td>${d.expiredDate}</td>
+
                 </tr>
-                <c:set var="totalAmount" value="${totalAmount + (d.quantity * d.priceIn)}"/>
             </c:forEach>
 
-            <tr>
-                <td colspan="4" style="text-align: right;"><strong>Tổng cộng:</strong></td>
-                <td><strong>${totalAmount}</strong></td>
-            </tr>
         </table>
-        <div style="margin-top: 24px;">
-            <c:if test="${stockIn.status == 0}">
-                <form method="post" style="display:inline;">
-                    <input type="hidden" name="id" value="${stockIn.id}" />
-                    <button type="submit" name="action" value="approve"
-                            class="btn-approve"
-                            onclick="return confirm('Bạn chắc chắn muốn duyệt đơn hàng này?');">
-                        ✔ Duyệt đơn
-                    </button>
-                </form>
-                <form method="post" style="display:inline;">
-                    <input type="hidden" name="id" value="${stockIn.id}" />
-                    <button type="submit" name="action" value="reject"
-                            class="btn-reject"
-                            onclick="return confirm('Bạn chắc chắn muốn từ chối đơn hàng này?');">
-                        ✖ Từ chối đơn
-                    </button>
-                </form>
-            </c:if>
-            <c:if test="${order.status == 1}">
-                <div style="margin-top:18px;color:green;font-weight:bold;">Đơn hàng đã được duyệt.</div>
-            </c:if>
-            <c:if test="${order.status == 2}">
-                <div style="margin-top:18px;color:#dc3545;font-weight:bold;">Đơn hàng đã bị từ chối.</div>
-            </c:if>
-        </div>
     </div>
 </body>
 </html>
