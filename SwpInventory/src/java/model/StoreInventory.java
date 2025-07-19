@@ -1,81 +1,117 @@
 package model;
 
 public class StoreInventory {
-    private int storeId;
-    private String storeName;
-    private int productId;
+
     private String productName;
     private String categoryName;
     private String supplierName;
-    private int stockQuantity;
+    private int quantityMain;       // SL Kho Tổng
+    private int quantityCauGiay;    // SL CN Cầu Giấy
+    private int quantityQuocOai;    // SL CN Quốc Oai
+    private int totalQuantity;      // Tổng Cộng
     private String unit;
-    private double price;
-    private double priceOut;
+    private double priceIn;         // Giá nhập
+    private double priceOut;        // Giá bán (new field)
 
-    // Default constructor
-    public StoreInventory() {}
+    public StoreInventory() {
+    }
 
-    // Full constructor
-    public StoreInventory(int storeId, String storeName, int productId, String productName,
-                         String categoryName, String supplierName, int stockQuantity,
-                         String unit, double price, double priceOut) {
-        this.storeId = storeId;
-        this.storeName = storeName;
-        this.productId = productId;
+    // Constructor đầy đủ tham số
+    public StoreInventory(String productName, String categoryName, String supplierName,
+                          int quantityMain, int quantityCauGiay, int quantityQuocOai,
+                          int totalQuantity, String unit, double priceIn, double priceOut) { // priceOut added
         this.productName = productName;
         this.categoryName = categoryName;
         this.supplierName = supplierName;
-        this.stockQuantity = stockQuantity;
+        this.quantityMain = quantityMain;
+        this.quantityCauGiay = quantityCauGiay;
+        this.quantityQuocOai = quantityQuocOai;
+        this.totalQuantity = totalQuantity;
         this.unit = unit;
-        this.price = price;
-        this.priceOut = priceOut;
+        this.priceIn = priceIn;
+        this.priceOut = priceOut; // Initialize new field
     }
 
-    // Getters & Setters
-    public int getStoreId() { return storeId; }
-    public void setStoreId(int storeId) { this.storeId = storeId; }
+    // Getters and Setters
+    public String getProductName() {
+        return productName;
+    }
 
-    public String getStoreName() { return storeName; }
-    public void setStoreName(String storeName) { this.storeName = storeName; }
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
-    public int getProductId() { return productId; }
-    public void setProductId(int productId) { this.productId = productId; }
+    public String getCategoryName() {
+        return categoryName;
+    }
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
-    public String getCategoryName() { return categoryName; }
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public String getSupplierName() {
+        return supplierName;
+    }
 
-    public String getSupplierName() { return supplierName; }
-    public void setSupplierName(String supplierName) { this.supplierName = supplierName; }
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
 
-    public int getStockQuantity() { return stockQuantity; }
-    public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
+    public int getQuantityMain() {
+        return quantityMain;
+    }
 
-    public String getUnit() { return unit; }
-    public void setUnit(String unit) { this.unit = unit; }
+    public void setQuantityMain(int quantityMain) {
+        this.quantityMain = quantityMain;
+    }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public int getQuantityCauGiay() {
+        return quantityCauGiay;
+    }
 
-    public double getPriceOut() { return priceOut; }
-    public void setPriceOut(double priceOut) { this.priceOut = priceOut; }
+    public void setQuantityCauGiay(int quantityCauGiay) {
+        this.quantityCauGiay = quantityCauGiay;
+    }
 
-    // Optionally: toString() for debugging
-    @Override
-    public String toString() {
-        return "StoreInventory{" +
-                "storeId=" + storeId +
-                ", storeName='" + storeName + '\'' +
-                ", productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", categoryName='" + categoryName + '\'' +
-                ", supplierName='" + supplierName + '\'' +
-                ", stockQuantity=" + stockQuantity +
-                ", unit='" + unit + '\'' +
-                ", price=" + price +
-                ", priceOut=" + priceOut +
-                '}';
+    public int getQuantityQuocOai() {
+        return quantityQuocOai;
+    }
+
+    public void setQuantityQuocOai(int quantityQuocOai) {
+        this.quantityQuocOai = quantityQuocOai;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public double getPriceIn() {
+        return priceIn;
+    }
+
+    public void setPriceIn(double priceIn) {
+        this.priceIn = priceIn;
+    }
+
+    // New getter for priceOut
+    public double getPriceOut() {
+        return priceOut;
+    }
+
+    // New setter for priceOut
+    public void setPriceOut(double priceOut) {
+        this.priceOut = priceOut;
     }
 }

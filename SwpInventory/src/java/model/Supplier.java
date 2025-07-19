@@ -32,6 +32,10 @@ public class Supplier {
         this.address = address;
     }
 
+    public Supplier(int aInt, String string) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 
     // --- Getters and Setters for all fields ---
 

@@ -1,7 +1,7 @@
 package model;
 
 public class User {
-
+    private int id;
     private String username;
     private String password;
     private String name;
@@ -12,8 +12,10 @@ public class User {
     private int role;
     private int isApproved;
 
-    // Constructor
-    public User(String username, String password, String name, String email, String phone, String address, int role, String image, int isApproved) {
+    // Constructor đầy đủ (có isApproved)
+    public User(int id, String username, String password, String name, String email,
+                String phone, String address, int role, String image, int isApproved) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -24,7 +26,11 @@ public class User {
         this.image = image;
         this.isApproved = isApproved;
     }
- public User(String username, String password, String name, String email, String phone, String address, int role, String image) {
+
+    // Constructor không có isApproved
+    public User(int id, String username, String password, String name, String email,
+                String phone, String address, int role, String image) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -35,12 +41,44 @@ public class User {
         this.image = image;
     }
 
+    // Constructor không có id, dùng khi tạo mới (id tự sinh)
+    public User(String username, String password, String name, String email,
+                String phone, String address, int role, String image, int isApproved) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+        this.image = image;
+        this.isApproved = isApproved;
+    }
 
+    // Constructor không có id và isApproved
+    public User(String username, String password, String name, String email,
+                String phone, String address, int role, String image) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+        this.image = image;
+    }
 
-    // Default constructor (nên có nếu dùng Bean hoặc ResultSet mapping)
+    // Default constructor
     public User() {}
 
     // Getters & Setters
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getUsername() {
         return username;
     }
