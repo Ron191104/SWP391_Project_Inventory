@@ -24,6 +24,7 @@ import model.StoreProduct;
  * @author ADMIN
  */
 @WebServlet(name = "StoreSaleController", urlPatterns = {"/sales"})
+
 public class StoreSalesController extends HttpServlet {
 
     /**
@@ -91,9 +92,9 @@ public class StoreSalesController extends HttpServlet {
 
         if (barcode != null && !barcode.trim().isEmpty()) {
             listProduct = productDAO.findByBarcodeLike(storeId, barcode);
-            totalItems = listProduct.size(); 
+            totalItems = listProduct.size();
             request.setAttribute("searchedBarcode", barcode);
-            request.setAttribute("paginationEnabled", false); 
+            request.setAttribute("paginationEnabled", false);
         } else if (categoryId != -1) {
             listProduct = productDAO.getStoreProductByCategoryWithPaging(storeId, categoryId, offset, itemsPerPage);
             totalItems = productDAO.countStoreProductByCategory(storeId, categoryId);
@@ -165,6 +166,7 @@ public class StoreSalesController extends HttpServlet {
                     break;
                 }
             }
+            
         } else {
             String productIdStr = request.getParameter("productId");
             if (productIdStr != null) {
@@ -187,16 +189,9 @@ public class StoreSalesController extends HttpServlet {
                         newItem.setProductId(productId);
                         newItem.setQuantity(1);
                         String priceParam = request.getParameter("price");
-    double price = storeProduct.getPriceOut(); // fallback
-//    if (priceParam != null && !priceParam.isEmpty()) {
-//        try {
-            price = Double.parseDouble(priceParam);
-//        } catch (NumberFormatException e) {
-//            // fallback giữ nguyên
-//        }
-//    }
-    newItem.setPrice(price);
-
+                        double price = storeProduct.getPriceOut(); // fallback
+                        price = Double.parseDouble(priceParam);
+                        newItem.setPrice(price);
 
                         newItem.setUnit(storeProduct.getProduct().getUnit());
                         cart.add(newItem);
@@ -214,6 +209,7 @@ public class StoreSalesController extends HttpServlet {
         request.setAttribute("storeProduct", listProduct);
         request.setAttribute("cart", cart);
         request.setAttribute("listStore", sdao.getAllStore());
+        session.setAttribute("storeProductAllPage", productDAO.getAllStoreProduct(storeId));
 
         response.sendRedirect("sales");
     }
