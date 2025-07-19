@@ -5,16 +5,77 @@
 <head>
     <title>Quản lý người dùng</title>
     <style>
-        table { border-collapse:collapse; width:90%; margin:30px auto; }
-        th,td { border:1px solid #ccc; padding:8px 12px; text-align:center;}
-        th { background:#e53935; color:white; }
-        a.action { color: #e53935; text-decoration: underline; }
-        .btn { padding: 4px 12px; background: #e53935; color: white; border: none; border-radius: 4px; }
+        /* Style bảng chính */
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 30px auto;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 14px;
+        }
+
+        /* Tiêu đề bảng */
+        th {
+            background: #e53935;
+            color: white;
+            padding: 10px;
+        }
+
+        /* Ô dữ liệu */
+        td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        /* Link thao tác (Sửa, Xóa, Đổi mật khẩu) */
+        a.action {
+            color: #e53935;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        /* Nút chính */
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #e53935;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        /* Hover nút */
+        .btn:hover {
+            background: #ff5c5c;
+        }
+
+        /* Tiêu đề trang */
+        h2 {
+            text-align: center;
+            color: #e53935;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        /* Container chứa nút quay lại – căn phải */
+        .button-container-right {
+            width: 90%;
+            margin: 20px auto;
+            text-align: right; /* Căn nút sang phải */
+        }
     </style>
 </head>
 <body>
-    <h2 style="text-align:center;">Quản lý người dùng</h2>
-    
+
+    <h2>Danh sách người dùng hệ thống</h2>
+
+    <!-- Bảng quản lý người dùng -->
     <table>
         <thead>
             <tr>
@@ -22,10 +83,10 @@
                 <th>Tài khoản</th>
                 <th>Họ tên</th>
                 <th>Email</th>
-                <th>Phone</th>
-                <th>Quyền</th>
+                <th>Điện thoại</th>
+                <th>Phân quyền</th>
                 <th>Duyệt</th>
-                <th>Hành động</th>
+                <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -39,9 +100,9 @@
                 <td>
                     <c:choose>
                         <c:when test="${u.role == 4}">Admin</c:when>
-                        <c:when test="${u.role == 1}">Nhân viên</c:when>
-                        <c:when test="${u.role == 2}">Quản lý</c:when>
-                        <c:when test="${u.role == 3}">Khách hàng</c:when>
+                        <c:when test="${u.role == 1}">Nhân viên kho</c:when>
+                        <c:when test="${u.role == 2}">Quản lý cửa hàng</c:when>
+                        <c:when test="${u.role == 3}">Quản lý nhà cung cấp</c:when>
                         <c:otherwise>Khác</c:otherwise>
                     </c:choose>
                 </td>
@@ -58,10 +119,13 @@
                 </td>
             </tr>
         </c:forEach>
-            
         </tbody>
-        
     </table>
-   
+
+    <!-- Nút quay lại Dashboard ở dưới bảng, góc phải -->
+    <div class="button-container-right">
+        <a href="AdminDashboardServlet" class="btn">← Quay lại Dashboard</a>
+    </div>
+
 </body>
 </html>

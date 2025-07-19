@@ -1,5 +1,6 @@
 package controller;
 
+import dao.NotificationDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,13 +25,11 @@ public class CreateOrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
 
         String supplierId = request.getParameter("supplierId");
         if (supplierId != null && !supplierId.isEmpty()) {
-        session.setAttribute("supplierId", supplierId);
-}
-
+            session.setAttribute("supplierId", supplierId);
+        }
 
         // láº¥y danh sÃ¡ch supplier
         SupplierDAO s_dao = new SupplierDAO();
@@ -49,7 +48,6 @@ public class CreateOrderServlet extends HttpServlet {
         request.setAttribute("listP", list);
 
         // forward sang JSP
-
         request.getRequestDispatcher("create_order.jsp").forward(request, response);
     }
 
@@ -102,6 +100,10 @@ public class CreateOrderServlet extends HttpServlet {
         }
 
         session.setAttribute("cart", cart);
+        // Sau khi thêm sản phẩm vào đơn nhập hàng, gửi thông báo cho admin
+        int adminId = 4;
+        String message = "Quản lý kho vừa tạo đơn nhập hàng từ nhà cung cấp (ID: " + supplierId + ").";
+        NotificationDAO.insertNotification(adminId, message);
 
         // redirect láº¡i trang táº¡o Ä‘Æ¡n hÃ ng vá»›i supplier Ä‘Ã£ chá» n
         response.sendRedirect("create_order?supplierId=" + supplierId);

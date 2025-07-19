@@ -376,70 +376,65 @@
     </head>
     <body>
         <div class="header">
-            <div class="header-left">
-                <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
-                <span class="admin-role-label">(Administrator)</span>
-                <div class="nav">
-                    <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản lý kho</a>
-                    <a href="store_dashboard.jsp"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
-                    <a href="supplier_dashboard"><i class="fas fa-truck"></i> Nhà cung cấp</a>
-                    <a href="store-inventory-statistics"><i class="fas fa-chart-bar"></i> Thống kê</a>
-                    <a href="login.jsp"><i class="fas fa-cash-register"></i> POS</a>
-                    <div class="dropdown">
-                        <input type="checkbox" id="admin-dropdown" />
-                        <label for="admin-dropdown" class="dropdown-label">
-                            <i class="fas fa-user-shield"></i> Quản trị
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="user-management"><i class="fas fa-users-cog"></i> Quản lý người dùng</a>
-                            <a href="system-logs"><i class="fas fa-file-alt"></i> Nhật ký hệ thống</a>
-                            <a href="settings.jsp"><i class="fas fa-cogs"></i> Cấu hình hệ thống</a>
-                            <a href="admin-approve"><i class="fas fa-user-check"></i> Duyệt tài khoản</a>
-                            <a href="admin/categories">Quản lý danh mục sản phẩm</a>
-                            <a href="admin/suppliers">Quản lý nhà cung cấp</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="header-right">
-                <div class="notification-wrapper">
-                    <svg class="notification-icon" viewBox="0 0 24 24">
-                    <path d="M12 22c1.1 0 1.99-.9 1.99-2H10c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z"/>
-                    </svg>
-                    <span class="notification-badge">5</span>
-                    <div class="notification-dropdown">
-                        <div>Yêu cầu cấp quyền mới từ user.</div>
-                        <div>Hệ thống phát hiện đăng nhập bất thường.</div>
-                        <div>Báo cáo tháng 5 đã được cập nhật.</div>
-                        <div>Bạn có đơn hàng mới cần xử lý.</div>
-                        <div>Sản phẩm SP002 sắp hết hàng.</div>
-                    </div>
-                </div>
-                <div class="user-menu">
-                    <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle">
-                        <img src="<%= request.getContextPath() + "/" +
-                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty()
-                                ? session.getAttribute("userImage")
-                                : "images/default-avatar.png") %>"
-                             alt="Avatar người dùng"
-                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
+        <div class="header-left">
+            <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+            <span class="admin-role-label">(Administrator)</span>
+            <div class="nav">
+                <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản lý kho</a>
+                <a href="store_dashboard.jsp"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
+                <a href="supplier_dashboard"><i class="fas fa-truck"></i> Nhà cung cấp</a>
+                <a href="store-inventory-statistics"><i class="fas fa-chart-bar"></i> Thống kê</a>
+                <a href="login.jsp"><i class="fas fa-cash-register"></i> POS</a>
+                <div class="dropdown">
+                    <input type="checkbox" id="admin-dropdown" />
+                    <label for="admin-dropdown" class="dropdown-label">
+                        <i class="fas fa-user-shield"></i> Quản trị
                     </label>
-                    <nav class="dropdown-menu">
-                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
-                            <%= session.getAttribute("userName") %>
-                        </span>
-                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
-                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
-                        <a href="<%= request.getContextPath() %>/logout">Logout</a>
-                    </nav>
+                    <div class="dropdown-menu">
+                        <a href="user-management"><i class="fas fa-users-cog"></i> Quản lý người dùng</a>
+                        <a href="system-logs"><i class="fas fa-file-alt"></i> Nhật ký hệ thống</a>
+                        <a href="settings.jsp"><i class="fas fa-cogs"></i> Cấu hình hệ thống</a>
+                        <a href="admin-approve"><i class="fas fa-user-check"></i> Duyệt tài khoản</a>
+                        <a href="admin/categories">Quản lý danh mục sản phẩm</a>
+                        <a href="admin/suppliers">Quản lý nhà cung cấp</a>
+                    </div>
                 </div>
-                <span style="padding:0 16px; color:#fff6c5; font-size:x-small;">
-                    <%= session.getAttribute("userRole") %>
-                </span>
             </div>
         </div>
-
+        <div class="header-right">
+            <div class="notification-wrapper">
+                <svg class="notification-icon" viewBox="0 0 24 24">
+                    <path d="M12 22c1.1 0 1.99-.9 1.99-2H10c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z"/>
+                </svg>
+                <span class="notification-badge">0</span>
+                <div class="notification-dropdown">
+                    <!-- Nội dung thông báo động -->
+                </div>
+            </div>
+            <div class="user-menu">
+                <input type="checkbox" id="user-menu-toggle" />
+                <label for="user-menu-toggle">
+                    <img src="<%= request.getContextPath() + "/" +
+                        (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty()
+                            ? session.getAttribute("userImage")
+                            : "images/default-avatar.png") %>"
+                         alt="Avatar người dùng"
+                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
+                </label>
+                <nav class="dropdown-menu">
+                    <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
+                        <%= session.getAttribute("userName") %>
+                    </span>
+                    <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
+                    <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
+                    <a href="<%= request.getContextPath() %>/logout">Logout</a>
+                </nav>
+            </div>
+            <span style="padding:0 16px; color:#fff6c5; font-size:x-small;">
+                <%= session.getAttribute("userRole") %>
+            </span>
+        </div>
+    </div>
 
         <main class="main-content">
             <section class="cards">
@@ -623,6 +618,53 @@
             } else {
                 document.getElementById('categoryStockChart').parentElement.innerHTML = "<p style='text-align: center; color: #888; padding: 20px;'>Không có dữ liệu danh mục để hiển thị biểu đồ tỷ lệ.</p>";
             }
+            
         </script>
+        
+        <!-- Phần Script load thông báo -->
+    <script>
+    function loadNotifications() {
+        fetch('<%= request.getContextPath() %>/load-notifications')
+            .then(response => response.json())
+            .then(data => {
+                const dropdown = document.querySelector('.notification-dropdown');
+                const badge = document.querySelector('.notification-badge');
+
+                dropdown.innerHTML = '';
+                let unreadCount = 0;
+
+                if (data.length > 0) {
+                    data.forEach(item => {
+                        const div = document.createElement('div');
+                        div.textContent = item.message;
+                        if (!item.isRead) {
+                            div.style.fontWeight = 'bold';
+                            unreadCount++;
+                        }
+                        dropdown.appendChild(div);
+                    });
+                } else {
+                    dropdown.innerHTML = '<div>Không có thông báo nào.</div>';
+                }
+
+                badge.textContent = unreadCount > 0 ? unreadCount : '';
+            })
+            .catch(error => {
+                console.error('Lỗi khi tải thông báo:', error);
+            });
+    }
+
+    //  sự kiện khi hover chuông (hoặc click):
+    document.querySelector('.notification-wrapper').addEventListener('mouseenter', () => {
+        fetch('<%= request.getContextPath() %>/mark-notifications-read', {
+            method: 'POST'
+        }).then(() => {
+            // Sau khi đánh dấu đã đọc → load lại thông báo để cập nhật badge
+            loadNotifications();
+        });
+    });
+
+    window.addEventListener('load', loadNotifications);
+</script>
     </body>
 </html>
