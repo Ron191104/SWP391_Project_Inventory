@@ -80,8 +80,6 @@ public class SalesDAO {
 
         try {
             con = DBConnect.getConnection();
-            System.out.println("Kết nối DB: " + con);
-
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
 
@@ -96,13 +94,8 @@ public class SalesDAO {
                     customerName = "Khách lẻ";
                 }
                 sale.setCustomerName(customerName);
-
-                System.out.println("Đọc hóa đơn sale_id = " + sale.getSaleId());
-
                 list.add(sale);
             }
-
-            System.out.println("Số hóa đơn lấy được: " + list.size());
 
         } catch (Exception e) {
         }
@@ -112,9 +105,12 @@ public class SalesDAO {
 
     public List<SaleDetail> getSaleDetailsBySaleId(int saleId) {
         List<SaleDetail> list = new ArrayList<>();
-        String query = "SELECT sd.product_id, p.product_name, sd.price_out, sd.quantity "
-                + "FROM sales_details sd "
-                + "JOIN products p ON sd.product_id = p.product_id "
+        String query = "SELECT sd.sale_detail_id, sd.sale_id, sd.product_id, sd.price_out, sd.quantity,\n"
+                + "       p.product_name,\n"
+                + "       pu.unit_name AS base_unit\n"
+                + "FROM sales_details sd\n"
+                + "JOIN products p ON sd.product_id = p.product_id\n"
+                + "JOIN product_units pu ON p.product_id = pu.product_id AND pu.is_base_unit = 1\n"
                 + "WHERE sd.sale_id = ?";
         try {
             con = DBConnect.getConnection();
@@ -123,12 +119,13 @@ public class SalesDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 SaleDetail detail = new SaleDetail();
+                detail.setSaleDetailId(rs.getInt("sale_detail_id"));
+                detail.setSaleId(rs.getInt("sale_id"));
                 detail.setProductId(rs.getInt("product_id"));
-                detail.setProductName(rs.getString("product_name"));
                 detail.setPriceOut(rs.getDouble("price_out"));
                 detail.setQuantity(rs.getInt("quantity"));
-                detail.setSaleId(saleId);
-
+                detail.setProductName(rs.getString("product_name"));
+                detail.setUnit(rs.getString("base_unit"));
                 list.add(detail);
             }
         } catch (Exception e) {
@@ -193,6 +190,29 @@ public class SalesDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public Sale getSaleById(int saleId) {
+        Sale sale = null;
+        String query = "SELECT sale_id, customer_id,store_id, sale_date, total_amount "
+                + "FROM sales WHERE sale_id = ?";
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, saleId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                sale = new Sale();
+                sale.setSaleId(rs.getInt("sale_id"));
+                sale.setCustomerId(rs.getInt("customer_id"));
+                sale.setStoreId(rs.getInt("store_id")); 
+                sale.setSaleDate(rs.getTimestamp("sale_date"));
+                sale.setTotalAmount(rs.getDouble("total_amount"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sale;
     }
 
 }

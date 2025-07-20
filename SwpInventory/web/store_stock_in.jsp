@@ -106,7 +106,6 @@
                 <h1>Tên kho</h1>
                 <div class="nav">
                     <a href="store_dashboard.jsp">
-
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -117,6 +116,7 @@
                         <div class="dropdown-menu">
                             <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
                             <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
+                            <a href="store_set_price"><i class="fas fa-cog"></i> Đặt giá sản phẩm</a>
                         </div>
                     </div>
 
@@ -129,8 +129,9 @@
                             <a href="store_stock_in"><i class="fas fa-plus-circle"></i>Tạo đơn</a>
                             <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
-                    </div>           
-                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    </div>                   
+                    <a href="sales"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    <a href="customer_list"><i class="fas fa-users"></i> Khách hàng</a>
                     <c:if test="${not empty sessionScope.storeId}">
                         <c:forEach var="store" items="${listStore}">
                             <c:if test="${store.storeId == sessionScope.storeId}">

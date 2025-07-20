@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CategoryDAO;
+import dao.CustomerDAO;
 import dao.StoreDAO;
 import dao.StoreProductDAO;
 import java.io.IOException;
@@ -114,6 +115,7 @@ public class StoreSalesController extends HttpServlet {
         StoreDAO sdao = new StoreDAO();
         CategoryDAO cdao = new CategoryDAO();
 
+
         request.setAttribute("storeProduct", listProduct);
         request.setAttribute("listStore", sdao.getAllStore());
         request.setAttribute("listStoreCategory", cdao.getAllCategories());
@@ -143,6 +145,23 @@ public class StoreSalesController extends HttpServlet {
             response.sendRedirect("choose_store");
             return;
         }
+String customerName = request.getParameter("customerName");
+String phone = request.getParameter("phone");
+request.setAttribute("customerName", customerName);
+request.setAttribute("phone", phone);
+int pointBalance = 0;
+session.setAttribute("customerName", customerName);
+session.setAttribute("phone", phone);
+session.setAttribute("pointBalance", pointBalance);
+
+if (phone != null && !phone.isEmpty()) {
+    CustomerDAO customerDAO = new CustomerDAO();
+    int customerId = customerDAO.findCustomerIdByPhone(phone);
+    if (customerId > 0) {
+        pointBalance = customerDAO.getPoints(customerId);
+    }
+}
+request.setAttribute("pointBalance", pointBalance);
 
         String action = request.getParameter("action");
         String cartKey = "saleCart_" + storeId;
@@ -211,7 +230,7 @@ public class StoreSalesController extends HttpServlet {
         request.setAttribute("listStore", sdao.getAllStore());
         session.setAttribute("storeProductAllPage", productDAO.getAllStoreProduct(storeId));
 
-        response.sendRedirect("sales");
+response.sendRedirect("sales");
     }
 
     /**

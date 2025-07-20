@@ -16,6 +16,8 @@ public class SaleDetail {
     private int quantity;
     private double priceOut;
     private String productName;
+    private String unit;
+    private int storeId;
 
     public SaleDetail() {
     }
@@ -74,6 +76,22 @@ public class SaleDetail {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 
 }

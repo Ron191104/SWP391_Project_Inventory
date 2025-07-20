@@ -19,10 +19,9 @@
                 border-radius: 8px;
                 margin: 30px;
                 padding-left: 30px;
-
                 display: inline-block;
                 width: 160px;
-                height: 80px;
+                height: 110px;
             }
             .card h3 {
                 font-size: 18px;
@@ -65,7 +64,7 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="store_dashboard.jsp">
+                    <a href="store_dashboard">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -76,6 +75,7 @@
                         <div class="dropdown-menu">
                             <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
                             <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
+                            <a href="store_set_price"><i class="fas fa-cog"></i> Đặt giá sản phẩm</a>
                         </div>
                     </div>
 
@@ -88,10 +88,16 @@
                             <a href="store_stock_in"><i class="fas fa-plus-circle"></i>Tạo đơn</a>
                             <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
-                    </div>                     <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
-
-                    <a href="choose_store"><i class="fas fa-store"></i>Chi nhánh</a>
-
+                    </div>                   
+                    <a href="sales"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    <a href="customer_list"><i class="fas fa-users"></i> Khách hàng</a>
+                    <c:if test="${not empty sessionScope.storeId}">
+                        <c:forEach var="store" items="${listStore}">
+                            <c:if test="${store.storeId == sessionScope.storeId}">
+                                <a href="choose_store"><i class="fas fa-store"></i>${store.storeName}</a>
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
                 </div>
             </div>
             <div class="header-right">
@@ -107,45 +113,38 @@
                         <div>Báo cáo tháng 5 đã được cập nhật.</div>
                     </div>
                 </div>
-               <div class="user-menu">
-    <input type="checkbox" id="user-menu-toggle" />
-    <label for="user-menu-toggle">
-        <img src="<%= request.getContextPath() + "/" + 
-            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() 
-                ? session.getAttribute("userImage") 
-                : "images/default-avatar.png") %>" 
-             alt="Avatar người dùng" 
-             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
-    </label>
-    <nav class="dropdown-menu">
-        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
-            <%= session.getAttribute("userName") %>
-        </span>
-        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
-        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
-        <a href="<%= request.getContextPath() %>/logout">Logout</a>
-    </nav>
-</div>
+                <div class="user-menu">
+                    <input type="checkbox" id="user-menu-toggle" />
+                    <label for="user-menu-toggle">
+                        <img src="<%= request.getContextPath() + "/" + 
+                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() 
+                                ? session.getAttribute("userImage") 
+                                : "images/default-avatar.png") %>" 
+                             alt="Avatar người dùng" 
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
+                    </label>
+                    <nav class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
+                        <a href="<%= request.getContextPath() %>/logout">Logout</a>
+                    </nav>
+                </div>
             </div>
         </div>
 
         <div class="card">
-            <h3>Clicks <span class="tooltip">
+            <h3>Số sản phẩm 
+                <span class="tooltip">
                     <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
+                    <span class="tooltiptext">Tổng số sản phẩm hiện có trong cửa hàng</span>
                 </span>
-                <div class="value">100</div>
-                <div>-13,04%</div>
+            </h3>
+            <div class="value">${totalProducts}</div>
         </div>
 
-        <div class="card">
-            <h3>Clicks <span class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-                </span>
-                <div class="value">100</div>
-                <div>-13,04%</div>
-        </div>
 
     </body>
 </html>

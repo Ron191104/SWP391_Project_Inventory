@@ -117,21 +117,27 @@ public int insertCustomer(String name, String phone, int point) {
     return -1;
 }
 
-      public static void main(String[] args) {
-        CustomerDAO dao = new CustomerDAO();
-        List<Customer> customers = dao.getAllCustomers();
-
-        if (customers.isEmpty()) {
-            System.out.println("Không có khách hàng nào trong hệ thống.");
-        } else {
-            for (Customer c : customers) {
-                System.out.println("ID: " + c.getCustomerId());
-                System.out.println("Tên: " + c.getName());
-                System.out.println("SĐT: " + c.getPhone());
-                System.out.println("Điểm: " + c.getPoint());
-                System.out.println("----------------------");
-            }
+public Customer getCustomerById(int customerId) {
+    Customer c = null;
+    String query = "SELECT customer_id, name, phone, point FROM customers WHERE customer_id = ?";
+    try {
+        con = DBConnect.getConnection();
+        ps = con.prepareStatement(query);
+        ps.setInt(1, customerId);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            c = new Customer();
+            c.setCustomerId(rs.getInt("customer_id"));
+            c.setName(rs.getString("name"));
+            c.setPhone(rs.getString("phone"));
+            c.setPoint(rs.getInt("point"));
         }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return c;
+}
+
+
 
 }

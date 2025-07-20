@@ -308,6 +308,8 @@
                                                 <div><p></p><fmt:formatNumber value="${o.priceOut_unit}" type="currency" currencySymbol="₫" groupingUsed="true"/></div>
                                                 <input type="hidden" name="productId" value="${o.product.id}">
                                                 <input type="hidden" name="price" value="${o.priceOut_unit}">
+                                                <input type="hidden" name="customerName" value="${customerName}" />
+                                                <input type="hidden" name="phone" value="${phone}" />
 
                                                 <button type="submit">Add</button>
                                             </form>
@@ -335,6 +337,7 @@
                 <div class="cart-container">
                     <form action="processCheckout" method="post">
                         <div style="display: flex; gap: 5px;">
+
                             <div>
                                 <label for="customerName" style="font-size: 10px; font-weight: bold;">Tên khách hàng:</label>
                                 <input type="text" id="customerName" name="customerName" class="custom-input-cart" />
@@ -342,7 +345,8 @@
                             <div>
                                 <label for="phone" style="font-size: 10px; font-weight: bold;">Số điện thoại:</label>
                                 <input type="text" id="phone" name="phone" class="custom-input-cart" />
-                            </div>
+                            </div>                         
+
                             <input type="hidden" name="customerId" value="${customerId}">
 
                         </div>
@@ -378,12 +382,16 @@
                                                 <form action="sales" method="post" style="display: inline;">
                                                     <input type="hidden" name="productId" value="${od.productId}">
                                                     <input type="hidden" name="action" value="decrease">
+
+
                                                     <button type="submit">-</button>
                                                 </form>
                                                 <span>${od.quantity}</span>
                                                 <form action="sales" method="post" style="display: inline;">
                                                     <input type="hidden" name="productId" value="${od.productId}">
                                                     <input type="hidden" name="action" value="increase">
+
+
                                                     <button type="submit">+</button>
                                                 </form>
                                             </div>
@@ -411,26 +419,21 @@
                                     <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" style="text-align: left; font-weight: bold;">
-                                        Dùng điểm:
-                                        <label style="font-weight: normal; font-size: 12px;">
-                                            <input type="checkbox" name="usePoints" value="true" />
-                                            Bạn có: <span style="color: green;"><c:out value="${pointBalance}" default="0" /></span>
-                                        </label>
-                                    </td>
-                                    <td colspan="2" style="font-weight: bold;">
-                                        <fmt:formatNumber value="${pointBalance}" type="currency" currencySymbol="₫" groupingUsed="true" />
-                                    </td>
-                                </tr>
-
-
-
-                                <tr>
                                     <td colspan="4" style="text-align: left; font-weight: bold;">Tổng tiền:</td>
                                     <td colspan="2" style="font-weight: bold;">
                                         <fmt:formatNumber value="${total - pointBalance}" type="currency" currencySymbol="₫" groupingUsed="true" />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: left; font-weight: bold;">
+                                        Dùng điểm:
+                                        <label>
+                                            <input type="checkbox" name="usePoints" value="true"  />
+                                        </label>
+                                    </td>
+                                  
+                                </tr>
+
                             </tbody>
                         </table>
                         <button class="checkout-btn" type="submit">Thanh toán</button>
