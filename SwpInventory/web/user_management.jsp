@@ -17,7 +17,7 @@
 
         /* Tiêu đề bảng */
         th {
-            background: #e53935;
+            background: #81d4fa; /* Xanh biển pastel */
             color: white;
             padding: 10px;
         }
@@ -31,7 +31,7 @@
 
         /* Link thao tác (Sửa, Xóa, Đổi mật khẩu) */
         a.action {
-            color: #e53935;
+            color: #0288d1;
             text-decoration: underline;
             font-weight: bold;
         }
@@ -40,7 +40,7 @@
         .btn {
             display: inline-block;
             padding: 8px 16px;
-            background: #e53935;
+            background: #4fc3f7;
             color: white;
             border: none;
             border-radius: 6px;
@@ -52,13 +52,13 @@
 
         /* Hover nút */
         .btn:hover {
-            background: #ff5c5c;
+            background: #29b6f6;
         }
 
         /* Tiêu đề trang */
         h2 {
             text-align: center;
-            color: #e53935;
+            color: #0288d1;
             font-size: 20px;
             margin-top: 20px;
         }

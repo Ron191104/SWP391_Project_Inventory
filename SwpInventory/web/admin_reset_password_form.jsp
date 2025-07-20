@@ -7,8 +7,8 @@
     <title>Đổi mật khẩu người dùng</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background-color: #f0f8ff;
             margin: 0;
             padding: 0;
         }
@@ -16,58 +16,69 @@
         .form-container {
             width: 90%;
             max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
+            margin: 60px auto;
+            padding: 24px;
+            border: 1px solid #cceeff;
             border-radius: 10px;
             background: #ffffff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         h2 {
             text-align: center;
-            color: #333;
+            color: #0288d1;
+            font-weight: 700;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin: 10px 0 5px;
-            color: #555;
+            margin: 12px 0 5px;
+            color: #333;
+            font-weight: 600;
         }
 
-        input[type=password], input[type=submit] {
+        input[type=password] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 8px 0 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 15px;
+            box-sizing: border-box;
         }
 
         input[type=submit] {
-            background-color: #4CAF50; /* Green */
+            width: 100%;
+            padding: 12px;
+            background-color: #4fc3f7;
             color: white;
+            font-weight: 600;
             border: none;
+            border-radius: 6px;
+            font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
         input[type=submit]:hover {
-            background-color: #45a049; /* Darker green */
+            background-color: #29b6f6;
         }
 
         .message {
             color: green;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-weight: 600;
         }
 
         .back-link {
-            display: inline-block;
-            margin-top: 10px;
-            color: #555;
-            text-decoration: none;
+            display: block;
             text-align: center;
+            margin-top: 16px;
+            color: #0288d1;
+            font-weight: 600;
+            text-decoration: none;
         }
 
         .back-link:hover {
@@ -77,14 +88,16 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Đổi mật khẩu cho tài khoản: <b>${username}</b></h2>
+        <h2>Đổi mật khẩu cho: <br><b>${username}</b></h2>
+
         <form action="admin-reset-password" method="post">
             <input type="hidden" name="username" value="${username}" />
+
             <label for="newPassword">Mật khẩu mới:</label>
             <input type="password" id="newPassword" name="newPassword" required />
 
             <input type="submit" value="Xác nhận đổi mật khẩu" />
-            <a href="login.jsp" class="back-link">← Đăng nhập lại</a>
+            <a href="login.jsp" class="back-link">← Quay lại đăng nhập</a>
         </form>
 
         <c:if test="${not empty message}">
