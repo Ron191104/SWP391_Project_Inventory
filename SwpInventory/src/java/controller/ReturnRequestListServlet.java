@@ -18,8 +18,8 @@ public class ReturnRequestListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Chỉ lấy các đơn hoàn trả đã gửi đi (đã duyệt)
-        List<ReturnRequest> returnList = dao.getApprovedReturnRequests();
+        // Lấy tất cả đơn hoàn trả với mọi trạng thái
+        List<ReturnRequest> returnList = dao.getAllReturnRequests();
 
         request.setAttribute("returnList", returnList);
 

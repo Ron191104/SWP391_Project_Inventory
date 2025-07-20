@@ -180,7 +180,9 @@ public class ReturnRequestDAO {
     // Lấy tất cả yêu cầu trả hàng
     public List<ReturnRequest> getAllReturnRequests() {
         List<ReturnRequest> list = new ArrayList<>();
-        String sql = "SELECT * FROM return_requests ORDER BY return_id DESC";
+        String sql = "SELECT rr.*, u.name AS employee_name FROM return_requests rr "
+                + "JOIN users u ON rr.employee_id = u.id "
+                + "ORDER BY rr.return_id DESC";
 
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -194,6 +196,10 @@ public class ReturnRequestDAO {
                 rr.setNote(rs.getString("note"));
                 rr.setCreatedDate(rs.getTimestamp("created_at"));
                 rr.setStatus(rs.getInt("status"));
+
+                // Lấy tên nhân viên từ bảng users
+                rr.setEmployeeName(rs.getString("employee_name"));
+
                 list.add(rr);
             }
 
@@ -203,8 +209,8 @@ public class ReturnRequestDAO {
 
         return list;
     }
-    // Lấy danh sách đơn hoàn trả đã duyệt (đã gửi đi)
 
+    // Lấy danh sách đơn hoàn trả đã duyệt (đã gửi đi)
     public List<ReturnRequest> getApprovedReturnRequests() {
         List<ReturnRequest> list = new ArrayList<>();
 

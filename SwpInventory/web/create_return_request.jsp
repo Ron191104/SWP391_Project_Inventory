@@ -42,7 +42,8 @@
                 border: 1.5px solid #ccc;
             }
 
-            input[type="submit"] {
+            input[type="submit"], .view-btn {
+                display: inline-block;
                 margin-top: 24px;
                 background-color: #82CAFA;
                 color: white;
@@ -52,9 +53,11 @@
                 font-weight: bold;
                 border-radius: 6px;
                 cursor: pointer;
+                text-decoration: none;
+                margin-right: 12px;
             }
 
-            input[type="submit"]:hover {
+            input[type="submit"]:hover, .view-btn:hover {
                 background-color: #21a5fc;
             }
 
@@ -94,7 +97,6 @@
         <div class="container">
             <h2><i class="fas fa-undo-alt"></i> Tạo yêu cầu trả hàng</h2>
 
-            <!-- Thông báo thành công hoặc lỗi -->
             <c:if test="${not empty sessionScope.successMessage}">
                 <p style="color: green">${sessionScope.successMessage}</p>
                 <c:remove var="successMessage" scope="session"/>
@@ -146,6 +148,7 @@
 
                     <div style="text-align: center;">
                         <input type="submit" value="Gửi yêu cầu trả hàng">
+                        <a href="return_requests" class="view-btn">Xem yêu cầu đã gửi</a>
                     </div>
                 </c:if>
             </form>

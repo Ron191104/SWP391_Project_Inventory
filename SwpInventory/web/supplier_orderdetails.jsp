@@ -1,5 +1,5 @@
 
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -201,19 +201,27 @@
                             <td><strong>${od.productName}</strong></td>
                             <td>${od.quantity}</td>
                             <td>${od.unit}</td>
-                            <td>${od.price}</td>
+                            <td>
+                                <fmt:formatNumber value="${od.price}" groupingUsed="true" maxFractionDigits="0"/>
+                                ₫
+                            </td>
                             <td>
                                 <c:set var="subtotal" value="${od.quantity * od.price}" />
-                                ${subtotal}
+                                <fmt:formatNumber value="${subtotal}" groupingUsed="true" maxFractionDigits="0"/>
+                                ₫
                                 <c:set var="total" value="${total + subtotal}" />
                             </td>
                         </tr>
                     </c:forEach>
                     <tr>
                         <td colspan="4" style="text-align:right;"><strong>Tổng cộng:</strong></td>
-                        <td><strong>${total}</strong></td>
+                        <td><strong>
+                                <fmt:formatNumber value="${total}" groupingUsed="true" maxFractionDigits="0"/>
+                                ₫
+                            </strong></td>
                     </tr>
                 </tbody>
+
             </table>
 
             <!-- Nút duyệt/từ chối -->

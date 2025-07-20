@@ -20,7 +20,6 @@ public class SupplierReturnDetailServlet extends HttpServlet {
 
         String param = request.getParameter("returnId");
 
-        // Xử lý lỗi thiếu hoặc sai kiểu returnId
         if (param == null || param.trim().isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu tham số returnId.");
             return;
@@ -37,20 +36,51 @@ public class SupplierReturnDetailServlet extends HttpServlet {
             return;
         }
 
-        // Truy vấn dữ liệu
         ReturnRequest returnInfo = dao.getReturnRequestById(returnId);
         if (returnInfo == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy yêu cầu trả hàng với returnId = " + returnId);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy yêu cầu trả hàng.");
             return;
         }
 
         List<ReturnRequestDetail> details = dao.getReturnRequestDetailInfo(returnId);
 
-        // Đặt dữ liệu vào request
         request.setAttribute("returnInfo", returnInfo);
         request.setAttribute("details", details);
 
-        // Forward sang JSP
         request.getRequestDispatcher("supplier_return_details.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String param = request.getParameter("returnId");
+
+        if (param == null || param.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu returnId trong POST.");
+            return;
+        }
+
+        int returnId;
+        try {
+            returnId = Integer.parseInt(param);
+            if (returnId <= 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "returnId không hợp lệ.");
+            return;
+        }
+
+        String action = request.getParameter("action");
+
+        if ("approve".equals(action)) {
+            dao.updateRequestStatus(returnId, 1); // Đã duyệt
+        } else if ("reject".equals(action)) {
+            dao.updateRequestStatus(returnId, 2); // Từ chối
+        }
+
+        // Sau khi xử lý, chuyển về lại trang chi tiết
+        response.sendRedirect("supplier_return_details?returnId=" + returnId);
     }
 }
