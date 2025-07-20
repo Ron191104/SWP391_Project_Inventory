@@ -5,10 +5,11 @@
 <!DOCTYPE html>
 <html lang="vi">
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
         <title>Yêu cầu trả hàng</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <style>
             body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -89,6 +90,7 @@
             }
         </style>
     </head>
+
     <body>
 
         <div class="header">
@@ -146,7 +148,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="return_request_detail?id=${r.id}" class="btn-view">
+                                    <a href="supplier_return_details?returnId=${r.id}" class="btn-view">
                                         <i class="fas fa-eye"></i> Xem chi tiết
                                     </a>
                                 </td>
@@ -159,6 +161,7 @@
             <c:if test="${empty returnRequests}">
                 <div class="no-data">Không có yêu cầu trả hàng nào.</div>
             </c:if>
+
         </div>
 
     </body>

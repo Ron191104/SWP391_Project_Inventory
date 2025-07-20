@@ -146,7 +146,7 @@ public class ReturnRequestDAO {
 
     // Cập nhật trạng thái yêu cầu (1 = duyệt, 2 = từ chối)
     public boolean updateRequestStatus(int id, int status) {
-        String sql = "UPDATE return_requests SET status = ? WHERE id = ?";
+        String sql = "UPDATE return_requests SET status = ? WHERE return_id = ?";
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, status);
             ps.setInt(2, id);
@@ -240,6 +240,33 @@ public class ReturnRequestDAO {
             e.printStackTrace();
         }
 
+        return list;
+    }
+
+    public List<ReturnRequestDetail> getReturnRequestDetailInfo(int returnId) {
+        List<ReturnRequestDetail> list = new ArrayList<>();
+        String sql = "SELECT d.product_id, p.product_name, d.quantity, p.unit, p.price "
+                + "FROM return_request_details d "
+                + "JOIN products p ON d.product_id = p.product_id "
+                + "WHERE d.return_id = ?";
+
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, returnId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ReturnRequestDetail d = new ReturnRequestDetail();
+                d.setProductId(rs.getInt("product_id"));
+                d.setProductName(rs.getString("product_name"));
+                d.setQuantity(rs.getInt("quantity"));
+                d.setUnit(rs.getString("unit"));
+                d.setPrice(rs.getDouble("price"));
+                list.add(d);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
