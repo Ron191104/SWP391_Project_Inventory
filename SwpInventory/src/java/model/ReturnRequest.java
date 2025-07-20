@@ -4,13 +4,17 @@ import java.util.Date;
 
 public class ReturnRequest {
 
-    private int id; 
+    private int id;
     private int supplier_id;
     private int employee_id;
     private String reason;
     private String note;
     private Date createdDate;
     private int status;
+
+    // Bổ sung cho hiển thị
+    private String supplierName;
+    private String employeeName;
 
     public ReturnRequest() {
     }
@@ -71,5 +75,22 @@ public class ReturnRequest {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+    // Các trường hiển thị thêm
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 }
