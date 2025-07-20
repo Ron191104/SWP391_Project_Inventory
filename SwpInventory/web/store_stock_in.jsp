@@ -109,7 +109,7 @@
 
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
-                     <div class="dropdown">
+                    <div class="dropdown">
                         <input type="checkbox" id="store-dropdown" />
                         <label for="store-dropdown" class="dropdown-label">
                             <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
@@ -196,8 +196,9 @@
                     <table border="1" width="100%">
                         <tr>
                             <th>Tên sản phẩm</th>
-                            <th>Giá</th>
                             <th>Số lượng</th>
+                            <th>Đơn vị</th>
+                            <th>Giá</th>
                             <th>Thành tiền</th>
                             <th>Action</th>
                         </tr>
@@ -214,9 +215,10 @@
                                                 </c:if>
                                             </c:forEach>
                                         </td>
+                                        <td>${od.quantity}</td>
+                                        <td>${od.unit}</td>
                                         <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
 
-                                        <td>${od.quantity}</td>
                                         <td>
                                             <c:set var="subtotal" value="${od.quantity * od.price}" />
                                             <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>
@@ -233,15 +235,15 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="5" style="text-align:center;">Giỏ hàng trống</td>
+                                    <td colspan="6" style="text-align:center;">Giỏ hàng trống</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
 
                         <tr>
-                            <td colspan="4"><b>Tổng:</b></td>
+                            <td colspan="5"><b>Tổng:</b></td>
                             <td><b><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></b></td>
-                                                                        
+
 
                         </tr>
                     </table>

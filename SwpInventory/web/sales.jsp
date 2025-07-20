@@ -30,7 +30,7 @@
                 width: 70%;
             }
             .cart-container {
-                width: 45%;
+                width: 40%;
                 background: white;
                 padding: 16px;
                 border-radius: 12px;
@@ -142,9 +142,13 @@
             }
 
             .pagination {
-                margin-top: 5px;
-                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 10px;
                 gap: 9px;
+                display: flex;
                 justify-content: center;
             }
 
@@ -168,7 +172,14 @@
             }
 
             .cart-container tbody td {
-                font-size: 11px;
+                font-size: 12px;
+            }
+            .custom-input-cart{
+                height: 20px;
+                border: 1px solid #82CAFA;
+                border-radius: 5px;
+                outline: none;
+                margin-bottom: 10px;
             }
 
         </style>
@@ -228,13 +239,21 @@
                 </div>
                 <div class="user-menu">
                     <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
-                        <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
+                    <label for="user-menu-toggle">
+                        <img src="<%= request.getContextPath() + "/" + 
+                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() 
+                                ? session.getAttribute("userImage") 
+                                : "images/default-avatar.png") %>" 
+                             alt="Avatar người dùng" 
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
-                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
-                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
-                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
+                    <nav class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
+                        <a href="<%= request.getContextPath() %>/logout">Logout</a>
                     </nav>
                 </div>
             </div>
@@ -268,26 +287,37 @@
 
 
                     <table>
-                        <c:forEach items="${storeProduct}" var="o" varStatus="status">
-                            <c:if test="${status.index % 6 == 0}">
+                        <c:choose>
+                            <c:when test="${empty storeProduct}">
                                 <tr>
-                                </c:if>
-                                <td class="product-td" style="border: none; text-align: center;">
-                                    <form action="sales" method="post" class="product">
-                                        <div><img src="assets/image/${o.product.image}"></div>
-                                        <div style="font-weight: 600;">${o.product.name}</div>
-                                        <div style="color: red">${o.product.barcode}</div>
-                                        <div><p></p><fmt:formatNumber value="${o.priceOut_unit}" type="currency" currencySymbol="₫" groupingUsed="true"/></div>
-                                        <input type="hidden" name="productId" value="${o.product.id}">
-                                        <input type="hidden" name="price" value="${o.priceOut_unit}">
-
-                                        <button type="submit">Add</button>
-                                    </form>
-                                </td>
-                                <c:if test="${status.index % 6 == 5 || status.last}">
+                                    <td colspan="6" style="text-align: center; padding: 20px; font-weight: bold; font-size: 14px; color: #888;">
+                                        Chưa có sản phẩm nào.
+                                    </td>
                                 </tr>
-                            </c:if>
-                        </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach items="${storeProduct}" var="o" varStatus="status">
+                                    <c:if test="${status.index % 6 == 0}">
+                                        <tr>
+                                        </c:if>
+                                        <td class="product-td" style="border: none; text-align: center;">
+                                            <form action="sales" method="post" class="product">
+                                                <div><img src="assets/image/${o.product.image}"></div>
+                                                <div style="font-weight: 600;">${o.product.name}</div>
+                                                <div style="color: red">${o.product.barcode}</div>
+                                                <div><p></p><fmt:formatNumber value="${o.priceOut_unit}" type="currency" currencySymbol="₫" groupingUsed="true"/></div>
+                                                <input type="hidden" name="productId" value="${o.product.id}">
+                                                <input type="hidden" name="price" value="${o.priceOut_unit}">
+
+                                                <button type="submit">Add</button>
+                                            </form>
+                                        </td>
+                                        <c:if test="${status.index % 6 == 5 || status.last}">
+                                        </tr>
+                                    </c:if>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                     </table>
                     <c:if test="${paginationEnabled}">
                         <div class="pagination">
@@ -303,90 +333,116 @@
                 </div>
 
                 <div class="cart-container">
-                    <table style="width: 100%;">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%;">STT</th>
-                                <th style="width: 25%;">Tên sản phẩm</th>
-                                <th style="width: 15%;">Số lượng</th>
-                                <th style="width: 15%;">Đơn giá</th>
-                                <th style="width: 30%;">Thành tiền</th>
-                                <th></th>
-                            </tr>
-                        </thead>
+                    <form action="processCheckout" method="post">
+                        <div style="display: flex; gap: 5px;">
+                            <div>
+                                <label for="customerName" style="font-size: 10px; font-weight: bold;">Tên khách hàng:</label>
+                                <input type="text" id="customerName" name="customerName" class="custom-input-cart" />
+                            </div>
+                            <div>
+                                <label for="phone" style="font-size: 10px; font-weight: bold;">Số điện thoại:</label>
+                                <input type="text" id="phone" name="phone" class="custom-input-cart" />
+                            </div>
+                            <input type="hidden" name="customerId" value="${customerId}">
 
-                        <tbody>
-                            <c:set var="index" value="0"/>
-                            <c:set var="total" value="0"/>
-
-                            <c:forEach var="od" items="${cart}">
-                                <c:set var="index" value="${index + 1}" />
+                        </div>
+                        <table style="width: 100%;">
+                            <thead>
                                 <tr>
-                                    <td>${index}</td>
-                                    <td>
-                                        <c:forEach items="${storeProduct}" var="sp">
-                                            <c:if test="${sp.product.id == od.productId}">
-                                                ${sp.product.name}
-                                            </c:if>
-                                        </c:forEach>
-                                    </td>
-                                    <td>
-                                        <div class="quantity-control">
-                                            <form action="sales" method="post" style="display: inline;">
-                                                <input type="hidden" name="productId" value="${od.productId}">
-                                                <input type="hidden" name="action" value="decrease">
-                                                <button type="submit">-</button>
-                                            </form>
-                                            <span>${od.quantity}</span>
-                                            <form action="sales" method="post" style="display: inline;">
-                                                <input type="hidden" name="productId" value="${od.productId}">
-                                                <input type="hidden" name="action" value="increase">
-                                                <button type="submit">+</button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                    <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-                                    <td>
-                                        <c:set var="subtotal" value="${od.price * od.quantity}" />
-                                        <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>                                        <c:set var="total" value="${total + subtotal}" />
-                                    </td>
-                                    <td>
-                                        <form action="sales" method="post" style="display:inline;">
-                                            <input type="hidden" name="productId" value="${od.productId}" />
-                                            <input type="hidden" name="action" value="remove" />
-                                            <button type="submit" style="color:red; background: none; border: none; font-size: 10px">Xóa</button>
-                                        </form>
-                                    </td>
-
+                                    <th style="width: 5%;">STT</th>
+                                    <th style="width: 25%;">Tên sản phẩm</th>
+                                    <th style="width: 15%;">Số lượng</th>
+                                    <th style="width: 15%;">Đơn giá</th>
+                                    <th style="width: 30%;">Thành tiền</th>
+                                    <th></th>
                                 </tr>
-                            </c:forEach>
+                            </thead>
 
-                            <tr><td colspan="6" style="height: 20px;"></td></tr>
+                            <tbody>
+                                <c:set var="index" value="0"/>
+                                <c:set var="total" value="0"/>
 
-                            <tr>
-                                <td colspan="4" style="text-align: left; font-weight: bold;">Thành tiền:</td>
-                                <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-                            </tr>
+                                <c:forEach var="od" items="${cart}">
+                                    <c:set var="index" value="${index + 1}" />
+                                    <tr>
+                                        <td>${index}</td>
+                                        <td>
+                                            <c:forEach items="${sessionScope.storeProductAllPage}" var="sp">
+                                                <c:if test="${sp.product.id == od.productId}">
+                                                    ${sp.product.name}
+                                                </c:if>
+                                            </c:forEach>
+                                        </td>
+                                        <td>
+                                            <div class="quantity-control">
+                                                <form action="sales" method="post" style="display: inline;">
+                                                    <input type="hidden" name="productId" value="${od.productId}">
+                                                    <input type="hidden" name="action" value="decrease">
+                                                    <button type="submit">-</button>
+                                                </form>
+                                                <span>${od.quantity}</span>
+                                                <form action="sales" method="post" style="display: inline;">
+                                                    <input type="hidden" name="productId" value="${od.productId}">
+                                                    <input type="hidden" name="action" value="increase">
+                                                    <button type="submit">+</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                        <td>
+                                            <c:set var="subtotal" value="${od.price * od.quantity}" />
+                                            <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>                                        <c:set var="total" value="${total + subtotal}" />
+                                        </td>
+                                        <td>
+                                            <form action="sales" method="post" style="display:inline;">
+                                                <input type="hidden" name="productId" value="${od.productId}" />
+                                                <input type="hidden" name="action" value="remove" />
+                                                <button type="submit" style="color:red; background: none; border: none; font-size: 10px">Xóa</button>
+                                            </form>
+                                        </td>
 
-                            <tr>
-                                <td colspan="4" style="text-align: left; font-weight: bold;">Tax:</td>
-                                <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total*0.1}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-                            </tr>
+                                    </tr>
+                                </c:forEach>
 
-                            <tr>
-                                <td colspan="4" style="text-align: left; font-weight: bold;">Tổng tiền:</td>
-                                <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total*1.1}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                <tr><td colspan="6" style="height: 20px;"></td></tr>
 
-                    <button class="checkout-btn">Thanh toán</button>
+                                <tr>
+                                    <td colspan="4" style="text-align: left; font-weight: bold;">Thành tiền:</td>
+                                    <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align: left; font-weight: bold;">
+                                        Dùng điểm:
+                                        <label style="font-weight: normal; font-size: 12px;">
+                                            <input type="checkbox" name="usePoints" value="true" />
+                                            Bạn có: <span style="color: green;"><c:out value="${pointBalance}" default="0" /></span>
+                                        </label>
+                                    </td>
+                                    <td colspan="2" style="font-weight: bold;">
+                                        <fmt:formatNumber value="${pointBalance}" type="currency" currencySymbol="₫" groupingUsed="true" />
+                                    </td>
+                                </tr>
+
+
+
+                                <tr>
+                                    <td colspan="4" style="text-align: left; font-weight: bold;">Tổng tiền:</td>
+                                    <td colspan="2" style="font-weight: bold;">
+                                        <fmt:formatNumber value="${total - pointBalance}" type="currency" currencySymbol="₫" groupingUsed="true" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="checkout-btn" type="submit">Thanh toán</button>
+
+
+                    </form>
                 </div>
             </div>
 
         </div>
 
-    </div>
 
-</body>
+
+    </body>
 </html>
