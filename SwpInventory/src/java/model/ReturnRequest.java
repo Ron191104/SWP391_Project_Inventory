@@ -5,8 +5,8 @@ import java.util.Date;
 public class ReturnRequest {
 
     private int id; 
-    private int supplierId;
-    private int employeeId;
+    private int supplier_id;
+    private int employee_id;
     private String reason;
     private String note;
     private Date createdDate;
@@ -26,19 +26,19 @@ public class ReturnRequest {
 
     // 
     public int getSupplierId() {
-        return supplierId;
+        return supplier_id;
     }
 
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
+    public void setSupplierId(int supplier_id) {
+        this.supplier_id = supplier_id;
     }
 
     public int getEmployeeId() {
-        return employeeId;
+        return employee_id;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployeeId(int employee_id) {
+        this.employee_id = employee_id;
     }
 
     public String getReason() {
