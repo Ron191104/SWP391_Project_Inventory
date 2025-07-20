@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.List;
 
 public class ReturnRequest {
 
@@ -16,10 +17,14 @@ public class ReturnRequest {
     private String supplierName;
     private String employeeName;
 
+    // Danh sách chi tiết trả hàng
+    private List<ReturnRequestDetail> details;
+
     public ReturnRequest() {
     }
 
-    // 
+    // Các Getter và Setter thông thường
+
     public int getId() {
         return id;
     }
@@ -28,7 +33,6 @@ public class ReturnRequest {
         this.id = id;
     }
 
-    // 
     public int getSupplierId() {
         return supplier_id;
     }
@@ -76,6 +80,7 @@ public class ReturnRequest {
     public void setStatus(int status) {
         this.status = status;
     }
+
     // Các trường hiển thị thêm
 
     public String getSupplierName() {
@@ -92,5 +97,15 @@ public class ReturnRequest {
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    // Getter và Setter cho details
+
+    public List<ReturnRequestDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<ReturnRequestDetail> details) {
+        this.details = details;
     }
 }

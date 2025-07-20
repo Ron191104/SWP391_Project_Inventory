@@ -117,12 +117,11 @@ public class ReturnRequestDAO {
         }
         return list;
     }
-    // Lấy thông tin chi tiết của 1 yêu cầu trả hàng dựa vào return_id
+    // Lấy thông tin yêu cầu trả hàng theo returnId và chi tiết trả hàng
 
     public ReturnRequest getReturnRequestById(int returnId) {
         String sql = "SELECT * FROM return_requests WHERE return_id = ?";
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, returnId);
             ResultSet rs = ps.executeQuery();
 
@@ -135,9 +134,13 @@ public class ReturnRequestDAO {
                 r.setNote(rs.getString("note"));
                 r.setCreatedDate(rs.getTimestamp("created_at"));
                 r.setStatus(rs.getInt("status"));
+
+                // Lấy các chi tiết trả hàng
+                List<ReturnRequestDetail> details = getReturnRequestDetailInfo(returnId);
+                r.setDetails(details);
+
                 return r;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
