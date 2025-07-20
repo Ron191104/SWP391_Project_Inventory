@@ -117,10 +117,39 @@ public class ReturnRequestDAO {
         }
         return list;
     }
+    // Lấy thông tin yêu cầu trả hàng theo returnId và chi tiết trả hàng
+
+    public ReturnRequest getReturnRequestById(int returnId) {
+        String sql = "SELECT * FROM return_requests WHERE return_id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, returnId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                ReturnRequest r = new ReturnRequest();
+                r.setId(rs.getInt("return_id"));
+                r.setSupplierId(rs.getInt("supplier_id"));
+                r.setEmployeeId(rs.getInt("employee_id"));
+                r.setReason(rs.getString("reason"));
+                r.setNote(rs.getString("note"));
+                r.setCreatedDate(rs.getTimestamp("created_at"));
+                r.setStatus(rs.getInt("status"));
+
+                // Lấy các chi tiết trả hàng
+                List<ReturnRequestDetail> details = getReturnRequestDetailInfo(returnId);
+                r.setDetails(details);
+
+                return r;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     // Cập nhật trạng thái yêu cầu (1 = duyệt, 2 = từ chối)
     public boolean updateRequestStatus(int id, int status) {
-        String sql = "UPDATE return_requests SET status = ? WHERE id = ?";
+        String sql = "UPDATE return_requests SET status = ? WHERE return_id = ?";
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, status);
             ps.setInt(2, id);
@@ -150,4 +179,104 @@ public class ReturnRequestDAO {
         }
         return list;
     }
+
+    // Lấy tất cả yêu cầu trả hàng
+    public List<ReturnRequest> getAllReturnRequests() {
+        List<ReturnRequest> list = new ArrayList<>();
+        String sql = "SELECT rr.*, u.name AS employee_name FROM return_requests rr "
+                + "JOIN users u ON rr.employee_id = u.id "
+                + "ORDER BY rr.return_id DESC";
+
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ReturnRequest rr = new ReturnRequest();
+                rr.setId(rs.getInt("return_id"));
+                rr.setSupplierId(rs.getInt("supplier_id"));
+                rr.setEmployeeId(rs.getInt("employee_id"));
+                rr.setReason(rs.getString("reason"));
+                rr.setNote(rs.getString("note"));
+                rr.setCreatedDate(rs.getTimestamp("created_at"));
+                rr.setStatus(rs.getInt("status"));
+
+                // Lấy tên nhân viên từ bảng users
+                rr.setEmployeeName(rs.getString("employee_name"));
+
+                list.add(rr);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    // Lấy danh sách đơn hoàn trả đã duyệt (đã gửi đi)
+    public List<ReturnRequest> getApprovedReturnRequests() {
+        List<ReturnRequest> list = new ArrayList<>();
+
+        String sql = "SELECT rr.*, s.supplier_name, u.name AS employee_name "
+                + "FROM return_requests rr "
+                + "JOIN suppliers s ON rr.supplier_id = s.supplier_id "
+                + "JOIN users u ON rr.employee_id = u.id "
+                + "WHERE rr.status = 1 "
+                + // Chỉ lấy đơn đã duyệt (đã gửi đi)
+                "ORDER BY rr.created_at DESC";
+
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ReturnRequest rr = new ReturnRequest();
+                rr.setId(rs.getInt("return_id"));
+                rr.setSupplierId(rs.getInt("supplier_id"));
+                rr.setEmployeeId(rs.getInt("employee_id"));
+                rr.setReason(rs.getString("reason"));
+                rr.setNote(rs.getString("note"));
+                rr.setCreatedDate(rs.getTimestamp("created_at"));
+                rr.setStatus(rs.getInt("status"));
+
+                // Gán thông tin hiển thị thêm
+                rr.setSupplierName(rs.getString("supplier_name"));
+                rr.setEmployeeName(rs.getString("employee_name"));
+
+                list.add(rr);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<ReturnRequestDetail> getReturnRequestDetailInfo(int returnId) {
+        List<ReturnRequestDetail> list = new ArrayList<>();
+        String sql = "SELECT d.product_id, p.product_name, d.quantity, p.unit, p.price "
+                + "FROM return_request_details d "
+                + "JOIN products p ON d.product_id = p.product_id "
+                + "WHERE d.return_id = ?";
+
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, returnId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ReturnRequestDetail d = new ReturnRequestDetail();
+                d.setProductId(rs.getInt("product_id"));
+                d.setProductName(rs.getString("product_name"));
+                d.setQuantity(rs.getInt("quantity"));
+                d.setUnit(rs.getString("unit"));
+                d.setPrice(rs.getDouble("price"));
+                list.add(d);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }
