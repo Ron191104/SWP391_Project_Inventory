@@ -240,7 +240,7 @@
             }
             .user-menu nav.dropdown-menu a:last-child {
                 border-bottom: none;
-                color: #;
+                color: #0080C0;
             }
             .user-menu nav.dropdown-menu a:hover {
                 background-color: #FDF9DA;
@@ -287,7 +287,7 @@
                 position: absolute;
                 top: 10px;
                 right: 10px;
-                color: #;
+                color: #0080C0;
             }
 
             /* --- CSS ĐÃ CHỈNH SỬA CHO BIỂU ĐỒ --- */
