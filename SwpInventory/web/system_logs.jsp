@@ -4,15 +4,54 @@
 <html>
 <head>
     <title>Nhật ký hệ thống</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
     <style>
-        table { border-collapse:collapse; width:90%; margin:30px auto;}
-        th,td { border:1px solid #ccc; padding:8px 12px; text-align:center;}
-        th { background:#e53935; color:white; }
-        td { background:#fff; }
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0288d1;
+            margin: 30px 0 20px;
+            font-weight: 700;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 20px auto;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        th {
+            background: #81d4fa;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        td {
+            border: 1px solid #eee;
+            padding: 10px 8px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) td {
+            background: #f9f9f9;
+        }
     </style>
 </head>
 <body>
-    <h2 style="text-align:center;">Nhật ký hệ thống</h2>
+
+    <h2>Nhật ký hệ thống</h2>
+
     <table>
         <thead>
             <tr>
@@ -35,5 +74,6 @@
         </c:forEach>
         </tbody>
     </table>
+
 </body>
 </html>

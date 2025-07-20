@@ -21,7 +21,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
-            /* CSS hiện có của bạn */
+            /* CSS  */
             * {
                 box-sizing: border-box;
             }
@@ -43,7 +43,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                background-color: #4CAF50;
+                background-color: #81D4FA;
                 color: white;
                 padding: 12px 24px;
                 flex-wrap: wrap;
@@ -91,10 +91,10 @@
             }
             .nav a i {
                 margin-right: 8px;
-                color: #4CAF50; /* Màu icon trong nav */
+                color: #1B608A; /* Màu icon trong nav */
             }
             .nav a:hover, .nav a.active {
-                background-color: #388E3C;
+                background-color: #1B608A;
             }
 
             .dropdown {
@@ -113,7 +113,7 @@
             }
             .dropdown-label i {
                 margin-right: 8px;
-                color: #4CAF50; /* Màu icon trong dropdown label */
+                color: #1B608A; /* Màu icon trong dropdown label */
             }
             .dropdown-menu {
                 position: absolute;
@@ -147,8 +147,9 @@
             .header-right {
                 display: flex;
                 align-items: center;
-                gap: 20px;
-                margin-top: 10px;
+                gap: 10px;            /* Giảm khoảng cách giữa các thành phần */
+                margin-top: 0;        /* Xóa khoảng cách trên cùng */
+                margin-right: 10px;   /* Đưa avatar gần hơn về bên phải */
             }
             .notification-wrapper {
                 position: relative;
@@ -239,7 +240,7 @@
             }
             .user-menu nav.dropdown-menu a:last-child {
                 border-bottom: none;
-                color: #4CAF50;
+                color: #0080C0;
             }
             .user-menu nav.dropdown-menu a:hover {
                 background-color: #FDF9DA;
@@ -286,7 +287,7 @@
                 position: absolute;
                 top: 10px;
                 right: 10px;
-                color: #4CAF50;
+                color: #0080C0;
             }
 
             /* --- CSS ĐÃ CHỈNH SỬA CHO BIỂU ĐỒ --- */
@@ -376,65 +377,64 @@
     </head>
     <body>
         <div class="header">
-        <div class="header-left">
-            <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
-            <span class="admin-role-label">(Administrator)</span>
-            <div class="nav">
-                <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản lý kho</a>
-                <a href="store_dashboard.jsp"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
-                <a href="supplier_dashboard"><i class="fas fa-truck"></i> Nhà cung cấp</a>
-                <a href="store-inventory-statistics"><i class="fas fa-chart-bar"></i> Thống kê</a>
-                <a href="login.jsp"><i class="fas fa-cash-register"></i> POS</a>
-                <div class="dropdown">
-                    <input type="checkbox" id="admin-dropdown" />
-                    <label for="admin-dropdown" class="dropdown-label">
-                        <i class="fas fa-user-shield"></i> Quản trị
-                    </label>
-                    <div class="dropdown-menu">
-                        <a href="user-management"><i class="fas fa-users-cog"></i> Quản lý người dùng</a>
-                        <a href="system-logs"><i class="fas fa-file-alt"></i> Nhật ký hệ thống</a>
-                        <a href="settings.jsp"><i class="fas fa-cogs"></i> Cấu hình hệ thống</a>
-                        <a href="admin-approve"><i class="fas fa-user-check"></i> Duyệt tài khoản</a>
-                        <a href="admin/categories">Quản lý danh mục sản phẩm</a>
-                        <a href="admin/suppliers">Quản lý nhà cung cấp</a>
+            <div class="header-left">
+                <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
+                <span class="admin-role-label">(Administrator)</span>
+                <div class="nav">
+                    <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản lý kho</a>
+                    <a href="store_dashboard.jsp"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
+                    <a href="supplier_dashboard"><i class="fas fa-truck"></i> Nhà cung cấp</a>
+                    <a href="store-inventory-statistics"><i class="fas fa-chart-bar"></i> Thống kê</a>
+
+                    <div class="dropdown">
+                        <input type="checkbox" id="admin-dropdown" />
+                        <label for="admin-dropdown" class="dropdown-label">
+                            <i class="fas fa-user-shield"></i> Quản trị
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="user-management"><i class="fas fa-users-cog"></i> Quản lý người dùng</a>
+                            <a href="system-logs"><i class="fas fa-file-alt"></i> Nhật ký hệ thống</a>
+                            <a href="admin-approve"><i class="fas fa-user-check"></i> Duyệt tài khoản</a>
+                            <a href="admin/categories">Quản lý danh mục sản phẩm</a>
+                            <a href="admin/suppliers">Quản lý nhà cung cấp</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="header-right">
-            <div class="notification-wrapper">
-                <svg class="notification-icon" viewBox="0 0 24 24">
+            <div class="header-right">
+                <div class="notification-wrapper">
+                    <svg class="notification-icon" viewBox="0 0 24 24">
                     <path d="M12 22c1.1 0 1.99-.9 1.99-2H10c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z"/>
-                </svg>
-                <span class="notification-badge">0</span>
-                <div class="notification-dropdown">
-                    <!-- Nội dung thông báo động -->
+                    </svg>
+                    <span class="notification-badge">0</span>
+                    <div class="notification-dropdown">
+                        <!-- Nội dung thông báo động -->
+                    </div>
                 </div>
+                <div class="user-menu">
+                    <input type="checkbox" id="user-menu-toggle" />
+                    <label for="user-menu-toggle">
+                        <img src="<%= request.getContextPath() + "/" +
+                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty()
+                                ? session.getAttribute("userImage")
+                                : "images/default-avatar.png") %>"
+                             alt="Avatar người dùng"
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
+                    </label>
+                    <nav class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#0080C0; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
+                        <a href="login.jsp"><i class=""></i> Login</a>
+                    </nav>
+                </div>
+                <span style="padding:0 16px; color:#fff6c5; font-size:x-small;">
+                    <%= session.getAttribute("userRole") %>
+                </span>
             </div>
-            <div class="user-menu">
-                <input type="checkbox" id="user-menu-toggle" />
-                <label for="user-menu-toggle">
-                    <img src="<%= request.getContextPath() + "/" +
-                        (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty()
-                            ? session.getAttribute("userImage")
-                            : "images/default-avatar.png") %>"
-                         alt="Avatar người dùng"
-                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
-                </label>
-                <nav class="dropdown-menu">
-                    <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
-                        <%= session.getAttribute("userName") %>
-                    </span>
-                    <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
-                    <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
-                    <a href="<%= request.getContextPath() %>/logout">Logout</a>
-                </nav>
-            </div>
-            <span style="padding:0 16px; color:#fff6c5; font-size:x-small;">
-                <%= session.getAttribute("userRole") %>
-            </span>
         </div>
-    </div>
 
         <main class="main-content">
             <section class="cards">
@@ -618,53 +618,53 @@
             } else {
                 document.getElementById('categoryStockChart').parentElement.innerHTML = "<p style='text-align: center; color: #888; padding: 20px;'>Không có dữ liệu danh mục để hiển thị biểu đồ tỷ lệ.</p>";
             }
-            
+
         </script>
-        
+
         <!-- Phần Script load thông báo -->
-    <script>
-    function loadNotifications() {
-        fetch('<%= request.getContextPath() %>/load-notifications')
-            .then(response => response.json())
-            .then(data => {
-                const dropdown = document.querySelector('.notification-dropdown');
-                const badge = document.querySelector('.notification-badge');
+        <script>
+            function loadNotifications() {
+                fetch('<%= request.getContextPath() %>/load-notifications')
+                        .then(response => response.json())
+                        .then(data => {
+                            const dropdown = document.querySelector('.notification-dropdown');
+                            const badge = document.querySelector('.notification-badge');
 
-                dropdown.innerHTML = '';
-                let unreadCount = 0;
+                            dropdown.innerHTML = '';
+                            let unreadCount = 0;
 
-                if (data.length > 0) {
-                    data.forEach(item => {
-                        const div = document.createElement('div');
-                        div.textContent = item.message;
-                        if (!item.isRead) {
-                            div.style.fontWeight = 'bold';
-                            unreadCount++;
-                        }
-                        dropdown.appendChild(div);
-                    });
-                } else {
-                    dropdown.innerHTML = '<div>Không có thông báo nào.</div>';
-                }
+                            if (data.length > 0) {
+                                data.forEach(item => {
+                                    const div = document.createElement('div');
+                                    div.textContent = item.message;
+                                    if (!item.isRead) {
+                                        div.style.fontWeight = 'bold';
+                                        unreadCount++;
+                                    }
+                                    dropdown.appendChild(div);
+                                });
+                            } else {
+                                dropdown.innerHTML = '<div>Không có thông báo nào.</div>';
+                            }
 
-                badge.textContent = unreadCount > 0 ? unreadCount : '';
-            })
-            .catch(error => {
-                console.error('Lỗi khi tải thông báo:', error);
+                            badge.textContent = unreadCount > 0 ? unreadCount : '';
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi tải thông báo:', error);
+                        });
+            }
+
+            //  sự kiện khi hover chuông (hoặc click):
+            document.querySelector('.notification-wrapper').addEventListener('mouseenter', () => {
+                fetch('<%= request.getContextPath() %>/mark-notifications-read', {
+                    method: 'POST'
+                }).then(() => {
+                    // Sau khi đánh dấu đã đọc → load lại thông báo để cập nhật badge
+                    loadNotifications();
+                });
             });
-    }
 
-    //  sự kiện khi hover chuông (hoặc click):
-    document.querySelector('.notification-wrapper').addEventListener('mouseenter', () => {
-        fetch('<%= request.getContextPath() %>/mark-notifications-read', {
-            method: 'POST'
-        }).then(() => {
-            // Sau khi đánh dấu đã đọc → load lại thông báo để cập nhật badge
-            loadNotifications();
-        });
-    });
-
-    window.addEventListener('load', loadNotifications);
-</script>
+            window.addEventListener('load', loadNotifications);
+        </script>
     </body>
 </html>
