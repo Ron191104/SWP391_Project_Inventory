@@ -1,5 +1,9 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,7 +23,6 @@
                 padding: 10px 24px 24px 24px;
                 background: white;
                 margin-left: 20px;
-                max-height: 85vh;
             }
             .dashboard-cards {
                 display: flex;
@@ -34,7 +37,7 @@
                 padding: 20px;
                 border-radius: 10px;
                 width: 150px;
-                height: 45px;
+                height: 55px;
                 text-align: center;
                 font-weight: bold;
                 box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -43,6 +46,11 @@
             .dashboard-cards .card:hover {
                 transform: translateY(-5px);
                 box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+            .card-inf{
+                font-size: 26px;
+                padding-top: 10px;
+                color: #FEB3C7;
             }
 
             .product-list {
@@ -88,7 +96,7 @@
             }
 
             .product-box {
-                width: 100px;
+                width: 90px;
                 background-color: #ffffff;
                 border: 1px solid #ddd;
                 border-radius: 10px;
@@ -120,6 +128,26 @@
                 font-size: 13px;
                 color: #666;
             }
+
+            .two-column-section {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+            }
+
+            .left-column {
+                flex: 1;
+            }
+
+            .right-column {
+                flex: 1;
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 10px;
+            }
+         
+
         </style>
     </head>
     <body>
@@ -212,49 +240,54 @@
             <div class="dashboard-cards">
                 <div class="card">
                     <div>Tổng sản phẩm</div>
-                    <div style="font-size: 25px">${totalProducts}</div>
+                    <div class="card-inf">${totalProducts}</div>
                 </div>
                 <div class="card">
                     <div>Tổng đơn nhập</div>
-                    <div style="font-size: 25px">${totalStockIn}</div>
+                    <div class="card-inf">${totalStockIn}</div>
                 </div>
                 <div class="card">
                     <div>Tổng đơn bán</div>
-                    <div style="font-size: 25px">${totalSales}</div>
+                    <div class="card-inf">${totalSales}</div>
                 </div>
 
                 <div class="card">
-                    Tổng doanh thu:
-                    <fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="₫"/>
+                    <div>Tổng doanh thu</div>
+                    <div class="card-inf"><fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="₫"/></div>
+                </div>
+            </div>
+            <div class="two-column-section">
+                <div class="left-column">
+                    <h3>Top 5 sản phẩm bán chạy</h3>
+                    <div class="selling-container">
+                        <c:forEach var="item" items="${topSellingProducts}">
+                            <div class="product-box">
+                                <img src="assets/image/${item.product.image}" class="product-image"/>
+                                <div class="product-name">${item.product.name}</div>
+                                <div class="quantity">${item.quantity} sp đã bán</div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                    <h3>Top 5 sản phẩm sắp hết hàng</h3>
+                    <div class="selling-container">
+                        <c:forEach var="item" items="${lowStockProducts}">
+                            <div class="product-box">
+                                <img src="assets/image/${item.product.image}" class="product-image" />
+                                <div class="product-name">${item.product.name}</div>
+                                <div class="quantity">Còn: ${item.quantity} sp</div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+                <div class="right-column">
+                    <h3>Biểu đồ doanh thu</h3>
+                    <canvas id="revenueChart"></canvas>
                 </div>
             </div>
 
-            <h3>Top 5 sản phẩm bán chạy</h3>
-
-            <div class="selling-container">
-                <c:forEach var="item" items="${topSellingProducts}">
-                    <div class="product-box">
-                        <img src="assets/image/${item.product.image}" class="product-image"/>
-                        <div class="product-name">${item.product.name}</div>
-                        <div class="quantity">${item.quantity} sp bán</div>
-                    </div>
-                </c:forEach>
-            </div>
 
 
-
-            <h3>Top 5 sản phẩm sắp hết hàng</h3>
-
-            <div class="selling-container">
-                <c:forEach var="item" items="${lowStockProducts}">
-                    <div class="product-box">
-                        <img src="assets/image/${item.product.image}" class="product-image" />
-                        <div class="product-name">${item.product.name}</div>
-                        <div class="quantity">Còn: ${item.quantity} sp</div>
-                    </div>
-                </c:forEach>
-            </div>
-
+                <h3 style="padding-top: 30px">Số lượng bán ra theo từng sản phẩm</h3>
 
             <canvas id="salesChart"></canvas>
 
@@ -275,7 +308,7 @@
                     ${item.quantity},
                 </c:forEach>
                                     ],
-                                    backgroundColor: 'rgba(75, 192, 192, 0.5)'
+                                    backgroundColor: '#FEB3C7'
                                 }]
                         };
 
@@ -286,6 +319,63 @@
 
                         new Chart(document.getElementById('salesChart'), config);
             </script>
+
+            <canvas id="revenueChart"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                        const revenueLabels = [
+                <c:forEach var="entry" items="${dailyRevenueMap.entrySet()}" varStatus="loop">
+                        '${entry.key}'<c:if test="${!loop.last}">,</c:if>
+                </c:forEach>
+                        ];
+
+                        const revenueData = [
+                <c:forEach var="entry" items="${dailyRevenueMap.entrySet()}" varStatus="loop">
+                    ${entry.value}<c:if test="${!loop.last}">,</c:if>
+                </c:forEach>
+                        ];
+
+                        const revenueChartData = {
+                            labels: revenueLabels,
+                            datasets: [{
+                                    label: 'Doanh thu (₫)',
+                                    data: revenueData,
+                                    fill: false,
+                                    borderColor: '#82CAFA',
+                                    backgroundColor: '#82CAFA',
+                                    tension: 0.2,
+                                    pointRadius: 4,
+                                    pointHoverRadius: 6
+                                }]
+                        };
+
+                        new Chart(
+                                document.getElementById('revenueChart'),
+                                {
+                                    type: 'line',
+                                    data: revenueChartData,
+                                    options: {
+                                        responsive: true,
+                                        plugins: {
+                                            legend: {display: true}
+                                        },
+                                        scales: {
+                                            y: {
+                                                ticks: {
+                                                    callback: function (value) {
+                                                        return value.toLocaleString('vi-VN') + ' ₫';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                        );
+            </script>
+
+
         </div>
     </body>
 </html>

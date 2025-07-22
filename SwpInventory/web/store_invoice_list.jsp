@@ -1,52 +1,57 @@
-<%-- 
-    Document   : store_stock_in_confirm
-    Created on : Jul 5, 2025, 4:52:43 PM
-    Author     : ADMIN
---%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Danh sách hóa đơn</title>
+        <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <link rel="stylesheet" href="assets/css/menu.css">
-
-        <title>JSP Page</title>
         <style>
-            .container {
-                width: 500px;
-                margin: 50px auto;
-                text-align: center;
-                padding: 20px;
-                background-color: white;
-                box-shadow: 0 0 8px rgba(0,0,0,0.1);
-                border-radius: 8px;
-                height: 250px;
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 28px;
+                table-layout: fixed;
             }
 
-            h2 {
-                margin-bottom: 20px;
+            th, td {
+                border: 1px solid #ddd;
+                padding: 5px;
+                text-align: left;
+                width: 20px;
+                font-size: 0.85rem;
+                text-align: center;
+
             }
-            .container a {
-                display: inline-block;
-                padding: 10px 16px;
+            th {
                 background-color: #82CAFA;
                 color: white;
-                text-decoration: none;
-                border-radius: 5px;
-                margin-right: 10px;
-                margin-top: 30px;
+                font-weight: 700;
             }
-            .container a:hover {
-                background-color: #787FF6;
+            table th:first-child,
+            table td:first-child {
+                width: 10px;
             }
-        </style>
 
+            tbody tr:hover {
+                background-color: #FDF9DA;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 10px 24px 24px 24px;
+                background: white;
+                margin-left: 10px;
+                margin-top: 0px;
+            }
+
+        </style>
     </head>
     <body>
-
         <div class="header">
             <div class="header-left">
                 <h1>Tên kho</h1>
@@ -102,32 +107,63 @@
                 </div>
                 <div class="user-menu">
                     <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
-                        <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
+                    <label for="user-menu-toggle">
+                        <img src="<%= request.getContextPath() + "/" + 
+                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() 
+                                ? session.getAttribute("userImage") 
+                                : "images/default-avatar.png") %>" 
+                             alt="Avatar người dùng" 
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
-                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
-                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
-                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
+                    <nav class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
+                        <a href="<%= request.getContextPath() %>/logout">Logout</a>
                     </nav>
                 </div>
             </div>
         </div>
 
         <div class="container">
-            <h2>Kết quả nhập hàng</h2>
+            <h3>Danh sách hóa đơn bán hàng</h3>
 
-            <c:if test="${not empty successMessage}">
-                <p style="color: green">${successMessage}</p>
+
+            <c:if test="${empty salesList}">
+                <p style="color:red;">Chưa có hóa đơn nào.</p>
             </c:if>
 
-            <c:if test="${not empty errorMessage}">
-                <p style="color: red">${errorMessage}</p>
-            </c:if>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Mã hóa đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Ngày bán</th>
+                        <th>Thời gian</th>
+                        <th>Tổng tiền</th>
+                        <th>Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="sale" items="${salesList}">
+                        <tr>
+                            <td>${sale.saleId}</td>
+                            <td>${sale.customerName}</td>
+                            <td>
+                                <fmt:formatDate value="${sale.saleDate}" pattern="dd-MM-yyyy"/>
+                            </td>
+                            <td>
+                                <fmt:formatDate value="${sale.saleDate}" pattern="HH:mm:ss"/>
+                            </td>                     
+                            <td><fmt:formatNumber value="${sale.totalAmount}" type="currency" currencySymbol="₫"/></td>
+                            <td><a class="detail-link" href="sale_detail?saleId=${sale.saleId}">Xem</a></td>
 
-            <a href="store_stock_in">Tạo đơn nhập hàng mới</a>   
-            <a href="store_stock_in_list">Danh sách đơn nhập hàng</a>   
-
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
         </div>
     </body>
 </html>
