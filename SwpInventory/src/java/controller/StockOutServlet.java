@@ -73,7 +73,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             invDAO.insertStockOutDetail(sod);
         }
 
-        storeDAO.approveStockIn(stockInId);
+        storeDAO.updateStatus(stockInId, 3);
 
         response.sendRedirect("inventory_order_detail?id=" + stockInId);
     }
