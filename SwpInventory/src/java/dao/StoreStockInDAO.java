@@ -133,6 +133,7 @@ public class StoreStockInDAO {
                 d.setQuantity(rs.getInt("quantity"));
                 d.setPriceIn(rs.getDouble("price_in"));
                 d.setProductName(rs.getString("product_name"));
+                d.setUnitName(rs.getString("unit_name"));
                 list.add(d);
             }
         } catch (Exception e) {
@@ -182,7 +183,7 @@ public class StoreStockInDAO {
     }
 
     public void approveStockIn(int stockInId) {
-        updateStatus(stockInId, 1);
+        updateStatus(stockInId, 3);
         int storeId = getStoreIdByStockInId(stockInId);
         Map<Integer, Integer> details = getStockInDetailsMap(stockInId);
 
@@ -297,5 +298,7 @@ public class StoreStockInDAO {
         }
         return -1;
     }
+    
+    
 
 }

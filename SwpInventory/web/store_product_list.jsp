@@ -249,7 +249,7 @@
                                         Detail
                                     </a>
 
-                                    <form action="edit_product" method="get" style="margin: 0;">
+                                    <form action="edit_product?id=${o.storeProductId}" method="get" style="margin: 0;">
                                         <input type="hidden" name="id" value="${o.storeProductId}" />
                                         <input type="submit" value="Edit"
                                                style="background: #787FF6; color: white; padding: 5px 6px; border-radius: 3px; font-size: 10px; border: none; cursor: pointer;margin-right:  3px;" />

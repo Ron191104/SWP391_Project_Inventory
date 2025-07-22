@@ -15,11 +15,12 @@ public class StoreStockInDetail {
     private int quantity;
     private double priceIn;
     private String productName;
+    private String unitName;
 
     public StoreStockInDetail() {
     }
 
-    public StoreStockInDetail(int id, int stockInId, int productId, int quantity, double priceIn, String productName) {
+    public StoreStockInDetail(int id, int stockInId, int productId, int quantity, double priceIn, String productName, String unitName) {
         this.id = id;
         this.stockInId = stockInId;
         this.productId = productId;
@@ -27,6 +28,15 @@ public class StoreStockInDetail {
         this.priceIn = priceIn;
         this.productName = productName;
     }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
+    
 
     public int getId() {
         return id;

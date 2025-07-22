@@ -522,9 +522,9 @@ public class StoreProductDAO {
         }
     }
 
- public List<StoreProduct> findByBarcodeLike(int storeId, String keyword) {
-    List<StoreProduct> list = new ArrayList<>();
-    String query = """
+    public List<StoreProduct> findByBarcodeLike(int storeId, String keyword) {
+        List<StoreProduct> list = new ArrayList<>();
+        String query = """
         SELECT 
             sp.store_product_id, 
             sp.store_id, 
@@ -540,38 +540,71 @@ public class StoreProductDAO {
         WHERE sp.store_id = ? AND p.barcode LIKE ?
         """;
 
-    try{
-  con = DBConnect.getConnection();
+        try {
+            con = DBConnect.getConnection();
             ps = con.prepareStatement(query);
-        ps.setInt(1, storeId);
-        ps.setString(2, "%" + keyword + "%");
+            ps.setInt(1, storeId);
+            ps.setString(2, "%" + keyword + "%");
 
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                StoreProduct sp = new StoreProduct();
-                sp.setStoreProductId(rs.getInt("store_product_id"));
-                sp.setStoreId(rs.getInt("store_id"));
-                sp.setPriceOut(rs.getDouble("price_out"));
-                sp.setQuantity(rs.getInt("quantity"));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    StoreProduct sp = new StoreProduct();
+                    sp.setStoreProductId(rs.getInt("store_product_id"));
+                    sp.setStoreId(rs.getInt("store_id"));
+                    sp.setPriceOut(rs.getDouble("price_out"));
+                    sp.setQuantity(rs.getInt("quantity"));
 
-                Product p = new Product();
-                p.setId(rs.getInt("product_id"));
-                p.setName(rs.getString("product_name"));
-                p.setBarcode(rs.getString("barcode"));
-                p.setUnit(rs.getString("unit"));
-                p.setImage(rs.getString("image"));
+                    Product p = new Product();
+                    p.setId(rs.getInt("product_id"));
+                    p.setName(rs.getString("product_name"));
+                    p.setBarcode(rs.getString("barcode"));
+                    p.setUnit(rs.getString("unit"));
+                    p.setImage(rs.getString("image"));
 
-                sp.setProduct(p);
-                list.add(sp);
+                    sp.setProduct(p);
+                    list.add(sp);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+
+        return list;
     }
 
-    return list;
+    public void updateStoreProduct(StoreProduct sp) {
+        String updateProductQuery = "UPDATE products SET product_name = ?, image = ?, description = ? WHERE product_id = ?";
+        String updateStoreProductQuery = "UPDATE store_products SET store_category_id = ? WHERE product_id = ?";
+
+        try {
+            con = DBConnect.getConnection();
+            con.setAutoCommit(false);
+
+            // update bảng products
+            ps = con.prepareStatement(updateProductQuery);
+            ps.setString(1, sp.getProduct().getName());
+            ps.setString(2, sp.getProduct().getImage());
+            ps.setString(3, sp.getProduct().getDescription());
+            ps.setInt(4, sp.getProduct().getId());
+            ps.executeUpdate();
+
+            // update bảng store_products
+            ps = con.prepareStatement(updateStoreProductQuery);
+            ps.setInt(1, sp.getStoreCategoryId());
+            ps.setInt(2, sp.getStoreProductId());
+            ps.executeUpdate();
+
+            con.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 }
-
-
-}
-

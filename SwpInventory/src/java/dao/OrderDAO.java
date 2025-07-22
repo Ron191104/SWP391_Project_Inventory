@@ -353,4 +353,51 @@ public class OrderDAO {
         return list;
     }
 
+    public List<OrderDisplay> getOrderDisplayList(String supplierFilter) {
+        List<OrderDisplay> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("""
+        SELECT 
+            o.order_id,
+            o.order_date,
+            o.note,
+            o.status,
+            s.supplier_name,
+            COUNT(od.product_id) AS product_count
+        FROM orders o
+        JOIN order_details od ON o.order_id = od.order_id
+        JOIN suppliers s ON o.supplier_id = s.supplier_id
+    """);
+
+        List<Object> params = new ArrayList<>();
+        if (supplierFilter != null && !supplierFilter.trim().isEmpty()) {
+            sql.append(" WHERE s.supplier_name = ? ");
+            params.add(supplierFilter);
+        }
+
+        sql.append("""
+        GROUP BY o.order_id, o.order_date, o.note, o.status, s.supplier_name
+        ORDER BY o.order_id DESC
+    """);
+
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                OrderDisplay od = new OrderDisplay();
+                od.setOrderId(rs.getInt("order_id"));
+                od.setOrderDate(rs.getDate("order_date"));
+                od.setNote(rs.getString("note"));
+                od.setStatus(rs.getInt("status"));
+                od.setSupplierName(rs.getString("supplier_name"));
+                od.setProductCount(rs.getInt("product_count"));
+                list.add(od);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

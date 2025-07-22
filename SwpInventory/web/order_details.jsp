@@ -1,3 +1,4 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
@@ -12,7 +13,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Danh sách sản phẩm - Quản lý kho</title>
+        <title>Chi tiết đơn hàng</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -335,18 +336,58 @@
                 color: #89D0F0;
                 background-color: white;
             }
+            .links {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 20px;
+            color: #1976D2;
+            text-decoration: underline;
+            font-size: 0.98rem;
+        }
 
         </style>
     </head>
     <body>
         <div class="header">
             <div class="header-left">
-                <h1>Quản lý sản phẩm</h1>
+                <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="product_list" class="active">Sản phẩm</a>
-                    <a href="import_goods.html">Nhập kho</a>
-                    <a href="export_goods.html">Xuất kho</a>
-                    <a href="stats.html">Thống kê</a>
+                    <a href="dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <div class="dropdown">
+                        <input type="checkbox" id="product-dropdown" />
+                        <label for="product-dropdown" class="dropdown-label">
+                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+
+                            <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+
+
+                        </div>
+                    </div>
+                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
+                        <i class="fas fa-warehouse"></i> Kho Hàng
+                    </a>
+                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+
+                    <div class="dropdown">
+                        <input type="checkbox" id="store-dropdown" />
+                        <label for="store-dropdown" class="dropdown-label">
+                            <i class="fas fa-store"></i> <span style="font-weight:600">Cửa hàng</span>
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="header-right">
@@ -367,18 +408,20 @@
                     <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
                         <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown" role="menu" aria-hidden="true">
-                        <a href="myprofile.html" role="menuitem" tabindex="0">My Profile</a>
-                        <a href="change_password.html" role="menuitem" tabindex="0">Change Password</a>
-                        <a href="login.html" role="menuitem" tabindex="0">Log Out</a>
+                    <nav class="dropdown-menu" id="user-menu-dropdown">
+                        <a href="myprofile.html">My Profile</a>
+                        <a href="change_password.html">Change Password</a>
+                        <a href="login.html">Log Out</a>
                     </nav>
                 </div>
             </div>
         </div>
+        <link rel="stylesheet" href="assets/css/menu.css">
 
 
         <div class="container" style="text-align: center">
-            <h2>Chi tiết đơn hàng</h2>
+            <a href="order_list" class="links" >Quay lại</a>
+            <h2>Chi tiết đơn hàng #${param.orderId}</h2>
 
             <table>
                 <tbody>
@@ -395,10 +438,12 @@
                             <td><strong>${od.productName}</strong></td>
                             <td>${od.quantity}</td>
                             <td>${od.unit}</td>
-                            <td>${od.price}</td>
+                            <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             <td>
+                                
+                                
                                 <c:set var="subtotal" value="${od.quantity * od.price}" />
-                                ${subtotal}
+                                <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>
                                 <c:set var="total" value="${total + subtotal}" />
                             </td>
                         </tr>
@@ -406,7 +451,7 @@
                     </c:forEach>
                     <tr>
                         <td colspan="4" style="text-align:right;"><strong>Tổng cộng:</strong></td>
-                        <td><strong>${total}</strong></td>
+                        <td><strong><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></strong></td>
                     </tr>
 
                 </tbody>

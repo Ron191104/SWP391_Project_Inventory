@@ -188,6 +188,9 @@
                             <c:when test="${stockIn.status == 2}">
                                 <span class="status-rejected">Từ chối</span>
                             </c:when>
+                            <c:when test="${stockIn.status == 3}">
+                                <span class="status-approved">Đã nhập hàng</span>
+                            </c:when>
                         </c:choose>
                     </p>
                 </div>
@@ -221,7 +224,7 @@
                     <td colspan="4" style=" font-weight:bold">Tổng cộng:</td>
                     <td style=" font-weight:bold"><fmt:formatNumber value="${totalAmount}" type="currency"/></td>
                 </tr>
-              
+
 
             </table>
             <p><b>Ghi chú:</b> ${stockIn.note}</p>

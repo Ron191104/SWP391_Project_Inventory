@@ -191,6 +191,9 @@
                                     <c:when test="${si.status == 2}">
                                         <span class="status-rejected">Từ chối</span>
                                     </c:when>
+                                        <c:when test="${si.status == 3}">
+                                        <span class="status-approved">Đã nhập hàng</span>
+                                    </c:when>
                                 </c:choose>
                             </td>
                             <td>${si.note}</td>

@@ -6,6 +6,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard Quản lý kho</title>
+        <link rel="stylesheet" href="assets/css/filter-icon.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css)">
         <style>
             body {
@@ -18,13 +20,19 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                background-color: #82CAFA;
+                background-color: #82CAFA; /* Màu chủ đạo */
                 color: white;
                 padding: 12px 24px;
+                position: relative;
+            }
+            .header-left {
+                display: flex;
+                align-items: center;
             }
             .header-left h1 {
                 margin: 0;
                 font-size: 1.8rem;
+                font-weight: 700;
             }
             .nav {
                 display: flex;
@@ -183,22 +191,75 @@
     </head>
     <body>
         <div class="header">
-            <div class="header-left"><h1>Tên kho</h1></div>
-            <div class="nav">
-                <a href="${pageContext.request.contextPath}/dashboard.jsp"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <div class="dropdown">
-                    <input type="checkbox" id="product-dropdown-inv" />
-                    <label for="product-dropdown-inv" class="dropdown-label"><i class="fas fa-box"></i> Sản phẩm</label>
-                    <div class="dropdown-menu">
-                        <a href="${pageContext.request.contextPath}/product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
-                        <a href="#"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+            <div class="header-left">
+                <h1>Tên kho</h1>
+                <div class="nav">
+                    <a href="dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <div class="dropdown">
+                        <input type="checkbox" id="product-dropdown" />
+                        <label for="product-dropdown" class="dropdown-label">
+                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+
+                            <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+
+
+                        </div>
+                    </div>
+                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
+                        <i class="fas fa-warehouse"></i> Kho Hàng
+                    </a>
+                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+
+                    <div class="dropdown">
+                        <input type="checkbox" id="store-dropdown" />
+                        <label for="store-dropdown" class="dropdown-label">
+                            <i class="fas fa-store"></i> <span style="font-weight:600">Cửa hàng</span>
+                        </label>
+                        <div class="dropdown-menu">
+                            <a href="store_product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+                            <a href="store_product_add"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                            <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="header-right">
+
+                <div class="notification-wrapper" tabindex="0" aria-label="Thông báo" role="button">
+                    <svg class="notification-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 22c1.1 0 1.99-.9 1.99-2H10c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z"/>
+                    </svg>
+                    <span class="notification-badge" aria-label="Số thông báo">3</span>
+                    <div class="notification-dropdown" tabindex="-1" aria-hidden="true" aria-label="Danh sách thông báo">
+                        <div>Bạn có đơn hàng mới cần xử lý.</div>
+                        <div>Sản phẩm SP002 sắp hết hàng.</div>
+                        <div>Báo cáo tháng 5 đã được cập nhật.</div>
                     </div>
                 </div>
-                <a href="${pageContext.request.contextPath}/inventory_dashboard" class="active"><i class="fas fa-warehouse"></i> Kho Hàng</a>
-                <a href="#"><i class="fas fa-chart-bar"></i> Thống kê</a>
+                <div class="user-menu">
+                    <input type="checkbox" id="user-menu-toggle" />
+                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
+                        <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
+                    </label>
+                    <nav class="dropdown-menu" id="user-menu-dropdown">
+                        <a href="myprofile.html">My Profile</a>
+                        <a href="change_password.html">Change Password</a>
+                        <a href="login.jsp">Log Out</a>
+                    </nav>
+                </div>
             </div>
         </div>
-
+        <link rel="stylesheet" href="assets/css/menu.css">
+        
         <div class="container">
             <c:if test="${not empty sessionScope.successMessage}"><p class="message success-message"><c:out value="${sessionScope.successMessage}"/></p><c:remove var="successMessage" scope="session"/></c:if>
             <c:if test="${not empty sessionScope.errorMessage}"><p class="message error-message"><c:out value="${sessionScope.errorMessage}"/></p><c:remove var="errorMessage" scope="session"/></c:if>
@@ -234,6 +295,12 @@
                     <h3>Tạo yêu cầu trả hàng</h3>
                     <p>Gửi yêu cầu trả hàng theo từng sản phẩm đến nhà cung cấp nếu có vấn đề.</p>
                     <a href="create_return_request">Tạo yêu cầu trả hàng</a>
+                </div>
+                <div class="dashboard-card">
+                    <i class="fas fa-list-alt card-icon"></i>
+                    <h3>Lịch sử xuất nhập kho</h3>
+                    <p>Xem báo cáo xuất/nhập kho theo thời gian</p>
+                    <a href="stock_report">Xem báo cáo</a>
                 </div>
             </div>
 

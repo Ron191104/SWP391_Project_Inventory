@@ -89,31 +89,8 @@ public class InventoryOrderDetailController extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("approve".equals(action)) {
-            dao.approveStockIn(id);
+            dao.updateStatus(id, 1);
 
-            StoreStockIn stockIn = dao.getStockInById(id);
-            List<StoreStockInDetail> details = dao.getStockInDetails(id);
-
-            StockOut stockOut = new StockOut();
-            stockOut.setStockOutDate(new Date());
-            stockOut.setReason("Xuất hàng cho cửa hàng");
-            stockOut.setNote(stockIn.getNote());
-            stockOut.setCreatedAt(new Date());
-
-// insert stock_out
-            InventoryStockDAO invDAO = new InventoryStockDAO();
-            int stockOutId = invDAO.insertStockOut(stockOut);
-
-// insert stock_out_details
-            for (StoreStockInDetail d : details) {
-                StockOutDetail sod = new StockOutDetail();
-                sod.setStockOutId(stockOutId);
-                sod.setProductId(d.getProductId());
-                sod.setQuantity(d.getQuantity());
-                sod.setPriceOut(d.getPriceIn());
-
-                invDAO.insertStockOutDetail(sod);
-            }
         } else if ("reject".equals(action)) {
             dao.updateStatus(id, 2);
         }

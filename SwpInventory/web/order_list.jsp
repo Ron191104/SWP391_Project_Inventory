@@ -412,11 +412,34 @@
 
         <div class="container" style="text-align: center">
             <h2>Danh sách đơn hàng đã gửi</h2>
+            
 
+            
+            <c:if test="${totalPages > 1}">
+                <div style="margin: 20px auto 0 auto; max-width: 600px; font-weight: bold; text-align: left;">
+                    <c:if test="${currentPage > 1}">
+                        <a href="order_list?page=${currentPage - 1}" style="margin-right: 10px; text-decoration: none; color: #0b5ed7;">&laquo;</a>
+                    </c:if>
+                    Trang ${currentPage}/${totalPages}
+                    <c:if test="${currentPage < totalPages}">
+                        <a href="order_list?page=${currentPage + 1}" style="margin-left: 10px; text-decoration: none; color: #0b5ed7;">&raquo;</a>
+                    </c:if>
+                </div>
+            </c:if>
+                <form method="get" action="order_list" style="margin: 20px 0; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <label for="supplier">Nhà cung cấp:</label>
+                    <select name="supplier" id="supplier" onchange="this.form.submit()" style="padding: 8px 16px; border: 2px solid #82CAFA; border-radius: 8px; font-size: 1em;">
+                        <option value="">Tất cả</option>
+                        <c:forEach var="s" items="${supplierList}">
+                            <option value="${s.supplierName}" <c:if test="${s.supplierName == selectedSupplier}">selected</c:if>>
+                                ${s.supplierName}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </form>
             <c:if test="${empty orderDisplayList}">
                 <p>Chưa có đơn hàng nào.</p>
             </c:if>
-
             <c:forEach var="od" items="${orderDisplayList}">
                 <a href="order_details?orderId=${od.orderId}" style="text-decoration: none; color: inherit;">
                     <div style="
@@ -493,7 +516,23 @@
                 </a>
 
             </c:forEach>
+            <c:if test="${totalPages > 1}">
+                <div style="text-align: center; margin-top: 20px;">
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <c:choose>
+                            <c:when test="${i == currentPage}">
+                                <span style="margin: 0 5px; font-weight: bold; color: #82CAFA;">${i}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="order_list?page=${i}" style="margin: 0 5px; color: #0b5ed7;">${i}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </div>
+            </c:if>
+
         </div>
+
 
 
 

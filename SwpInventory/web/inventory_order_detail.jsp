@@ -8,6 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <html>
     <head>
     <div class="header">
@@ -113,7 +114,7 @@
         }
         table th:first-child,
         table td:first-child {
-            width: 10px;
+            width: 15px;
         }
 
         tbody tr:hover {
@@ -211,13 +212,17 @@
                 <c:when test="${stockIn.status == 2}">
                     <span class="status-rejected">Từ chối</span>
                 </c:when>
+                <c:when test="${stockIn.status == 3}">
+                    <span class="status-approved">Đã xuất kho</span>
+                </c:when>
             </c:choose>
         </p>
         <table>
             <tr>
-                <th>Product ID</th>
+                <th>Mã sản phẩm</th>
                 <th>Tên sản phẩm</th>
                 <th>Số lượng</th>
+                <th>Đơn vị</th>               
                 <th>Giá nhập</th>
                 <th>Thành tiền</th>
             </tr>
@@ -228,15 +233,19 @@
                     <td>${d.productId}</td>
                     <td>${d.productName}</td>
                     <td>${d.quantity}</td>
+                    <td>${d.unitName}</td>
                     <td>${d.priceIn}</td>
-                    <td>${d.quantity * d.priceIn}</td>
+                    <td><fmt:formatNumber value="${d.quantity * d.priceIn}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+
                 </tr>
                 <c:set var="totalAmount" value="${totalAmount + (d.quantity * d.priceIn)}"/>
             </c:forEach>
 
             <tr>
-                <td colspan="4" style="text-align: right;"><strong>Tổng cộng:</strong></td>
-                <td><strong>${totalAmount}</strong></td>
+                <td colspan="5" style="text-align: right;"><strong>Tổng cộng:</strong></td>
+                <td><strong><fmt:formatNumber value="${totalAmount}" type="currency" currencySymbol="₫" groupingUsed="true"/></strong></td>
+
+
             </tr>
         </table>
         <div style="margin-top: 24px;">
@@ -258,11 +267,21 @@
                     </button>
                 </form>
             </c:if>
-            <c:if test="${order.status == 1}">
+            <c:if test="${stockIn.status == 1}">
                 <div style="margin-top:18px;color:green;font-weight:bold;">Đơn hàng đã được duyệt.</div>
+                <form method="get" action="stock_out" style="margin-top: 12px;">
+                    <input type="hidden" name="id" value="${stockIn.id}" />
+                    <button type="submit" class="btn-approve">
+                        ➤ Tạo phiếu xuất kho
+                    </button>
+                </form>
             </c:if>
-            <c:if test="${order.status == 2}">
+
+            <c:if test="${stockIn.status == 2}">
                 <div style="margin-top:18px;color:#dc3545;font-weight:bold;">Đơn hàng đã bị từ chối.</div>
+            </c:if>
+            <c:if test="${stockIn.status == 3}">
+                <div style="margin-top:18px;color:green;font-weight:bold;">Đơn hàng đã xuất kho.</div>
             </c:if>
         </div>
     </div>

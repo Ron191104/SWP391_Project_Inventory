@@ -8,6 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <html>
     <head>
     <div class="header">
@@ -81,135 +82,138 @@
     <link rel="stylesheet" href="assets/css/menu.css">
     <style>
 
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 28px;
-                table-layout: fixed;
-            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 28px;
+            table-layout: fixed;
+        }
 
-            th, td {
-                border: 1px solid #ddd;
-                padding: 5px;
-                text-align: left;
-                width: 20px;
-                font-size: 0.85rem;
-                text-align: center;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            text-align: left;
+            width: 20px;
+            font-size: 0.85rem;
+            text-align: center;
 
-            }
-            th {
-                background-color: #82CAFA;
-                color: white;
-                font-weight: 700;
-            }
-            table th:first-child,
-            table td:first-child {
-                width: 10px;
-            }
+        }
+        th {
+            background-color: #82CAFA;
+            color: white;
+            font-weight: 700;
+        }
+        table th:first-child,
+        table td:first-child {
+            width: 10px;
+        }
 
-            tbody tr:hover {
-                background-color: #FDF9DA;
-            }
+        tbody tr:hover {
+            background-color: #FDF9DA;
+        }
 
-            .container {
-                max-width: 100%;
-                padding: 10px 24px 24px 24px;
-                background: white;
-                margin-left: 10px;
-                margin-top: 0px;
-            }
-
-
-            .btn-view {
-                background-color: #128bfc;
-                color: white;
-                border: none;
-                height: 23px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 14px;
-            }
-
-            .status-processing {
-                font-weight: bold;
-            }
-
-            .status-approved {
-                font-weight: bold;
-                color: green;
-            }
-
-            .status-rejected {
-                font-weight: bold;
-                color: red;
-            }
-            .container {
-                max-width: 1200px;
-                margin: 40px auto;
-                background: #fff;
-                padding: 24px;
-                border-radius: 8px;
-                box-shadow: 0 0 16px rgba(0,0,0,0.1);
-            }
-            body {
-                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-                background-color: #f4f4f4;
-                margin: 0;
-                padding: 0;
-            }
+        .container {
+            max-width: 100%;
+            padding: 10px 24px 24px 24px;
+            background: white;
+            margin-left: 10px;
+            margin-top: 0px;
+        }
 
 
-        </style>
+        .btn-view {
+            background-color: #128bfc;
+            color: white;
+            border: none;
+            height: 23px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .status-processing {
+            font-weight: bold;
+        }
+
+        .status-approved {
+            font-weight: bold;
+            color: green;
+        }
+
+        .status-rejected {
+            font-weight: bold;
+            color: red;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 0 16px rgba(0,0,0,0.1);
+        }
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+
+    </style>
 </head>
 <body>
     <div class="container">
-    <h3>Danh sách đơn nhập hàng</h3>
-    <c:if test="${empty stockInList}">
-        <p>Không có đơn nhập nào.</p>
-    </c:if>
+        <h3>Danh sách đơn nhập hàng</h3>
+        <c:if test="${empty stockInList}">
+            <p>Không có đơn nhập nào.</p>
+        </c:if>
 
-    <c:if test="${not empty stockInList}">
-        <table border="1" width="100%">
-            <tr style="height: 35px">
-                <th>Mã đơn</th>
-                <th>Chi nhánh</th>
-                <th>Thời gian</th>
-                <th>Trạng thái</th>
-                <th>Ghi chú</th>
-                <th>Thao tác</th>
-            </tr>
-
-            <c:forEach items="${stockInList}" var="si">
-                <tr>
-                    <td>${si.id}</td>
-                    <td>${storeNameMap[si.storeId]}</td>
-                    <td><fmt:formatDate value="${si.importDate}" pattern="dd/MM/yyyy HH:mm:ss" /></td>                          
-                    <td>
-                        <c:choose>
-                            <c:when test="${si.status == 0}">
-                                <span class="status-processing">Chờ duyệt</span>
-                            </c:when>
-                            <c:when test="${si.status == 1}">
-                                <span class="status-approved">Đã duyệt</span>
-                            </c:when>
-                            <c:when test="${si.status == 2}">
-                                <span class="status-rejected">Từ chối</span>
-                            </c:when>
-                        </c:choose>
-                    </td>
-                    <td>${si.note}</td>
-
-                    <td>
-                        <form action="inventory_order_detail" style="margin: 0;">
-                            <input type="hidden" name="id" value="${si.id}">
-                            <button type="submit" class="btn-view">Xem đơn</button>
-                        </form>
-                    </td>
+        <c:if test="${not empty stockInList}">
+            <table border="1" width="100%">
+                <tr style="height: 35px">
+                    <th>Mã đơn</th>
+                    <th>Chi nhánh</th>
+                    <th>Thời gian</th>
+                    <th>Trạng thái</th>
+                    <th>Ghi chú</th>
+                    <th>Thao tác</th>
                 </tr>
-            </c:forEach>
-        </table>
 
-    </c:if>
+                <c:forEach items="${stockInList}" var="si">
+                    <tr>
+                        <td>${si.id}</td>
+                        <td>${storeNameMap[si.storeId]}</td>
+                        <td><fmt:formatDate value="${si.importDate}" pattern="dd/MM/yyyy HH:mm:ss" /></td>                          
+                        <td>
+                            <c:choose>
+                                <c:when test="${si.status == 0}">
+                                    <span class="status-processing">Chờ duyệt</span>
+                                </c:when>
+                                <c:when test="${si.status == 1}">
+                                    <span class="status-approved">Đã duyệt</span>
+                                </c:when>
+                                <c:when test="${si.status == 2}">
+                                    <span class="status-rejected">Từ chối</span>
+                                </c:when>
+                                <c:when test="${si.status == 3}">
+                                    <span class="status-approved">Đã xuất kho</span>
+                                </c:when>
+                            </c:choose>
+                        </td>
+                        <td>${si.note}</td>
+
+                        <td>
+                            <form action="inventory_order_detail" style="margin: 0;">
+                                <input type="hidden" name="id" value="${si.id}">
+                                <button type="submit" class="btn-view">Xem đơn</button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+
+        </c:if>
     </div>
 </body>
 </html>
