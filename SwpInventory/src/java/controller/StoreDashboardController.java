@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import model.StoreProduct;
 
 /**
@@ -62,7 +63,7 @@ public class StoreDashboardController extends HttpServlet {
                 fromDate = now.minusDays(7).format(formatter);
                 toDate = now.format(formatter);
                 break;
-            default:  
+            default:
                 fromDate = now.format(formatter);
                 toDate = now.format(formatter);
         }
@@ -78,6 +79,8 @@ public class StoreDashboardController extends HttpServlet {
             List<StoreProduct> topSellingProducts = dao.getTopSellingProducts(storeId, fromDate, toDate);
             List<StoreProduct> lowStockProducts = dao.getTopLowStoreStockProducts(storeId);
             List<StoreProduct> chartData = dao.getProductSalesChart(storeId, fromDate, toDate);
+            Map<String, Double> dailyRevenueMap = dao.getDailyRevenue(storeId, fromDate, toDate);
+            request.setAttribute("dailyRevenueMap", dailyRevenueMap);
 
             request.setAttribute("totalProducts", totalProducts);
             request.setAttribute("totalStockIn", totalStockIn);

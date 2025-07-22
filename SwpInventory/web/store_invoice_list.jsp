@@ -1,21 +1,14 @@
-<%-- 
-    Document   : store_stock_in_list
-    Created on : Jul 6, 2025, 2:21:09 PM
-    Author     : ADMIN
---%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Danh sách hóa đơn</title>
+        <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <link rel="stylesheet" href="assets/css/menu.css">
-
-        <title>JSP Page</title>
         <style>
 
             table {
@@ -56,36 +49,9 @@
                 margin-top: 0px;
             }
 
-
-            .btn-view {
-                background-color: #82CAFA;
-                color: white;
-                border: none;
-                height: 23px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 14px;
-            }
-
-            .status-processing {
-                font-weight: bold;
-            }
-
-            .status-approved {
-                font-weight: bold;
-                color: green;
-            }
-
-            .status-rejected {
-                font-weight: bold;
-                color: red;
-            }
-
-
         </style>
     </head>
     <body>
-
         <div class="header">
             <div class="header-left">
                 <h1>Tên kho</h1>
@@ -141,71 +107,63 @@
                 </div>
                 <div class="user-menu">
                     <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
-                        <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
+                    <label for="user-menu-toggle">
+                        <img src="<%= request.getContextPath() + "/" + 
+                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() 
+                                ? session.getAttribute("userImage") 
+                                : "images/default-avatar.png") %>" 
+                             alt="Avatar người dùng" 
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown">
-                        <a href="myprofile.html">My Profile</a>
-                        <a href="change_password.html">Change Password</a>
-                        <a href="login.html">Log Out</a>
+                    <nav class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
+                        <a href="<%= request.getContextPath() %>/logout">Logout</a>
                     </nav>
                 </div>
             </div>
         </div>
 
         <div class="container">
-            <h3>Danh sách đơn nhập hàng</h3>
+            <h3>Danh sách hóa đơn bán hàng</h3>
 
-            <c:if test="${empty stockInList}">
-                <p>Không có đơn nhập nào.</p>
+
+            <c:if test="${empty salesList}">
+                <p style="color:red;">Chưa có hóa đơn nào.</p>
             </c:if>
 
-            <c:if test="${not empty stockInList}">
-                <table border="1" width="100%">
-                    <tr style="height: 35px">
-                        <th>MÃ ĐƠN</th>
-                        <th>NGÀY</th>
-                        <th>THỜI GIAN</th>
-                        <th>TRẠNG THÁI</th>
-                        <th>GHI CHÚ</th>
-                        <th>ACTION</th>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Mã hóa đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Ngày bán</th>
+                        <th>Thời gian</th>
+                        <th>Tổng tiền</th>
+                        <th>Chi tiết</th>
                     </tr>
-
-                    <c:forEach items="${stockInList}" var="si">
+                </thead>
+                <tbody>
+                    <c:forEach var="sale" items="${salesList}">
                         <tr>
-                            <td>${si.id}</td>
-                            <td><fmt:formatDate value="${si.importDate}" pattern="dd/MM/yyyy" /></td>
-                            <td><fmt:formatDate value="${si.importDate}" pattern="HH:mm:ss" /></td>
+                            <td>${sale.saleId}</td>
+                            <td>${sale.customerName}</td>
                             <td>
-                                <c:choose>
-                                    <c:when test="${si.status == 0}">
-                                        <span class="status-processing">Đang xử lý</span>
-                                    </c:when>
-                                    <c:when test="${si.status == 1}">
-                                        <span class="status-approved">Đã duyệt</span>
-                                    </c:when>
-                                    <c:when test="${si.status == 2}">
-                                        <span class="status-rejected">Từ chối</span>
-                                    </c:when>
-                                        <c:when test="${si.status == 3}">
-                                        <span class="status-approved">Đã nhập hàng</span>
-                                    </c:when>
-                                </c:choose>
+                                <fmt:formatDate value="${sale.saleDate}" pattern="dd-MM-yyyy"/>
                             </td>
-                            <td>${si.note}</td>
+                            <td>
+                                <fmt:formatDate value="${sale.saleDate}" pattern="HH:mm:ss"/>
+                            </td>                     
+                            <td><fmt:formatNumber value="${sale.totalAmount}" type="currency" currencySymbol="₫"/></td>
+                            <td><a class="detail-link" href="sale_detail?saleId=${sale.saleId}">Xem</a></td>
 
-                            <td>
-                                <form action="store_stock_in_detail" style="margin: 0;">
-                                    <input type="hidden" name="id" value="${si.id}">
-                                    <button type="submit" class="btn-view">Xem chi tiết</button>
-                                </form>
-                            </td>
                         </tr>
                     </c:forEach>
-                </table>
-
-            </c:if>
+                </tbody>
+            </table>
         </div>
     </body>
-
 </html>
