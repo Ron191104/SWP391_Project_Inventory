@@ -115,7 +115,6 @@ public class StoreSalesController extends HttpServlet {
         StoreDAO sdao = new StoreDAO();
         CategoryDAO cdao = new CategoryDAO();
 
-
         request.setAttribute("storeProduct", listProduct);
         request.setAttribute("listStore", sdao.getAllStore());
         request.setAttribute("listStoreCategory", cdao.getAllCategories());
@@ -145,23 +144,23 @@ public class StoreSalesController extends HttpServlet {
             response.sendRedirect("choose_store");
             return;
         }
-String customerName = request.getParameter("customerName");
-String phone = request.getParameter("phone");
-request.setAttribute("customerName", customerName);
-request.setAttribute("phone", phone);
-int pointBalance = 0;
-session.setAttribute("customerName", customerName);
-session.setAttribute("phone", phone);
-session.setAttribute("pointBalance", pointBalance);
+        String customerName = request.getParameter("customerName");
+        String phone = request.getParameter("phone");
+        request.setAttribute("customerName", customerName);
+        request.setAttribute("phone", phone);
+        int pointBalance = 0;
+        session.setAttribute("customerName", customerName);
+        session.setAttribute("phone", phone);
+        session.setAttribute("pointBalance", pointBalance);
 
-if (phone != null && !phone.isEmpty()) {
-    CustomerDAO customerDAO = new CustomerDAO();
-    int customerId = customerDAO.findCustomerIdByPhone(phone);
-    if (customerId > 0) {
-        pointBalance = customerDAO.getPoints(customerId);
-    }
-}
-request.setAttribute("pointBalance", pointBalance);
+        if (phone != null && !phone.isEmpty()) {
+            CustomerDAO customerDAO = new CustomerDAO();
+            int customerId = customerDAO.findCustomerIdByPhone(phone);
+            if (customerId > 0) {
+                pointBalance = customerDAO.getPoints(customerId);
+            }
+        }
+        request.setAttribute("pointBalance", pointBalance);
 
         String action = request.getParameter("action");
         String cartKey = "saleCart_" + storeId;
@@ -185,7 +184,7 @@ request.setAttribute("pointBalance", pointBalance);
                     break;
                 }
             }
-            
+
         } else {
             String productIdStr = request.getParameter("productId");
             if (productIdStr != null) {
@@ -208,7 +207,7 @@ request.setAttribute("pointBalance", pointBalance);
                         newItem.setProductId(productId);
                         newItem.setQuantity(1);
                         String priceParam = request.getParameter("price");
-                        double price = storeProduct.getPriceOut(); // fallback
+                        double price = storeProduct.getPriceOut(); 
                         price = Double.parseDouble(priceParam);
                         newItem.setPrice(price);
 
@@ -230,7 +229,7 @@ request.setAttribute("pointBalance", pointBalance);
         request.setAttribute("listStore", sdao.getAllStore());
         session.setAttribute("storeProductAllPage", productDAO.getAllStoreProduct(storeId));
 
-response.sendRedirect("sales");
+        response.sendRedirect("sales");
     }
 
     /**

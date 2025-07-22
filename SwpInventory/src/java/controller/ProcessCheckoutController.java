@@ -133,7 +133,7 @@ public class ProcessCheckoutController extends HttpServlet {
                 (customerId > 0) ? customerId : 0,
                 storeId,
                 totalAmount,
-                "Giao dịch thành công"
+                ""
         );
 
         for (StoreOrderDetails item : cart) {
