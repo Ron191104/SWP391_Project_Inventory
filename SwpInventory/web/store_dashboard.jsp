@@ -13,50 +13,113 @@
 
         <title>JSP Page</title>
         <style>
-            .card {
-                background-color: #fff;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                margin: 30px;
-                padding-left: 30px;
-                display: inline-block;
-                width: 160px;
-                height: 110px;
+
+            .container {
+                max-width: 100%;
+                padding: 10px 24px 24px 24px;
+                background: white;
+                margin-left: 20px;
+                max-height: 85vh;
             }
-            .card h3 {
-                font-size: 18px;
-            }
-            .card .value {
-                font-size: 1em;
-                font-weight: bold;
-            }
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                cursor: help;
-            }
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 180px;
-                background-color: #333;
-                color: #fff;
-                text-align: center;
-                border-radius: 6px;
-                padding: 6px;
-                position: absolute;
-                z-index: 10;
-                bottom: 125%;
-                left: 50%;
-                margin-left: -90px;
-                opacity: 0;
-                transition: opacity 0.3s;
-                font-size: 0.75rem;
-            }
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
+            .dashboard-cards {
+                display: flex;
+                justify-content: center;
+                gap: 25px;
+                margin-top:  20px;
+                margin-bottom: 20px;
             }
 
+            .dashboard-cards .card {
+                background: #FFFEED;
+                padding: 20px;
+                border-radius: 10px;
+                width: 150px;
+                height: 45px;
+                text-align: center;
+                font-weight: bold;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+            .dashboard-cards .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+
+            .product-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+
+            .product-item {
+                width: 180px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                text-align: center;
+                padding: 10px;
+                background: #fff;
+            }
+
+            .product-item img {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 4px;
+                margin-bottom: 8px;
+            }
+
+            select{
+                border-radius: 10px;
+                height: 30px;
+                width: 120px;
+                outline: none;
+                border: 2px solid #82CAFA;
+
+            }
+
+
+            .selling-container {
+                display: flex;
+                gap: 16px;
+                flex-wrap: wrap;
+                justify-content: start;
+                margin-top: 16px;
+            }
+
+            .product-box {
+                width: 100px;
+                background-color: #ffffff;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 6px;
+                text-align: center;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .product-box:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            }
+
+            .product-image {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 6px;
+                border-radius: 8px;
+            }
+
+            .product-name {
+                font-weight: 600;
+                font-size: 16px;
+                color: #333;
+                margin-bottom: 4px;
+            }
+            .quantity {
+                font-size: 13px;
+                color: #666;
+            }
         </style>
     </head>
     <body>
@@ -135,16 +198,94 @@
             </div>
         </div>
 
-        <div class="card">
-            <h3>Số sản phẩm 
-                <span class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">Tổng số sản phẩm hiện có trong cửa hàng</span>
-                </span>
-            </h3>
-            <div class="value">${totalProducts}</div>
+        <div class="container">
+            <div style="margin-bottom: 12px;">
+                <form action="store_dashboard" method="get">
+                    <select name="filter" onchange="this.form.submit()">
+                        <option value="today" ${filter == 'today' ? 'selected' : ''}>Hôm nay</option>
+                        <option value="week" ${filter == 'week' ? 'selected' : ''}>Tuần</option>
+                        <option value="month" ${filter == 'month' ? 'selected' : ''}>Tháng</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div>Tổng sản phẩm</div>
+                    <div style="font-size: 25px">${totalProducts}</div>
+                </div>
+                <div class="card">
+                    <div>Tổng đơn nhập</div>
+                    <div style="font-size: 25px">${totalStockIn}</div>
+                </div>
+                <div class="card">
+                    <div>Tổng đơn bán</div>
+                    <div style="font-size: 25px">${totalSales}</div>
+                </div>
+
+                <div class="card">
+                    Tổng doanh thu:
+                    <fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="₫"/>
+                </div>
+            </div>
+
+            <h3>Top 5 sản phẩm bán chạy</h3>
+
+            <div class="selling-container">
+                <c:forEach var="item" items="${topSellingProducts}">
+                    <div class="product-box">
+                        <img src="assets/image/${item.product.image}" class="product-image"/>
+                        <div class="product-name">${item.product.name}</div>
+                        <div class="quantity">${item.quantity} sp bán</div>
+                    </div>
+                </c:forEach>
+            </div>
+
+
+
+            <h3>Top 5 sản phẩm sắp hết hàng</h3>
+
+            <div class="selling-container">
+                <c:forEach var="item" items="${lowStockProducts}">
+                    <div class="product-box">
+                        <img src="assets/image/${item.product.image}" class="product-image" />
+                        <div class="product-name">${item.product.name}</div>
+                        <div class="quantity">Còn: ${item.quantity} sp</div>
+                    </div>
+                </c:forEach>
+            </div>
+
+
+            <canvas id="salesChart"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                        const labels = [
+                <c:forEach var="item" items="${chartData}">
+                            '${item.product.name}',
+                </c:forEach>
+                        ];
+
+                        const data = {
+                            labels: labels,
+                            datasets: [{
+                                    label: 'Số lượng bán',
+                                    data: [
+                <c:forEach var="item" items="${chartData}">
+                    ${item.quantity},
+                </c:forEach>
+                                    ],
+                                    backgroundColor: 'rgba(75, 192, 192, 0.5)'
+                                }]
+                        };
+
+                        const config = {
+                            type: 'bar',
+                            data: data,
+                        };
+
+                        new Chart(document.getElementById('salesChart'), config);
+            </script>
         </div>
-
-
     </body>
 </html>
