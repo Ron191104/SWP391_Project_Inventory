@@ -106,10 +106,9 @@
                 <h1>Tên kho</h1>
                 <div class="nav">
                     <a href="store_dashboard.jsp">
-
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
-                     <div class="dropdown">
+                    <div class="dropdown">
                         <input type="checkbox" id="store-dropdown" />
                         <label for="store-dropdown" class="dropdown-label">
                             <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
@@ -117,6 +116,7 @@
                         <div class="dropdown-menu">
                             <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
                             <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
+                            <a href="store_set_price"><i class="fas fa-cog"></i> Đặt giá sản phẩm</a>
                         </div>
                     </div>
 
@@ -129,8 +129,9 @@
                             <a href="store_stock_in"><i class="fas fa-plus-circle"></i>Tạo đơn</a>
                             <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
-                    </div>           
-                    <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    </div>                   
+                    <a href="sales"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    <a href="customer_list"><i class="fas fa-users"></i> Khách hàng</a>
                     <c:if test="${not empty sessionScope.storeId}">
                         <c:forEach var="store" items="${listStore}">
                             <c:if test="${store.storeId == sessionScope.storeId}">
@@ -196,8 +197,9 @@
                     <table border="1" width="100%">
                         <tr>
                             <th>Tên sản phẩm</th>
-                            <th>Giá</th>
                             <th>Số lượng</th>
+                            <th>Đơn vị</th>
+                            <th>Giá</th>
                             <th>Thành tiền</th>
                             <th>Action</th>
                         </tr>
@@ -214,9 +216,10 @@
                                                 </c:if>
                                             </c:forEach>
                                         </td>
+                                        <td>${od.quantity}</td>
+                                        <td>${od.unit}</td>
                                         <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
 
-                                        <td>${od.quantity}</td>
                                         <td>
                                             <c:set var="subtotal" value="${od.quantity * od.price}" />
                                             <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>
@@ -233,15 +236,15 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="5" style="text-align:center;">Giỏ hàng trống</td>
+                                    <td colspan="6" style="text-align:center;">Giỏ hàng trống</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
 
                         <tr>
-                            <td colspan="4"><b>Tổng:</b></td>
+                            <td colspan="5"><b>Tổng:</b></td>
                             <td><b><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></b></td>
-                                                                        
+
 
                         </tr>
                     </table>

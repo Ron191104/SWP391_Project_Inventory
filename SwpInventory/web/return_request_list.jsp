@@ -1,80 +1,149 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.ReturnRequest" %>
+
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Danh sách yêu cầu trả hàng</title>
-    <link rel="stylesheet" href="assets/css/filter-icon.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        body {
-            font-family: "Segoe UI", sans-serif;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: 32px auto;
-            padding: 24px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 16px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .return-card {
-            border: 2px solid #82CAFA;
-            border-radius: 12px;
-            margin: 20px auto;
-            max-width: 600px;
-            background-color: #f9fcff;
-            padding: 20px;
-            position: relative;
-            transition: transform 0.2s ease;
-        }
-        .return-card h3 {
-            color: #0b5ed7;
-        }
-        .return-card p {
-            margin: 4px 0;
-        }
-        .status {
-            font-weight: bold;
-        }
-        .status-0 { color: gray; }
-        .status-1 { color: green; }
-        .status-2 { color: red; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Danh sách đơn hoàn trả đã gửi</h2>
+    <head>
+        <meta charset="UTF-8">
+        <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+        <link rel="stylesheet" href="assets/css/filter-icon.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        <c:if test="${empty returnList}">
-            <p>Chưa có yêu cầu trả hàng nào.</p>
-        </c:if>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Danh sách yêu cầu hoàn hàng</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
 
-        <c:forEach var="rr" items="${returnList}">
-            <div class="return-card">
-                <h3>Yêu cầu hoàn #${rr.returnId}</h3>
-                <p><strong>Ngày tạo:</strong> ${rr.createdAt}</p>
-                <p><strong>Nhân viên gửi:</strong> ${rr.employeeName}</p>
-                <p><strong>Lý do:</strong> ${rr.reason}</p>
-                <c:if test="${not empty rr.note}">
-                    <p><strong>Ghi chú:</strong> ${rr.note}</p>
-                </c:if>
-                <p><strong>Trạng thái:</strong>
-                    <span class="status status-${rr.status}">
-                        <c:choose>
-                            <c:when test="${rr.status == 0}">Chờ duyệt</c:when>
-                            <c:when test="${rr.status == 1}">Đã duyệt</c:when>
-                            <c:when test="${rr.status == 2}">Từ chối</c:when>
-                            <c:otherwise>Không rõ</c:otherwise>
-                        </c:choose>
-                    </span>
-                </p>
-                <a href="return_details?returnId=${rr.returnId}">Xem chi tiết</a>
-            </div>
-        </c:forEach>
-    </div>
-</body>
+            body {
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                color: #333;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            .container {
+                max-width: 850px;
+                margin: 40px auto;
+                background: white;
+                padding: 32px;
+                border-radius: 10px;
+                box-shadow: 0 0 16px rgba(0,0,0,0.1);
+                width: 100%;
+            }
+
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+
+            .request-card {
+                border: 2px solid #82CAFA;
+                border-radius: 12px;
+                margin: 20px auto;
+                max-width: 600px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                background-color: #f9fcff;
+                font-family: 'Segoe UI', sans-serif;
+                padding: 20px;
+                transition: transform 0.2s ease;
+            }
+
+            .request-card:hover {
+                transform: scale(1.02);
+            }
+
+            .request-card h3 {
+                color: #0b5ed7;
+            }
+
+            .request-card p {
+                margin: 8px 0;
+            }
+
+            .request-card .status {
+                font-weight: 600;
+            }
+
+            .btn-action {
+                background-color: #82CAFA;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 4px;
+                text-decoration: none;
+                font-size: 1rem;
+                cursor: pointer;
+                display: inline-block;
+                margin-right: 10px;
+            }
+
+            .btn-action:hover {
+                background-color: #21a5fc;
+            }
+
+            .btn-cancel {
+                background-color: #ff4d4d;
+                color: white;
+            }
+
+            .btn-cancel:hover {
+                background-color: #c82333;
+            }
+
+            .no-data {
+                text-align: center;
+                font-style: italic;
+                color: #888;
+                background: #fefefe;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Danh sách yêu cầu trả hàng</h2>
+
+            <c:if test="${empty returnList}">
+                <div class="no-data">Chưa có yêu cầu trả hàng nào.</div>
+            </c:if>
+
+            <c:forEach var="r" items="${returnList}">
+                <a href="return_request_details?returnId=${r.id}" style="text-decoration: none; color: inherit;">
+                    <div class="request-card">
+                        <h3>Yêu cầu trả hàng #${r.id}</h3>
+                        <p><strong>Nhà cung cấp:</strong> ${r.supplierName}</p>
+                        <p><strong>Nhân viên tạo:</strong> ${r.employeeName}</p>
+                        <p><strong>Ngày tạo:</strong> ${r.createdDate}</p>
+                        <p><strong>Lý do:</strong> ${r.reason}</p>
+                        <p><strong>Trạng thái:</strong>
+                            <c:choose>
+                                <c:when test="${r.status == 0}">⏳ Chờ duyệt</c:when>
+                                <c:when test="${r.status == 1}">✔ Đã duyệt</c:when>
+                                <c:when test="${r.status == 2}">✖ Từ chối</c:when>
+                            </c:choose>
+                        </p>
+
+                        <div class="btn-action-container">
+                            <a href="return_request_details?returnId=${r.id}" class="btn-action">Xem chi tiết</a>
+
+                            <c:if test="${r.status == 0}">
+                                <a href="cancel_return_request?id=${r.id}" class="btn-cancel"
+                                   onclick="return confirm('Bạn có chắc chắn muốn hủy yêu cầu này?')">Hủy yêu cầu</a>
+                            </c:if>
+                        </div>
+                    </div>
+                </a>
+            </c:forEach>
+
+        </div>
+    </body>
 </html>

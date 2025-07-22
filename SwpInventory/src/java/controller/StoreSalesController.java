@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CategoryDAO;
+import dao.CustomerDAO;
 import dao.StoreDAO;
 import dao.StoreProductDAO;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import model.StoreProduct;
  * @author ADMIN
  */
 @WebServlet(name = "StoreSaleController", urlPatterns = {"/sales"})
+
 public class StoreSalesController extends HttpServlet {
 
     /**
@@ -91,9 +93,9 @@ public class StoreSalesController extends HttpServlet {
 
         if (barcode != null && !barcode.trim().isEmpty()) {
             listProduct = productDAO.findByBarcodeLike(storeId, barcode);
-            totalItems = listProduct.size(); 
+            totalItems = listProduct.size();
             request.setAttribute("searchedBarcode", barcode);
-            request.setAttribute("paginationEnabled", false); 
+            request.setAttribute("paginationEnabled", false);
         } else if (categoryId != -1) {
             listProduct = productDAO.getStoreProductByCategoryWithPaging(storeId, categoryId, offset, itemsPerPage);
             totalItems = productDAO.countStoreProductByCategory(storeId, categoryId);
@@ -112,6 +114,7 @@ public class StoreSalesController extends HttpServlet {
 
         StoreDAO sdao = new StoreDAO();
         CategoryDAO cdao = new CategoryDAO();
+
 
         request.setAttribute("storeProduct", listProduct);
         request.setAttribute("listStore", sdao.getAllStore());
@@ -142,6 +145,23 @@ public class StoreSalesController extends HttpServlet {
             response.sendRedirect("choose_store");
             return;
         }
+String customerName = request.getParameter("customerName");
+String phone = request.getParameter("phone");
+request.setAttribute("customerName", customerName);
+request.setAttribute("phone", phone);
+int pointBalance = 0;
+session.setAttribute("customerName", customerName);
+session.setAttribute("phone", phone);
+session.setAttribute("pointBalance", pointBalance);
+
+if (phone != null && !phone.isEmpty()) {
+    CustomerDAO customerDAO = new CustomerDAO();
+    int customerId = customerDAO.findCustomerIdByPhone(phone);
+    if (customerId > 0) {
+        pointBalance = customerDAO.getPoints(customerId);
+    }
+}
+request.setAttribute("pointBalance", pointBalance);
 
         String action = request.getParameter("action");
         String cartKey = "saleCart_" + storeId;
@@ -165,6 +185,7 @@ public class StoreSalesController extends HttpServlet {
                     break;
                 }
             }
+            
         } else {
             String productIdStr = request.getParameter("productId");
             if (productIdStr != null) {
@@ -187,16 +208,9 @@ public class StoreSalesController extends HttpServlet {
                         newItem.setProductId(productId);
                         newItem.setQuantity(1);
                         String priceParam = request.getParameter("price");
-    double price = storeProduct.getPriceOut(); // fallback
-//    if (priceParam != null && !priceParam.isEmpty()) {
-//        try {
-            price = Double.parseDouble(priceParam);
-//        } catch (NumberFormatException e) {
-//            // fallback giữ nguyên
-//        }
-//    }
-    newItem.setPrice(price);
-
+                        double price = storeProduct.getPriceOut(); // fallback
+                        price = Double.parseDouble(priceParam);
+                        newItem.setPrice(price);
 
                         newItem.setUnit(storeProduct.getProduct().getUnit());
                         cart.add(newItem);
@@ -214,8 +228,9 @@ public class StoreSalesController extends HttpServlet {
         request.setAttribute("storeProduct", listProduct);
         request.setAttribute("cart", cart);
         request.setAttribute("listStore", sdao.getAllStore());
+        session.setAttribute("storeProductAllPage", productDAO.getAllStoreProduct(storeId));
 
-        response.sendRedirect("sales");
+response.sendRedirect("sales");
     }
 
     /**

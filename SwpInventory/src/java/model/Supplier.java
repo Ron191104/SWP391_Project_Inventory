@@ -1,12 +1,9 @@
-// File: src/main/java/model/Supplier.java
-// (This file should be in your 'model' package)
 package model;
-
 
 public class Supplier {
 
-    private int supplierId;
-    private String supplierName;
+    private int supplier_id;
+    private String supplier_name;
     private String phone;
     private String email;
     private String address;
@@ -15,40 +12,45 @@ public class Supplier {
     public Supplier() {
     }
 
-    // Constructor with all fields
-    public Supplier(int supplierId, String supplierName, String phone, String email, String address) {
-        this.supplierId = supplierId;
-        this.supplierName = supplierName;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-    }
-    
-    // Constructor without ID (for creating new suppliers)
-    public Supplier(String supplierName, String phone, String email, String address) {
-        this.supplierName = supplierName;
+    // Constructor với đầy đủ thông tin
+    public Supplier(int supplier_id, String supplier_name, String phone, String email, String address) {
+        this.supplier_id = supplier_id;
+        this.supplier_name = supplier_name;
         this.phone = phone;
         this.email = email;
         this.address = address;
     }
 
+    // Constructor không có ID (dùng khi thêm mới)
+    public Supplier(String supplier_name, String phone, String email, String address) {
+        this.supplier_name = supplier_name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+    }
 
-    // --- Getters and Setters for all fields ---
+    // Constructor đơn giản với ID và tên (dùng trong DAO)
+    public Supplier(int supplier_id, String supplier_name) {
+        this.supplier_id = supplier_id;
+        this.supplier_name = supplier_name;
+    }
+
+    // --- Getter và Setter ---
 
     public int getSupplierId() {
-        return supplierId;
+        return supplier_id;
     }
 
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
+    public void setSupplierId(int supplier_id) {
+        this.supplier_id = supplier_id;
     }
 
     public String getSupplierName() {
-        return supplierName;
+        return supplier_name;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setSupplierName(String supplier_name) {
+        this.supplier_name = supplier_name;
     }
 
     public String getPhone() {
@@ -78,8 +80,8 @@ public class Supplier {
     @Override
     public String toString() {
         return "Supplier{" +
-                "supplierId=" + supplierId +
-                ", supplierName='" + supplierName + '\'' +
+                "supplier_id=" + supplier_id +
+                ", supplier_name='" + supplier_name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +

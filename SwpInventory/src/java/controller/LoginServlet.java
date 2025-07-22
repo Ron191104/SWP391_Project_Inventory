@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("userImage", user.getImage());
         session.setAttribute("userEmail", user.getEmail());
         session.setAttribute("username", user.getUsername()); // ✅ THÊM DÒNG NÀY
-
+        session.setAttribute("id", user.getId());
         // Ghi LOG đăng nhập thành công
         SystemLogDAO logDao = new SystemLogDAO();
         logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");
@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("inventory_dashboard.jsp");
                 break;
             case 2:
-                response.sendRedirect("store_dashboard.jsp");
+                response.sendRedirect("choose_store");
                 break;
             case 3:
                 response.sendRedirect("supplier_login");

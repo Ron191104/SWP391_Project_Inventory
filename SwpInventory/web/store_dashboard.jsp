@@ -13,51 +13,113 @@
 
         <title>JSP Page</title>
         <style>
-            .card {
-                background-color: #fff;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                margin: 30px;
-                padding-left: 30px;
 
-                display: inline-block;
-                width: 160px;
-                height: 80px;
+            .container {
+                max-width: 100%;
+                padding: 10px 24px 24px 24px;
+                background: white;
+                margin-left: 20px;
+                max-height: 85vh;
             }
-            .card h3 {
-                font-size: 18px;
+            .dashboard-cards {
+                display: flex;
+                justify-content: center;
+                gap: 25px;
+                margin-top:  20px;
+                margin-bottom: 20px;
             }
-            .card .value {
-                font-size: 1em;
-                font-weight: bold;
-            }
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                cursor: help;
-            }
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 180px;
-                background-color: #333;
-                color: #fff;
+
+            .dashboard-cards .card {
+                background: #FFFEED;
+                padding: 20px;
+                border-radius: 10px;
+                width: 150px;
+                height: 45px;
                 text-align: center;
-                border-radius: 6px;
-                padding: 6px;
-                position: absolute;
-                z-index: 10;
-                bottom: 125%;
-                left: 50%;
-                margin-left: -90px;
-                opacity: 0;
-                transition: opacity 0.3s;
-                font-size: 0.75rem;
-            }
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
+                font-weight: bold;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             }
 
+            .dashboard-cards .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+
+            .product-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+
+            .product-item {
+                width: 180px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                text-align: center;
+                padding: 10px;
+                background: #fff;
+            }
+
+            .product-item img {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 4px;
+                margin-bottom: 8px;
+            }
+
+            select{
+                border-radius: 10px;
+                height: 30px;
+                width: 120px;
+                outline: none;
+                border: 2px solid #82CAFA;
+
+            }
+
+
+            .selling-container {
+                display: flex;
+                gap: 16px;
+                flex-wrap: wrap;
+                justify-content: start;
+                margin-top: 16px;
+            }
+
+            .product-box {
+                width: 100px;
+                background-color: #ffffff;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 6px;
+                text-align: center;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .product-box:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            }
+
+            .product-image {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 6px;
+                border-radius: 8px;
+            }
+
+            .product-name {
+                font-weight: 600;
+                font-size: 16px;
+                color: #333;
+                margin-bottom: 4px;
+            }
+            .quantity {
+                font-size: 13px;
+                color: #666;
+            }
         </style>
     </head>
     <body>
@@ -65,7 +127,7 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="store_dashboard.jsp">
+                    <a href="store_dashboard">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
                     <div class="dropdown">
@@ -76,6 +138,7 @@
                         <div class="dropdown-menu">
                             <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
                             <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
+                            <a href="store_set_price"><i class="fas fa-cog"></i> Đặt giá sản phẩm</a>
                         </div>
                     </div>
 
@@ -88,10 +151,16 @@
                             <a href="store_stock_in"><i class="fas fa-plus-circle"></i>Tạo đơn</a>
                             <a href="store_stock_in_list"><i class="fas fa-bars"></i> Danh sách đơn</a>
                         </div>
-                    </div>                     <a href="stats.html"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
-
-                    <a href="choose_store"><i class="fas fa-store"></i>Chi nhánh</a>
-
+                    </div>                   
+                    <a href="sales"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
+                    <a href="customer_list"><i class="fas fa-users"></i> Khách hàng</a>
+                    <c:if test="${not empty sessionScope.storeId}">
+                        <c:forEach var="store" items="${listStore}">
+                            <c:if test="${store.storeId == sessionScope.storeId}">
+                                <a href="choose_store"><i class="fas fa-store"></i>${store.storeName}</a>
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
                 </div>
             </div>
             <div class="header-right">
@@ -109,35 +178,114 @@
                 </div>
                 <div class="user-menu">
                     <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
-                        <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
+                    <label for="user-menu-toggle">
+                        <img src="<%= request.getContextPath() + "/" + 
+                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() 
+                                ? session.getAttribute("userImage") 
+                                : "images/default-avatar.png") %>" 
+                             alt="Avatar người dùng" 
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown">
-                        <a href="myprofile.html">My Profile</a>
-                        <a href="change_password.html">Change Password</a>
-                        <a href="login.html">Log Out</a>
+                    <nav class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
+                        <a href="<%= request.getContextPath() %>/logout">Logout</a>
                     </nav>
                 </div>
             </div>
         </div>
 
-        <div class="card">
-            <h3>Clicks <span class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-                </span>
-                <div class="value">100</div>
-                <div>-13,04%</div>
-        </div>
+        <div class="container">
+            <div style="margin-bottom: 12px;">
+                <form action="store_dashboard" method="get">
+                    <select name="filter" onchange="this.form.submit()">
+                        <option value="today" ${filter == 'today' ? 'selected' : ''}>Hôm nay</option>
+                        <option value="week" ${filter == 'week' ? 'selected' : ''}>Tuần</option>
+                        <option value="month" ${filter == 'month' ? 'selected' : ''}>Tháng</option>
+                    </select>
+                </form>
+            </div>
 
-        <div class="card">
-            <h3>Clicks <span class="tooltip">
-                    <i class="fas fa-info-circle"></i>
-                    <span class="tooltiptext">Số lần nhấp chuột trên các sản phẩm hoặc quảng cáo.</span>
-                </span>
-                <div class="value">100</div>
-                <div>-13,04%</div>
-        </div>
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div>Tổng sản phẩm</div>
+                    <div style="font-size: 25px">${totalProducts}</div>
+                </div>
+                <div class="card">
+                    <div>Tổng đơn nhập</div>
+                    <div style="font-size: 25px">${totalStockIn}</div>
+                </div>
+                <div class="card">
+                    <div>Tổng đơn bán</div>
+                    <div style="font-size: 25px">${totalSales}</div>
+                </div>
 
+                <div class="card">
+                    Tổng doanh thu:
+                    <fmt:formatNumber value="${totalRevenue}" type="currency" currencySymbol="₫"/>
+                </div>
+            </div>
+
+            <h3>Top 5 sản phẩm bán chạy</h3>
+
+            <div class="selling-container">
+                <c:forEach var="item" items="${topSellingProducts}">
+                    <div class="product-box">
+                        <img src="assets/image/${item.product.image}" class="product-image"/>
+                        <div class="product-name">${item.product.name}</div>
+                        <div class="quantity">${item.quantity} sp bán</div>
+                    </div>
+                </c:forEach>
+            </div>
+
+
+
+            <h3>Top 5 sản phẩm sắp hết hàng</h3>
+
+            <div class="selling-container">
+                <c:forEach var="item" items="${lowStockProducts}">
+                    <div class="product-box">
+                        <img src="assets/image/${item.product.image}" class="product-image" />
+                        <div class="product-name">${item.product.name}</div>
+                        <div class="quantity">Còn: ${item.quantity} sp</div>
+                    </div>
+                </c:forEach>
+            </div>
+
+
+            <canvas id="salesChart"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                        const labels = [
+                <c:forEach var="item" items="${chartData}">
+                            '${item.product.name}',
+                </c:forEach>
+                        ];
+
+                        const data = {
+                            labels: labels,
+                            datasets: [{
+                                    label: 'Số lượng bán',
+                                    data: [
+                <c:forEach var="item" items="${chartData}">
+                    ${item.quantity},
+                </c:forEach>
+                                    ],
+                                    backgroundColor: 'rgba(75, 192, 192, 0.5)'
+                                }]
+                        };
+
+                        const config = {
+                            type: 'bar',
+                            data: data,
+                        };
+
+                        new Chart(document.getElementById('salesChart'), config);
+            </script>
+        </div>
     </body>
 </html>

@@ -606,5 +606,20 @@ public class StoreProductDAO {
             }
         }
     }
+ 
+ public void subtractQuantity(int storeId, int productId, int quantity) {
+        String query = "UPDATE store_products SET quantity = quantity - ? WHERE store_id = ? AND product_id = ?";
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, quantity);
+            ps.setInt(2, storeId);
+            ps.setInt(3, productId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+ 
+ 
 
 }

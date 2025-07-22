@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <title>User Registration</title>
     <style>
+        /* Toàn bộ body: căn giữa, nền sáng */
         body {
             font-family: Arial, sans-serif;
             background: #eaf6ff;
@@ -13,6 +14,8 @@
             align-items: center;
             min-height: 100vh;
         }
+
+        /* Container form: khung chính */
         .container {
             background: #fff;
             padding: 30px 40px;
@@ -20,15 +23,31 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.10);
             width: 350px;
         }
-        h2 { text-align: center; color: #0066cc; }
-        label { font-weight: bold; }
+
+        /* Tiêu đề form */
+        h2 {
+            text-align: center;
+            color: #0066cc;
+            margin-bottom: 20px;
+        }
+
+        /* Nhãn */
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Các ô input & select */
         input, select {
             width: 100%;
             padding: 10px;
             margin-bottom: 12px;
             border: 1px solid #bbb;
             border-radius: 6px;
+            font-size: 14px;
         }
+
+        /* Nút submit */
         .btn-primary {
             width: 100%;
             padding: 12px;
@@ -38,16 +57,35 @@
             border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
-        .btn-primary:hover { background: #339cff; }
+
+        /* Hiệu ứng hover cho nút */
+        .btn-primary:hover {
+            background: #339cff;
+        }
+
+        /* Thông báo lỗi */
         .error-message {
             color: red;
             margin-bottom: 12px;
             text-align: center;
+            font-size: 14px;
         }
+
+        /* Hướng dẫn nhập mật khẩu */
+        .password-guide {
+            font-size: 12px;
+            color: gray;
+            margin: -8px 0 10px;
+        }
+
+        /* Input bị sai theo pattern (HTML5 validation) */
         input:invalid {
             border: 2px solid red;
         }
+
+        /* Input hợp lệ */
         input:valid {
             border: 2px solid #bbb;
         }
@@ -56,12 +94,14 @@
 <body>
     <div class="container">
         <h2>Register</h2>
+
         <% 
             String error = (String) request.getAttribute("error");
             if (error != null && !error.isEmpty()) {
         %>
             <div class="error-message"><%= error %></div>
         <% } %>
+
         <form id="registrationForm" action="register" method="POST" enctype="multipart/form-data" autocomplete="off">
             <label for="username">Username *</label>
             <input type="text" id="username" name="username" maxlength="50" required />
@@ -73,9 +113,15 @@
                 name="password"
                 maxlength="255"
                 required
-                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$"
-                title="Password must be at least 6 characters, include both letters and numbers."
+                pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()\\-+=<>?]).{8,}$"
+                title="Password must be at least 8 characters, include uppercase, lowercase, number and special character."
             />
+
+            <!-- Hướng dẫn nhập mật khẩu -->
+            <p class="password-guide">
+                Must be at least 8 characters, including:
+                1 uppercase, 1 lowercase, 1 number, and 1 special character.
+            </p>
 
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" maxlength="100" />
