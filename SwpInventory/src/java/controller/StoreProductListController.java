@@ -93,12 +93,8 @@ public class StoreProductListController extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
 
-        
-            request.getRequestDispatcher("store_product_list.jsp").forward(request, response); 
+        request.getRequestDispatcher("store_product_list.jsp").forward(request, response);
     }
-
-    
-
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
