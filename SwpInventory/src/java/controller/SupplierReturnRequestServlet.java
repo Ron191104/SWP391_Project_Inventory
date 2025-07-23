@@ -23,7 +23,9 @@ import model.Supplier;
  */
 @WebServlet("/supplier_return_requests")
 public class SupplierReturnRequestServlet extends HttpServlet {
+
     private ReturnRequestDAO dao = new ReturnRequestDAO();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,7 +43,7 @@ public class SupplierReturnRequestServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SupplierReturnRequestServlet</title>");            
+            out.println("<title>Servlet SupplierReturnRequestServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet SupplierReturnRequestServlet at " + request.getContextPath() + "</h1>");
@@ -70,8 +72,22 @@ public class SupplierReturnRequestServlet extends HttpServlet {
             return;
         }
 
-        // Lấy tất cả yêu cầu trả hàng thuộc về nhà cung cấp này
-        List<ReturnRequest> list = dao.getReturnRequestsBySupplierId(supplier.getSupplierId());
+        String statusParam = request.getParameter("status");
+        List<ReturnRequest> list;
+
+        if (statusParam != null && !statusParam.isEmpty()) {
+            try {
+                int status = Integer.parseInt(statusParam);
+                // Gọi DAO có hỗ trợ lọc theo status
+                list = dao.getReturnRequestsBySupplierIdAndStatus(supplier.getSupplierId(), status);
+            } catch (NumberFormatException e) {
+                // Nếu status không hợp lệ, lấy tất cả
+                list = dao.getReturnRequestsBySupplierId(supplier.getSupplierId());
+            }
+        } else {
+            list = dao.getReturnRequestsBySupplierId(supplier.getSupplierId());
+        }
+
         request.setAttribute("returnRequests", list);
         request.getRequestDispatcher("supplier_return_requests.jsp").forward(request, response);
     }
