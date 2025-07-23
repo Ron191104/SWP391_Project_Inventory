@@ -221,7 +221,7 @@
             </div>
         </div>
         <div class="button-group">
-            <a href="export_pdf?saleId=${sale.saleId}" class="button-link">Xuất PDF</a>
+            <a href="store_invoice_list" class="button-link">Danh sách hóa đơn</a>
         </div>
 
     </body>

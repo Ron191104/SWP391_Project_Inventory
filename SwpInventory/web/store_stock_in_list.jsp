@@ -187,7 +187,7 @@
                                     <c:when test="${si.status == 2}">
                                         <span class="status-rejected">Từ chối</span>
                                     </c:when>
-                                        <c:when test="${si.status == 3}">
+                                    <c:when test="${si.status == 3}">
                                         <span class="status-approved">Đã nhập hàng</span>
                                     </c:when>
                                 </c:choose>
@@ -195,11 +195,20 @@
                             <td>${si.note}</td>
 
                             <td>
-                                <form action="store_stock_in_detail" style="margin: 0;">
-                                    <input type="hidden" name="id" value="${si.id}">
-                                    <button type="submit" class="btn-view">Xem chi tiết</button>
-                                </form>
+                                <div style="display: flex; gap: 7px;justify-content: center">
+                                    <form action="store_stock_in_detail" style="margin: 0;">
+                                        <input type="hidden" name="id" value="${si.id}">
+                                        <button type="submit" class="btn-view">Chi tiết</button>
+                                    </form>
+                                    <c:if test="${si.status == 1}">
+                                        <form action="store_stock_in_receive" method="get">
+                                            <input type="hidden" name="id" value="${si.id}">
+                                            <button type="submit" class="btn-view">Xác nhận</button>
+                                        </form>
+                                    </c:if>
+                                </div>
                             </td>
+
                         </tr>
                     </c:forEach>
                 </table>

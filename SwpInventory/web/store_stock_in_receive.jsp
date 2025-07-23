@@ -1,22 +1,19 @@
 <%-- 
-    Document   : customer_list
-    Created on : Jul 19, 2025, 11:07:51 PM
+    Document   : store_stock_in_receive
+    Created on : Jul 22, 2025, 11:05:43 PM
     Author     : ADMIN
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <meta charset="UTF-8">
-        <title>Danh sách khách hàng</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
         <link rel="stylesheet" href="assets/css/menu.css">
+        <title>JSP Page</title>
+        <title>Nhập hàng vào kho cửa hàng</title>
         <style>
             .container {
                 max-width: 100%;
@@ -28,26 +25,33 @@
             table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-top: 28px;
-                table-layout: fixed;
+                margin-top: 20px;
             }
-
             th, td {
                 border: 1px solid #ddd;
                 padding: 8px;
-                text-align: left;
-                width: 20px;
-                font-size: 0.85rem;
-                height: 25px;
                 text-align: center;
             }
             th {
                 background-color: #82CAFA;
                 color: white;
-                font-weight: 700;
             }
-            tbody tr:hover {
-                background-color: #FDF9DA;
+            input[type="number"] {
+                width: 80px;
+                padding: 4px;
+                text-align: center;
+            }
+            button {
+                margin-top: 15px;
+                padding: 8px 16px;
+                background-color: #82CAFA;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #787FF6;
             }
         </style>
     </head>
@@ -90,8 +94,6 @@
                                 </c:if>
                             </c:forEach>
                         </c:if>
-
-
                 </div>
             </div>
             <div class="header-right">
@@ -115,15 +117,10 @@
                                 ? session.getAttribute("userImage") 
                                 : "images/default-avatar.png") %>" 
                              alt="Avatar người dùng" 
-                             style="width: 40px;
-                             height: 40px;
-                             border-radius: 50%;
-                             object-fit: cover;" />
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
                     </label>
                     <nav class="dropdown-menu">
-                        <span style="padding:12px 16px;
-                              color:#4CAF50;
-                              font-weight:bold;">
+                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
                             <%= session.getAttribute("userName") %>
                         </span>
                         <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
@@ -134,28 +131,32 @@
             </div>
         </div>
         <div class="container">
-            <h1>Danh sách khách hàng</h1>
+            <h2>Xác nhận nhập hàng vào cửa hàng</h2>
+            <form action="store_stock_in_receive" method="post">
+                <input type="hidden" name="storeStockInId" value="${storeStockIn.id}">
 
-            <table>
-                <thead>
+                <table>
                     <tr>
-                        <th style="width: 10px;">Mã khách</th>
-                        <th>Tên khách hàng</th>
-                        <th>Số điện thoại</th>
-                        <th>Điểm tích lũy</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Đơn vị</th>
+                        <th>Số lượng đặt</th>
+                        <th>Số lượng nhập thực tế</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="customer" items="${customerList}">
+                    <c:forEach items="${details}" var="item">
                         <tr>
-                            <td>${customer.customerId}</td>
-                            <td>${customer.name}</td>
-                            <td>${customer.phone}</td>
-                            <td>${customer.point}</td>
+                            <td>${item.productName}</td>
+                            <td>${item.unitName}</td>
+                            <td>${item.quantity}</td>
+                            <td>
+                                <input type="number" name="actualQuantity" min="0" value="${item.quantity}" placeholder="${item.quantity}">
+                                <input type="hidden" name="productId" value="${item.productId}">
+                            </td>
                         </tr>
                     </c:forEach>
-                </tbody>
-            </table>
+                </table>
+
+                <button type="submit">Xác nhận</button>
+            </form> 
         </div>
     </body>
 </html>

@@ -158,7 +158,7 @@
                                 <td><fmt:formatNumber value="${o.priceOut}" type="currency" currencySymbol="₫"/></td>
                                 <td>
                                     <input type="number" name="newPrices[${o.storeProductId}]"
-                                           value="" step="1000" min="0" />
+                                           value="" min="0" />
                                 </td>
                             </tr>
                         </c:forEach>
