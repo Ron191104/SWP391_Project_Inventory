@@ -150,9 +150,12 @@
         </div>
 
         <div class="container" role="main" aria-label="Thông tin chi tiết sản phẩm">
-
-            <h1 class="title" style="text-align: center;">Chi tiết sản phẩm</h1>
-
+            <div>
+                <a href="store_product_list" style="background: #82CAFA; color: white; padding: 7px 10px; border-radius: 6px; font-weight: 500;">
+                    <i class="" style=""></i>Quay lại
+                </a>
+                <h1 class="title" style="text-align: center;">Chi tiết sản phẩm</h1>
+            </div>
             <h1 class="product-name" tabindex="0">${detail.product.name}</h1>
             <div class="product-detail">
                 <div class="product-image" role="img" aria-label="Ảnh sản phẩm">

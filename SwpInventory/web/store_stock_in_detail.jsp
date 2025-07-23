@@ -42,7 +42,7 @@
                 width: 800px;
                 box-shadow: 0 0 8px rgba(0,0,0,0.1);
                 border-radius: 8px;
-                height: 680px;
+                height: 600px;
             }
 
             .status-processing {
@@ -229,12 +229,6 @@
             </table>
             <p><b>Ghi chú:</b> ${stockIn.note}</p>
 
-            <div style="text-align: right; padding-right: 60px; padding-top: 35px">
-                Người lập phiếu:<br>
-                <span style="padding-right: 10px">
-                    (Ký rõ họ tên)
-                </span>
-            </div>
 
         </div>
     </body>

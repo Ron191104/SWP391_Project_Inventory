@@ -382,7 +382,7 @@
                 <span class="admin-role-label">(Administrator)</span>
                 <div class="nav">
                     <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản lý kho</a>
-                    <a href="store_dashboard.jsp"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
+                    <a href="store_dashboard"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
                     <a href="supplier_dashboard"><i class="fas fa-truck"></i> Nhà cung cấp</a>
                     <a href="store-inventory-statistics"><i class="fas fa-chart-bar"></i> Thống kê</a>
 
