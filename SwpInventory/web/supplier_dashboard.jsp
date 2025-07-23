@@ -209,41 +209,119 @@
             .sno {
                 width: 40px;
             }
+            .user-menu {
+                position: relative;
+                display: inline-block;
+            }
+
+            .user-menu input[type="checkbox"] {
+                display: none;
+            }
+
+            .user-menu label {
+                cursor: pointer;
+            }
+
+            .user-menu img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid white;
+            }
+
+            .user-menu .dropdown-menu {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 50px;
+                background-color: white;
+                box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+                border-radius: 8px;
+                overflow: hidden;
+                min-width: 180px;
+                z-index: 999;
+            }
+
+            .user-menu input[type="checkbox"]:checked ~ .dropdown-menu {
+                display: block;
+            }
+
+            .user-menu .dropdown-menu a {
+                display: block;
+                padding: 10px 16px;
+                color: #333;
+                text-decoration: none;
+                transition: background-color 0.2s;
+            }
+
+            .user-menu .dropdown-menu a:hover {
+                background-color: #f4f4f4;
+            }
+
         </style>
     </head>
     <body>
-        <div class="header">
-            <h1>Nhà Cung Cấp</h1>
-            <div class="nav">
-                <a href="supplier_order"><i class="fas fa-box"></i> Đơn hàng</a>
-                <a href="supplier_return_requests"><i class="fas fa-undo-alt"></i> Yêu cầu hoàn hàng</a>
-                <a href="supplier-dashboard?view=approved"><i class="fas fa-check"></i> Đã cung cấp</a>
-                <!-- Notification bell dropdown -->
-                <div class="notification-dropdown-wrapper">
-                    <button class="notification-bell" id="notifyBell" title="Thông báo đơn hàng mới">
+        <div class="header" style="display: flex; justify-content: space-between; align-items: center; background-color: #82CAFA; padding: 12px 24px;">
+
+            <div class="header-left" style="display: flex; align-items: center;">
+                <h1 style="margin-right: 32px; color: white;">Nhà Cung Cấp</h1>
+                <div class="nav" style="display: flex; gap: 16px;">
+                    <a href="supplier_order" style="color: white;"><i class="fas fa-box"></i> Đơn hàng</a>
+                    <a href="supplier_return_requests" style="color: white;"><i class="fas fa-undo-alt"></i> Yêu cầu hoàn hàng</a>
+                    <a href="supplier-dashboard?view=approved" style="color: white;"><i class="fas fa-check"></i> Đã cung cấp</a>
+                </div>
+            </div>
+
+            <div class="header-right" style="display: flex; align-items: center; gap: 16px;">
+
+                <div class="notification-dropdown-wrapper" style="position: relative;">
+                    <button class="notification-bell" id="notifyBell" title="Thông báo đơn hàng mới" style="background: none; border: none; color: white; font-size: 1.3rem;">
                         <i class="fas fa-bell"></i>
                         <c:if test="${not empty newOrders}">
-                            <span class="notification-badge">${fn:length(newOrders)}</span>
+                            <span class="notification-badge" style="position: absolute; top: -6px; right: -6px; background: red; color: white; border-radius: 50%; font-size: 0.75rem; padding: 2px 6px;">
+                                ${fn:length(newOrders)}
+                            </span>
                         </c:if>
                     </button>
-                    <div class="notification-dropdown-box" id="notifyBox">
-                        <div class="notification-title">Thông báo đơn hàng mới</div>
+
+                    <div class="notification-dropdown-box" id="notifyBox" style="display: none; position: absolute; top: 36px; right: 0; background: white; color: #333; box-shadow: 0 0 8px #aaa; border-radius: 6px; min-width: 250px; z-index: 999;">
+                        <div class="notification-title" style="padding: 8px 12px; font-weight: 600; background: #f4f4f4;">Thông báo đơn hàng mới</div>
                         <c:choose>
                             <c:when test="${not empty newOrders}">
                                 <c:forEach var="order" items="${newOrders}">
-                                    <a class="notify-item" href="supplier_orderdetails?orderId=${order.orderId}">
+                                    <a class="notify-item" href="supplier_orderdetails?orderId=${order.orderId}" style="display: block; padding: 10px 12px; color: #333; border-bottom: 1px solid #eee; text-decoration: none;">
                                         Đơn hàng mới #${order.orderId} từ NV ${order.employeeId}
-                                        <div style="font-size:0.9em;color:#888;">${order.orderDate}</div>
+                                        <div style="font-size: 0.9em; color: #888;">${order.orderDate}</div>
                                     </a>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                <div class="no-notify">Không có đơn hàng mới</div>
+                                <div class="no-notify" style="padding: 12px; text-align: center; color: #888;">Không có đơn hàng mới</div>
                             </c:otherwise>
                         </c:choose>
                     </div>
                 </div>
-                <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+
+                <div class="user-menu">
+                    <input type="checkbox" id="user-menu-toggle" />
+                    <label for="user-menu-toggle">
+                        <img src="<%= request.getContextPath() + "/" +
+                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty()
+                                ? session.getAttribute("userImage")
+                                : "images/default-avatar.png") %>"
+                             alt="Avatar người dùng"
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
+                    </label>
+                    <nav class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Hồ sơ</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Đổi mật khẩu</a>
+                        <a href="login.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                    </nav>
+                </div>
             </div>
         </div>
 

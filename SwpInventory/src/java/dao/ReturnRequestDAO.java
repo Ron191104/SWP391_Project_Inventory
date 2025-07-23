@@ -279,4 +279,28 @@ public class ReturnRequestDAO {
         return list;
     }
 
+    public List<ReturnRequest> getReturnRequestsBySupplierIdAndStatus(int supplierId, int status) {
+        List<ReturnRequest> list = new ArrayList<>();
+        String sql = "SELECT * FROM return_requests WHERE supplier_id = ? AND status = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, supplierId);
+            ps.setInt(2, status);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ReturnRequest r = new ReturnRequest();
+                r.setId(rs.getInt("return_id"));
+                r.setSupplierId(rs.getInt("supplier_id"));
+                r.setEmployeeId(rs.getInt("employee_id"));
+                r.setReason(rs.getString("reason"));
+                r.setNote(rs.getString("note"));
+                r.setCreatedDate(rs.getTimestamp("created_at"));
+                r.setStatus(rs.getInt("status"));
+                list.add(r);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

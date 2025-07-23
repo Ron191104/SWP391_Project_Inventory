@@ -1,118 +1,164 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="vi">
     <head>
-        <meta charset="UTF-8" />
-        <title>Nhà Cung Cấp</title>
+        <meta charset="UTF-8">
+        <title>Danh sách đơn hàng từ cửa hàng</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
             body {
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 background-color: #f4f4f4;
                 margin: 0;
-                padding: 0;
             }
+
             .header {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 background-color: #82CAFA;
-                padding: 12px 24px;
+                padding: 0px 24px;
                 color: white;
             }
-            .header h1 {
-                font-size: 1.8rem;
-                font-weight: 700;
-                margin: 0;
-            }
-            .nav {
+
+            .header-left {
                 display: flex;
                 align-items: center;
             }
+
+            .header-left h1 {
+                font-size: 1.8rem;
+                margin-right: 32px;
+                color: white;
+            }
+
+            .nav {
+                display: flex;
+                gap: 16px;
+            }
+
             .nav a {
                 color: white;
-                padding: 8px 16px;
-                border-radius: 4px;
-                font-weight: 600;
+                font-weight: bold;
                 text-decoration: none;
-                transition: background-color 0.3s ease;
-                display: inline-block;
-                margin-left: 12px;
+                padding: 8px 12px;
+                border-radius: 4px;
             }
+
             .nav a:hover {
-                background-color: #787ff6;
+                background-color: #5aa0e8;
             }
-            /* Notification styles */
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+
             .notification-dropdown-wrapper {
                 position: relative;
-                display: inline-block;
-                margin-left: 16px;
             }
+
             .notification-bell {
-                cursor: pointer;
-                position: relative;
+                background: none;
+                border: none;
                 color: white;
                 font-size: 1.3rem;
-                border: none;
-                background: none;
-                outline: none;
+                position: relative;
+                cursor: pointer;
             }
+
             .notification-badge {
                 position: absolute;
-                top: -8px;
-                right: -8px;
+                top: -6px;
+                right: -6px;
                 background: red;
                 color: white;
                 border-radius: 50%;
-                font-size: 0.8em;
-                padding: 2px 7px;
-                font-weight: bold;
+                font-size: 0.75rem;
+                padding: 2px 6px;
             }
+
             .notification-dropdown-box {
                 display: none;
                 position: absolute;
-                top: 30px;
+                top: 36px;
                 right: 0;
-                background: #fff;
+                background: white;
                 color: #333;
                 box-shadow: 0 0 8px #aaa;
                 border-radius: 6px;
                 min-width: 250px;
-                max-width: 350px;
                 z-index: 999;
-                max-height: 320px;
-                overflow-y: auto;
-                flex-direction: column;
             }
-            .notification-dropdown-box .notification-title {
+
+            .notification-title {
                 padding: 8px 12px;
-                border-bottom: 1px solid #eee;
                 font-weight: 600;
                 background: #f4f4f4;
             }
-            .notification-dropdown-box .notify-item {
+
+            .notify-item {
                 display: block;
                 padding: 10px 12px;
-                text-decoration: none;
                 color: #333;
-                border-bottom: 1px solid #f4f4f4;
+                border-bottom: 1px solid #eee;
+                text-decoration: none;
                 font-size: 0.95em;
             }
-            .notification-dropdown-box .notify-item:last-child {
-                border-bottom: none;
-            }
-            .notification-dropdown-box .notify-item:hover {
-                background: #f2f8ff;
-            }
-            .notification-dropdown-box .no-notify {
+
+            .no-notify {
                 padding: 14px;
                 color: #888;
                 text-align: center;
             }
+
+            .user-menu {
+                position: relative;
+            }
+
+            .user-menu img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid white;
+                cursor: pointer;
+            }
+
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 50px;
+                background-color: white;
+                box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+                border-radius: 8px;
+                overflow: hidden;
+                min-width: 180px;
+                z-index: 999;
+            }
+
+            .user-menu:hover .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 10px 16px;
+                color: #333;
+                text-decoration: none;
+                transition: background-color 0.2s;
+            }
+
+            .dropdown-menu a:hover {
+                background-color: #f4f4f4;
+            }
+
             .container {
                 max-width: 1000px;
                 margin: 40px auto;
@@ -120,60 +166,65 @@
                 padding: 24px;
                 border-radius: 8px;
             }
+
             h2 {
                 text-align: center;
                 color: #82CAFA;
-                margin-bottom: 24px;
-                font-size: 28px;
             }
+
             table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-top: 20px;
             }
+
             th, td {
                 padding: 12px;
-                text-align: left;
                 border-bottom: 1px solid #ddd;
+                text-align: left;
             }
+
             th {
                 background-color: #82CAFA;
                 color: white;
             }
-            .btn-approve {
-                background-color: #28a745;
-                color: white;
-                border: none;
-                padding: 6px 12px;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            .btn-approve:hover {
-                background-color: #218838;
-            }
-            .btn-reject {
-                background-color: #dc3545;
-                color: white;
-                border: none;
-                padding: 6px 12px;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            .btn-reject:hover {
-                background-color: #c82333;
-            }
+
             .status-label {
-                font-weight: 600;
+                font-weight: bold;
+            }
+
+            .btn-detail {
+                background-color: #007bff;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                text-decoration: none;
+                font-size: 0.9rem;
+            }
+
+            .btn-detail:hover {
+                background-color: #0056b3;
+            }
+
+            select {
+                padding: 6px 12px;
+                border-radius: 6px;
+                border: 2px solid #82CAFA;
+                font-size: 1em;
             }
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>Nhà Cung Cấp</h1>
-            <div class="nav">
-                <a href="supplier_order"><i class="fas fa-box"></i> Đơn hàng</a>
-                <a href="supplier-dashboard?view=approved"><i class="fas fa-check"></i> Đã cung cấp</a>
-                <!-- Notification bell dropdown -->
+            <div class="header-left">
+                <h1>Nhà Cung Cấp</h1>
+                <div class="nav">
+                    <a href="supplier_order"><i class="fas fa-box"></i> Đơn hàng</a>
+                    <a href="supplier_return_requests"><i class="fas fa-undo-alt"></i> Yêu cầu hoàn hàng</a>
+                    <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                </div>
+            </div>
+            <div class="header-right">
                 <div class="notification-dropdown-wrapper">
                     <button class="notification-bell" id="notifyBell" title="Thông báo đơn hàng mới">
                         <i class="fas fa-bell"></i>
@@ -188,7 +239,7 @@
                                 <c:forEach var="order" items="${newOrders}">
                                     <a class="notify-item" href="supplier_orderdetails?orderId=${order.orderId}">
                                         Đơn hàng mới #${order.orderId} từ NV ${order.employeeId}
-                                        <div style="font-size:0.9em;color:#888;">${order.orderDate}</div>
+                                        <div style="font-size: 0.9em; color: #888;">${order.orderDate}</div>
                                     </a>
                                 </c:forEach>
                             </c:when>
@@ -198,7 +249,17 @@
                         </c:choose>
                     </div>
                 </div>
-                <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                <div class="user-menu">
+                    <img src="<%= request.getContextPath() + '/' + (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty() ? session.getAttribute("userImage") : "images/default-avatar.png") %>" alt="Avatar người dùng" />
+                    <div class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#4CAF50; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Hồ sơ</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Đổi mật khẩu</a>
+                        <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                    </div>
+                </div>
             </div>
         </div>
 
