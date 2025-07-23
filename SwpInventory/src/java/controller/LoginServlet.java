@@ -51,6 +51,7 @@ public class LoginServlet extends HttpServlet {
         // Ghi LOG đăng nhập thành công
         SystemLogDAO logDao = new SystemLogDAO();
         logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");
+        
 
         // Điều hướng theo role (int)
         int role = user.getRole();

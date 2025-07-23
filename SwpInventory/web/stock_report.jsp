@@ -216,8 +216,8 @@
         <div class="container">
             <h3>Báo cáo xuất nhập kho:</h3>
             <form method="get" action="stock_report">
-                Từ ngày: <input type="date" name="from" value="${param.from}" class="form-control1" required>
-                đến: <input type="date" name="to" value="${param.to}" class="form-control1" required>
+                Từ ngày: <input type="date" name="from" id="fromDate" value="${param.from}" class="form-control1" max="<%= java.time.LocalDate.now() %>" required>
+                đến: <input type="date" name="to" id="toDate" value="${param.to}" class="form-control1" max="<%= java.time.LocalDate.now() %>" required>
                 <input type="hidden" name="tab" id="tabInput" value="${param.tab != null ? param.tab : 'in'}">
                 <c:if test="${not empty param.from or not empty param.to}">
                     <button type="button" onclick="window.location = 'stock_report?tab=${param.tab}'" class="button-reset">× Xóa bộ lọc</button>
@@ -225,6 +225,10 @@
                 <button type="submit" class="button-filter">Lọc</button>
 
             </form>
+            <c:if test="${not empty error}">
+                <p style="color: red; font-weight: bold;">${error}</p>
+            </c:if>
+
             <br>
 
             <div class="tab-container">
@@ -305,6 +309,20 @@
                 const currentTab = urlParams.get('tab') || 'in';
                 showTab(currentTab);
             }
+
+            document.querySelector('form').addEventListener('submit', function (e) {
+                const from = document.getElementById('fromDate').value;
+                const to = document.getElementById('toDate').value;
+                const today = new Date().toISOString().split('T')[0];
+
+                if (from > to) {
+                    alert("Khoảng thời gian không hợp lệ. Vui lòng nhập lại");
+                    e.preventDefault();
+                } else if (to > today || from > today) {
+                    alert("Vui lòng chọn khoảng thời gian hợp lệ");
+                    e.preventDefault();
+                }
+            });
         </script>
 
     </body>

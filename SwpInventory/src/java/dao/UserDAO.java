@@ -135,6 +135,7 @@ public class UserDAO {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     user = new User(
+                            rs.getInt("id"),
                             rs.getString("username"),
                             rs.getString("password"),
                             rs.getString("name"),
@@ -160,6 +161,7 @@ public class UserDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User user = new User(
+                        rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("name"),
@@ -252,6 +254,7 @@ public class UserDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 // Lấy dữ liệu từ ResultSet và tạo đối tượng User đầy đủ
+                int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
@@ -260,6 +263,7 @@ public class UserDAO {
                 String image = rs.getString("image");
                 int isApproved = rs.getInt("is_approved");
                 user = new User(
+                        id,
                         username,
                         password,
                         name,

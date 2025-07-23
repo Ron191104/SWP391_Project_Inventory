@@ -14,11 +14,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import model.StockIn;
 import model.StockOut;
-
 
 /**
  *
@@ -44,7 +44,7 @@ public class InventoryStockReportController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InventoryStockReportController</title>");            
+            out.println("<title>Servlet InventoryStockReportController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet InventoryStockReportController at " + request.getContextPath() + "</h1>");
@@ -69,28 +69,42 @@ public class InventoryStockReportController extends HttpServlet {
             String fromRaw = request.getParameter("from");
             String toRaw = request.getParameter("to");
 
-            List<StockIn> stockInList;
-            List<StockOut> stockOutList;
+            List<StockIn> stockInList = new ArrayList<>();
+            List<StockOut> stockOutList = new ArrayList<>();
 
             InventoryStockDAO dao = new InventoryStockDAO();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setLenient(false); // tránh parse sai
+
+            Date today = new Date();
 
             if (fromRaw != null && toRaw != null && !fromRaw.isEmpty() && !toRaw.isEmpty()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date from = sdf.parse(fromRaw);
-                Date to = sdf.parse(toRaw);
+                try {
+                    Date from = sdf.parse(fromRaw);
+                    Date to = sdf.parse(toRaw);
 
-                stockInList = dao.getStockInListByDateRange(from, to);
-                stockOutList = dao.getStockOutListByDateRange(from, to);
+                    if (from.after(to)) {
+                        request.setAttribute("error", "Ngày bắt đầu không được lớn hơn ngày kết thúc.");
+                    } else if (to.after(today)) {
+                        request.setAttribute("error", "Ngày kết thúc không được lớn hơn ngày hiện tại.");
+                    } else {
+                        stockInList = dao.getStockInListByDateRange(from, to);
+                        stockOutList = dao.getStockOutListByDateRange(from, to);
+                    }
+                } catch (Exception e) {
+                    request.setAttribute("error", "Định dạng ngày không hợp lệ.");
+                }
             } else {
-                // nếu không chọn khoảng thời gian thì lấy tất cả
-                stockInList = dao.getStockInListByDateRange(new Date(0), new Date());
-                stockOutList = dao.getStockOutListByDateRange(new Date(0), new Date());
+                // Nếu không lọc thì lấy toàn bộ
+                stockInList = dao.getStockInListByDateRange(new Date(0), today);
+                stockOutList = dao.getStockOutListByDateRange(new Date(0), today);
             }
-            
+
+            // Gắn tên nhà cung cấp
             for (StockIn s : stockInList) {
-            String name = dao.getSupplierNameById(s.getSupplierId());
-            s.setSupplierName(name);
-        }
+                String name = dao.getSupplierNameById(s.getSupplierId());
+                s.setSupplierName(name);
+            }
 
             request.setAttribute("stockInList", stockInList);
             request.setAttribute("stockOutList", stockOutList);

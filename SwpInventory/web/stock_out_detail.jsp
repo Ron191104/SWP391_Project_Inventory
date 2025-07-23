@@ -211,8 +211,7 @@
                     <td>${d.productId}</td>
                     <td>${d.productName}</td>
                     <td>${d.quantity}</td>
-                    <td>${d.priceOut}</td>
-
+                    <td><fmt:formatNumber value="${d.priceOut}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                 </tr>
             </c:forEach>
 

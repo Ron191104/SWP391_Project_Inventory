@@ -186,15 +186,16 @@ public class InventoryStockDAO {
     }
 
     public int insertStockOut(StockOut stockOut) {
-        String sql = "INSERT INTO stock_out (stock_out_date, reason, note, created_at) "
-                + "VALUES (?, ?, ?, GETDATE())";
+        String sql = "INSERT INTO stock_out (employee_id, stock_out_date, reason, note, created_at) "
+                + "VALUES (?, ?, ?, ?, GETDATE())";
         String[] returnId = {"stock_out_id"};
 
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, returnId)) {
 
-            ps.setTimestamp(1, new java.sql.Timestamp(stockOut.getStockOutDate().getTime()));
-            ps.setString(2, stockOut.getReason());
-            ps.setString(3, stockOut.getNote());
+            ps.setInt(1, stockOut.getEmployeeId());
+            ps.setTimestamp(2, new java.sql.Timestamp(stockOut.getStockOutDate().getTime()));
+            ps.setString(3, stockOut.getReason());
+            ps.setString(4, stockOut.getNote());
 
             ps.executeUpdate();
 

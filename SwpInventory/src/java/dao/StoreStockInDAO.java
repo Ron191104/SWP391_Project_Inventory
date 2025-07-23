@@ -183,7 +183,6 @@ public class StoreStockInDAO {
     }
 
     public void exportStock(int stockInId) {
-        updateStatus(stockInId, 3);
         Map<Integer, Integer> details = getStockInDetailsMap(stockInId);
 
         try {
