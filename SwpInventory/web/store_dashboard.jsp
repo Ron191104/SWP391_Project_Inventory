@@ -96,9 +96,9 @@
             }
 
             .product-box {
-                width: 90px;
+                width: 85px;
                 background-color: #ffffff;
-                border: 1px solid #ddd;
+                border: 1.5px solid #82CAFA;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 padding: 6px;
@@ -146,7 +146,7 @@
                 border-radius: 10px;
                 padding: 10px;
             }
-         
+
 
         </style>
     </head>
@@ -287,9 +287,9 @@
 
 
 
-                <h3 style="padding-top: 30px">Số lượng bán ra theo từng sản phẩm</h3>
+            <h3 style="padding-top: 30px">Số lượng bán ra theo từng sản phẩm</h3>
 
-            <canvas id="salesChart"></canvas>
+            <canvas id="salesChart" style="width: 100%; height: 300px; margin: 0 auto; display: block;"></canvas>
 
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <script>

@@ -20,7 +20,7 @@
 
             th, td {
                 border: 1px solid #ddd;
-                padding: 5px;
+                padding: 8px;
                 text-align: left;
                 width: 20px;
                 font-size: 0.85rem;
@@ -48,6 +48,18 @@
                 margin-left: 10px;
                 margin-top: 0px;
             }
+            .detail-link {
+                background-color: #82CAFA;
+                color: white;
+                padding: 3px 7px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            .detail-link:hover {
+                background-color: #787FF6;
+            }
+
 
         </style>
     </head>

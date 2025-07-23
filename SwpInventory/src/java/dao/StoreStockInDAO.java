@@ -299,6 +299,62 @@ public class StoreStockInDAO {
         return -1;
     }
     
-    
+   public void receiveStockIn(int stockInId, int[] productIds, int[] quantities) {
+    int storeId = getStoreIdByStockInId(stockInId);
+
+    try {
+        con = DBConnect.getConnection();
+
+        String sql = "SELECT CASE WHEN pu.is_base_unit = 1 THEN ? ELSE ? * pu.conversion_value END AS store_quantity "
+                   + "FROM store_stock_in_details s "
+                   + "JOIN product_units pu ON s.product_id = pu.product_id AND s.unit_name = pu.unit_name "
+                   + "WHERE s.store_stock_in_id = ? AND s.product_id = ?";
+
+        String updateStoreSql = "UPDATE store_products SET quantity = quantity + ? WHERE store_id = ? AND product_id = ?";
+        String insertStoreSql = "INSERT INTO store_products (store_id, product_id, quantity) VALUES (?, ?, ?)";
+
+        for (int i = 0; i < productIds.length; i++) {
+            int productId = productIds[i];
+            int quantity = quantities[i];
+
+            int storeQuantity = quantity; // default
+
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, quantity);
+            ps.setInt(2, quantity);
+            ps.setInt(3, stockInId);
+            ps.setInt(4, productId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                storeQuantity = rs.getInt("store_quantity");
+            }
+            rs.close();
+            ps.close();
+
+            ps = con.prepareStatement(updateStoreSql);
+            ps.setInt(1, storeQuantity);
+            ps.setInt(2, storeId);
+            ps.setInt(3, productId);
+            int rows = ps.executeUpdate();
+            ps.close();
+
+            if (rows == 0) {
+                ps = con.prepareStatement(insertStoreSql);
+                ps.setInt(1, storeId);
+                ps.setInt(2, productId);
+                ps.setInt(3, storeQuantity);
+                ps.executeUpdate();
+                ps.close();
+            }
+        }
+
+        updateStatus(stockInId, 3);
+        con.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
 
 }
