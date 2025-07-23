@@ -85,7 +85,7 @@ public class StoreStockInDAO {
             ps.setInt(2, d.getProductId());
             ps.setInt(3, d.getQuantity());
             ps.setDouble(4, d.getPrice());
-            ps.setString(5,d.getUnit());
+            ps.setString(5, d.getUnit());
             ps.executeUpdate();
 
         } catch (Exception e) {
@@ -182,9 +182,8 @@ public class StoreStockInDAO {
         }
     }
 
-    public void approveStockIn(int stockInId) {
+    public void exportStock(int stockInId) {
         updateStatus(stockInId, 3);
-        int storeId = getStoreIdByStockInId(stockInId);
         Map<Integer, Integer> details = getStockInDetailsMap(stockInId);
 
         try {
@@ -194,62 +193,13 @@ public class StoreStockInDAO {
                 int productId = entry.getKey();
                 int quantity = entry.getValue();
 
-                // lấy unit_name từ store_stock_in_details
-                String unitName = null;
-                String getUnitNameQuery = "SELECT unit_name FROM store_stock_in_details WHERE store_stock_in_id = ? AND product_id = ?";
-                ps = con.prepareStatement(getUnitNameQuery);
-                ps.setInt(1, stockInId);
-                ps.setInt(2, productId);
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    unitName = rs.getString("unit_name");
-                }
-                rs.close();
-                ps.close();
-
-                // lấy conversion_value và is_base_unit từ product_units
-                int conversionValue = 1;
-                boolean isBaseUnit = false;
-                String unitQuery = "SELECT conversion_value, is_base_unit FROM product_units WHERE product_id = ? AND unit_name = ?";
-                ps = con.prepareStatement(unitQuery);
-                ps.setInt(1, productId);
-                ps.setString(2, unitName);
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    conversionValue = rs.getInt("conversion_value");
-                    isBaseUnit = rs.getBoolean("is_base_unit");
-                }
-                rs.close();
-                ps.close();
-
-                int storeQuantity = isBaseUnit ? quantity : quantity * conversionValue;
-
-                // 1. trừ kho tổng (vẫn tính theo đơn vị lớn)
+                // Trừ kho tổng (products)
                 String updateInventory = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
                 ps = con.prepareStatement(updateInventory);
                 ps.setInt(1, quantity);
                 ps.setInt(2, productId);
                 ps.executeUpdate();
                 ps.close();
-
-                // 2. cộng vào kho chi nhánh (đơn vị cơ sở)
-                String updateStore = "UPDATE store_products SET quantity = quantity + ? WHERE store_id = ? AND product_id = ?";
-                ps = con.prepareStatement(updateStore);
-                ps.setInt(1, storeQuantity);
-                ps.setInt(2, storeId);
-                ps.setInt(3, productId);
-                int rows = ps.executeUpdate();
-                ps.close();
-
-                if (rows == 0) {
-                    String insertStore = "INSERT INTO store_products (store_id, product_id, quantity) VALUES (?, ?, ?)";
-                    ps = con.prepareStatement(insertStore);
-                    ps.setInt(1, storeId);
-                    ps.setInt(2, productId);
-                    ps.setInt(3, storeQuantity);
-                    ps.executeUpdate();
-                    ps.close();
-                }
             }
 
             if (con != null) {
@@ -298,7 +248,5 @@ public class StoreStockInDAO {
         }
         return -1;
     }
-    
-    
 
 }
