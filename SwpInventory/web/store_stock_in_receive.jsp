@@ -58,7 +58,7 @@
     <body>
         <div class="header">
             <div class="header-left">
-                <h1>Tên kho</h1>
+                <h1>Cửa hàng</h1>
                 <div class="nav">
                     <a href="store_dashboard">
                         <i class="fas fa-tachometer-alt"></i> Dashboard

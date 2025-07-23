@@ -85,7 +85,7 @@
 
         <div class="header">
             <div class="header-left">
-                <h1>Tên kho</h1>
+                <h1>Cửa hàng</h1>
                 <div class="nav">
                     <a href="store_dashboard">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -201,6 +201,7 @@
                 <tr>
                     <th>Product ID</th>
                     <th>Tên sản phẩm</th>
+                    <th>Đơn vị</th>
                     <th>Số lượng</th>
                     <th>Giá nhập</th>
                     <th>Thành tiền</th>
@@ -211,6 +212,7 @@
                     <tr>
                         <td>${d.productId}</td>
                         <td>${d.productName}</td>
+                        <td>${d.unitName}</td>
                         <td>${d.quantity}</td>
                         <td><fmt:formatNumber value="${d.priceIn}" type="currency"/></td>
                         <td>
@@ -221,7 +223,7 @@
                 </c:forEach>
 
                 <tr>
-                    <td colspan="4" style=" font-weight:bold">Tổng cộng:</td>
+                    <td colspan="5" style=" font-weight:bold">Tổng cộng:</td>
                     <td style=" font-weight:bold"><fmt:formatNumber value="${totalAmount}" type="currency"/></td>
                 </tr>
 
