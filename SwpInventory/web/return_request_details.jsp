@@ -168,8 +168,32 @@
             <p><strong>Nhân viên gửi:</strong> ${returnRequest.employeeName}</p>
             <p><strong>Lý do:</strong> ${returnRequest.reason}</p>
             <p><strong>Ghi chú:</strong> ${returnRequest.note}</p>
-            <p><strong>Trạng thái:</strong> ✔ Đã duyệt</p>
-            <p class="status-approved">✔ Yêu cầu hoàn trả đã được duyệt.</p>
+            <p><strong>Trạng thái:</strong>
+                <c:choose>
+                    <c:when test="${returnRequest.status == 1}">
+                        ✔ Đã duyệt
+                    </c:when>
+                    <c:when test="${returnRequest.status == 2}">
+                        ✘ Đã bị từ chối
+                    </c:when>
+                    <c:otherwise>
+                        ⏳ Đang chờ duyệt
+                    </c:otherwise>
+                </c:choose>
+            </p>
+
+            <c:choose>
+                <c:when test="${returnRequest.status == 1}">
+                    <p class="status-approved">✔ Yêu cầu hoàn trả đã được duyệt.</p>
+                </c:when>
+                <c:when test="${returnRequest.status == 2}">
+                    <p style="color: red; font-weight: bold;">✘ Yêu cầu hoàn trả đã bị từ chối.</p>
+                </c:when>
+                <c:otherwise>
+                    <p style="color: orange; font-weight: bold;">⏳ Yêu cầu đang chờ duyệt.</p>
+                </c:otherwise>
+            </c:choose>
+
 
             <table>
                 <thead>

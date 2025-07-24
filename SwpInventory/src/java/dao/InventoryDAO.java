@@ -2,8 +2,7 @@ package dao;
 
 import dal.DBConnect;
 import dto.AvailableProductView;
-import model.SupplierAdmin;
-
+import model.Supplier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,14 +18,14 @@ public class InventoryDAO {
      * @throws SQLException if a database access error occurs.
      * @throws ClassNotFoundException if the JDBC driver is not found.
      */
-    public List<SupplierAdmin> getAllSuppliers() throws SQLException, ClassNotFoundException {
-        List<SupplierAdmin> suppliers = new ArrayList<>();
+    public List<Supplier> getAllSuppliers() throws SQLException, ClassNotFoundException {
+        List<Supplier> suppliers = new ArrayList<>();
         String sql = "SELECT supplier_id, supplier_name, phone, email, address FROM suppliers ORDER BY supplier_name ASC";
         try (Connection con = DBConnect.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                suppliers.add(new SupplierAdmin(
+                suppliers.add(new Supplier(
                     rs.getInt("supplier_id"), 
                     rs.getString("supplier_name"),
                     rs.getString("phone"),
