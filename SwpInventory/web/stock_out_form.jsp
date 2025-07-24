@@ -172,7 +172,7 @@
         </div>
         <link rel="stylesheet" href="assets/css/menu.css">
         <div class="container">
-            <a href="inventory_order_detail?id=${stockIn.id}" class="links" >Quay lại</a>
+            <a href="stock_out_list" class="links" >Quay lại</a>
 
             <h2 style="text-align: center;">Phiếu xuất kho</h2>
 
@@ -180,11 +180,11 @@
             <div style="display: flex; flex-direction: column; align-items: center;">
 
                 <div style="text-align: center;">
-                    <p><b>Mã đơn:</b> ${stockIn.id}</p>
+                    <p><b>Mã đơn:</b> ${so.stockOutId}</p>
 
                 </div>
             </div>
-            <p><b>Ghi chú:</b> ${stockIn.note}</p>
+            <p><b>Ghi chú:</b> ${so.note}</p>
 
             <table>
                 <tr>
@@ -209,7 +209,7 @@
             </table>
 
             <form method="post" action="stock_out" style="margin-top: 12px; display: flex; justify-content: center; margin-top: 50px">
-                <input type="hidden" name="id" value="${stockIn.id}" />
+                <input type="hidden" name="id" value="${so.stockOutId}" />
                 <button type="submit" class="btn-approve">
                     Xác nhận xuất kho
                 </button>

@@ -15,16 +15,29 @@ public class StockOutDetail {
     private int quantity;
     private double priceOut;
     private String productName;
+    private String unitName;
 
     public StockOutDetail() {}
 
-    public StockOutDetail(int stockOutDetailId, int stockOutId, int productId, int quantity, double priceOut) {
+    public StockOutDetail(int stockOutDetailId, int stockOutId, int productId, int quantity, double priceOut, String productName, String unitName) {
         this.stockOutDetailId = stockOutDetailId;
         this.stockOutId = stockOutId;
         this.productId = productId;
         this.quantity = quantity;
         this.priceOut = priceOut;
+        this.productName = productName;
+        this.unitName = unitName;
     }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
+    
+    
 
     public String getProductName() {
         return productName;

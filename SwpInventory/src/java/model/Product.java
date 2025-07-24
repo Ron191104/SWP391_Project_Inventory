@@ -34,7 +34,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name, String barcode, int category_id, int supplierId, double price, int quantity, String unit, Date manufacture_date, Date expired_date, String image, String description) {
+    public Product(int id, String name, String barcode, int category_id, int supplier_id, double price, int quantity, String unit, Date manufacture_date, Date expired_date, String image, String description) {
 
 
         this.id = id;

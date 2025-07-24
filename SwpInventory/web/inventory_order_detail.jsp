@@ -210,10 +210,7 @@
                     <span class="status-approved">Đã duyệt</span>
                 </c:when>
                 <c:when test="${stockIn.status == 2}">
-                    <span class="status-rejected">Từ chối</span>
-                </c:when>
-                <c:when test="${stockIn.status == 3}">
-                    <span class="status-approved">Đã xuất kho</span>
+                    <span class="status-rejected">Đã từ chối</span>
                 </c:when>
             </c:choose>
         </p>
@@ -236,7 +233,6 @@
                     <td>${d.unitName}</td>
                     <td>${d.priceIn}</td>
                     <td><fmt:formatNumber value="${d.quantity * d.priceIn}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-
                 </tr>
                 <c:set var="totalAmount" value="${totalAmount + (d.quantity * d.priceIn)}"/>
             </c:forEach>
@@ -269,19 +265,10 @@
             </c:if>
             <c:if test="${stockIn.status == 1}">
                 <div style="margin-top:18px;color:green;font-weight:bold;">Đơn hàng đã được duyệt.</div>
-                <form method="get" action="stock_out" style="margin-top: 12px;">
-                    <input type="hidden" name="id" value="${stockIn.id}" />
-                    <button type="submit" class="btn-approve">
-                        ➤ Tạo phiếu xuất kho
-                    </button>
-                </form>
             </c:if>
 
             <c:if test="${stockIn.status == 2}">
                 <div style="margin-top:18px;color:#dc3545;font-weight:bold;">Đơn hàng đã bị từ chối.</div>
-            </c:if>
-            <c:if test="${stockIn.status == 3}">
-                <div style="margin-top:18px;color:green;font-weight:bold;">Đơn hàng đã xuất kho.</div>
             </c:if>
         </div>
     </div>

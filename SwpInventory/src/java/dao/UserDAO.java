@@ -294,75 +294,74 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+
     //Edit người dùng
     public void updateUser(String username, String name, String email, String phone, String address, int role) {
-    String sql = "UPDATE users SET name=?, email=?, phone=?, address=?, role=? WHERE username=?";
-    try (Connection conn = DBConnect.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, name);
-        ps.setString(2, email);
-        ps.setString(3, phone);
-        ps.setString(4, address);
-        ps.setInt(5, role);
-        ps.setString(6, username);
-        ps.executeUpdate();
-    } catch (Exception e) {
-        e.printStackTrace();
+        String sql = "UPDATE users SET name=?, email=?, phone=?, address=?, role=? WHERE username=?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, email);
+            ps.setString(3, phone);
+            ps.setString(4, address);
+            ps.setInt(5, role);
+            ps.setString(6, username);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-}
-    
+
     // Change passWord do Admin làm
-public boolean updatePassword(String username, String newPassword) {
-    String sql = "UPDATE users SET password = ? WHERE username = ?";
-    try (Connection conn = DBConnect.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, newPassword);
-        ps.setString(2, username);
-        int rowsUpdated = ps.executeUpdate();
-        return rowsUpdated > 0;
-    } catch (Exception e) {
-        e.printStackTrace();
+    public boolean updatePassword(String username, String newPassword) {
+        String sql = "UPDATE users SET password = ? WHERE username = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newPassword);
+            ps.setString(2, username);
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    // Hàm kiểm tra mật khẩu cũ
+
+    public boolean checkPassword(String username, String oldPassword) {
+        String sql = "SELECT password FROM users WHERE username = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String currentPassword = rs.getString("password");
+                    // Debug kiểm tra giá trị thực tế
+                    System.out.println("DB password: " + currentPassword + " | User nhập: " + oldPassword);
+                    return currentPassword.equals(oldPassword);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
-}
- // Hàm kiểm tra mật khẩu cũ
- public boolean checkPassword(String username, String oldPassword) {
-    String sql = "SELECT password FROM users WHERE username = ?";
-    try (Connection conn = DBConnect.getConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, username);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                String currentPassword = rs.getString("password");
-                // Debug kiểm tra giá trị thực tế
-                System.out.println("DB password: " + currentPassword + " | User nhập: " + oldPassword);
-                return currentPassword.equals(oldPassword);
-            }
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return false;
-}
 // Hàm cho myprofile
- public User getUserByEmail(String email) {
+
+    public User getUserByEmail(String email) {
         User user = null;
         String sql = "SELECT * FROM users WHERE email = ?";
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     user = new User(
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getInt("role"),
-                        rs.getString("image"),
-                        rs.getInt("is_approved")
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getString("phone"),
+                            rs.getString("address"),
+                            rs.getInt("role"),
+                            rs.getString("image"),
+                            rs.getInt("is_approved")
                     );
                 }
             }
@@ -371,13 +370,11 @@ public boolean updatePassword(String username, String newPassword) {
         }
         return user;
     }
- 
 
 // Update đầy đủ thông tin cá nhân (trừ username và is_approved)
     public boolean updateProfile(User user) {
         String sql = "UPDATE users SET password=?, name=?, email=?, phone=?, address=?, role=?, image=? WHERE username=?";
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getPassword());
             ps.setString(2, user.getName());
             ps.setString(3, user.getEmail());
@@ -387,9 +384,37 @@ public boolean updatePassword(String username, String newPassword) {
             ps.setString(7, user.getImage());
             ps.setString(8, user.getUsername());
             return ps.executeUpdate() > 0;
-        } catch(Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
- 
-   
+
+    public User getUserById(int id) {
+        User user = null;
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                user = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getInt("role"),
+                        rs.getString("image"),
+                        rs.getInt("is_approved")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
 }

@@ -3,7 +3,7 @@
     Created on : Jul 18, 2025, 1:26:24 AM
     Author     : User
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -249,7 +249,7 @@
                         <tr>
                             <td>${s.stockInId}</td>
                             <td>${s.supplierName}</td>
-                            <td>${s.stockInDate}</td>
+                            <td><fmt:formatDate value="${s.stockInDate}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                             <td>${s.note}</td>
                             <td>
                                 <form action="stock_in_detail" style="margin: 0;">
@@ -275,7 +275,7 @@
                         <tr>
                             <td>${s.stockOutId}</td>
                             <td>${s.reason}</td>
-                            <td>${s.stockOutDate}</td>
+                            <td><fmt:formatDate value="${s.stockOutDate}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                             <td>${s.note}</td>
                             <td>
                                 <form action="stock_out_detail" style="margin: 0;">
@@ -284,6 +284,7 @@
                                 </form>
                             </td>
                         </tr>
+                        
                     </c:forEach>
                 </table>
             </div>

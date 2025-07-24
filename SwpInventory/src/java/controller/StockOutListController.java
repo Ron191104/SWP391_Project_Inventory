@@ -5,28 +5,22 @@
 package controller;
 
 import dao.InventoryStockDAO;
-import dao.StoreStockInDAO;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.HashMap;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 import model.StockOut;
-import model.StockOutDetail;
-import model.StoreStockIn;
-import model.StoreStockInDetail;
 
 /**
  *
- * @author ADMIN
+ * @author User
  */
-@WebServlet(name = "StoreReceiveStockController", urlPatterns = {"/store_stock_in_receive"})
-public class StoreReceiveStockController extends HttpServlet {
+@WebServlet(name = "StockOutListController", urlPatterns = {"/stock_out_list"})
+public class StockOutListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +39,10 @@ public class StoreReceiveStockController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet StoreReceiveStockController</title>");
+            out.println("<title>Servlet StockOutListController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet StoreReceiveStockController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet StockOutListController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,24 +60,23 @@ public class StoreReceiveStockController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idRaw = request.getParameter("id");
+        InventoryStockDAO invDAO = new InventoryStockDAO();
+        String statusParam = request.getParameter("status");
+        List<StockOut> list;
 
-        if (idRaw == null || idRaw.isEmpty()) {
-            response.sendRedirect("store_stock_in_list");
-            return;
+        if (statusParam != null && !statusParam.isEmpty()) {
+            try {
+                int status = Integer.parseInt(statusParam);
+                list = invDAO.getStockOutByStatus(status);
+            } catch (NumberFormatException e) {
+                list = invDAO.getAllStockOut();
+            }
+        } else {
+            list = invDAO.getAllStockOut();
         }
 
-        int stockInId = Integer.parseInt(idRaw);
-        StoreStockInDAO dao = new StoreStockInDAO();
-        
-        StoreStockIn stockIn = dao.getStockInById(stockInId);
-        List<StoreStockInDetail> details = dao.getStockInDetails(stockInId);
-        
-        
-        request.setAttribute("storeStockIn", stockIn);
-        request.setAttribute("details", details);
-
-        request.getRequestDispatcher("store_stock_in_receive.jsp").forward(request, response);
+        request.setAttribute("stockOutList", list);
+        request.getRequestDispatcher("stock_out_list.jsp").forward(request, response);
     }
 
     /**
@@ -97,25 +90,7 @@ public class StoreReceiveStockController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        InventoryStockDAO idao = new InventoryStockDAO();
-        int stockOutId = Integer.parseInt(request.getParameter("storeStockInId"));
-        int stockInId = Integer.parseInt(request.getParameter("storeStockInId"));
-        String[] productIdsRaw = request.getParameterValues("productId");
-        String[] quantitiesRaw = request.getParameterValues("actualQuantity");
-
-        int[] productIds = new int[productIdsRaw.length];
-        int[] quantities = new int[quantitiesRaw.length];
-
-        for (int i = 0; i < productIdsRaw.length; i++) {
-            productIds[i] = Integer.parseInt(productIdsRaw[i]);
-            quantities[i] = Integer.parseInt(quantitiesRaw[i]);
-        }
-
-        StoreStockInDAO dao = new StoreStockInDAO();
-        dao.receiveStockIn(stockInId, productIds, quantities);
-        idao.updateStatus(stockOutId, 2);
-
-        response.sendRedirect("store_stock_in_list");
+        processRequest(request, response);
     }
 
     /**

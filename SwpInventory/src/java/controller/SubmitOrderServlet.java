@@ -25,6 +25,7 @@ public class SubmitOrderServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         List<OrderDetails> cart = (List<OrderDetails>) session.getAttribute("cart");
+        
 
         if (cart == null || cart.isEmpty()) {
             response.sendRedirect("create_order");
@@ -39,6 +40,9 @@ public class SubmitOrderServlet extends HttpServlet {
         ProductDAO productDAO = new ProductDAO();
         Product product = productDAO.getProductByID(String.valueOf(productId));
         int supplierId = product.getSupplierId();
+        System.out.println("Product ID: " + cart.get(0).getProductId());
+        System.out.println("Supplier ID: " + product.getSupplierId());
+        System.out.println("Product Name: " + product.getName());
 
         // tạo đơn hàng
         Order order = new Order();

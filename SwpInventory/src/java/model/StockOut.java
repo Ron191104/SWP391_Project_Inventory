@@ -15,17 +15,19 @@ public class StockOut {
     private String reason;
     private String note;
     private java.util.Date createdAt;
+    private int status;
 
     public StockOut() {}
 
     public StockOut(int stockOutId, int employeeId, java.util.Date stockOutDate,
-                    String reason, String note, java.util.Date createdAt) {
+                    String reason, String note, java.util.Date createdAt, int status) {
         this.stockOutId = stockOutId;
         this.employeeId = employeeId;
         this.stockOutDate = stockOutDate;
         this.reason = reason;
         this.note = note;
         this.createdAt = createdAt;
+        this.status = status;
     }
 
     public int getStockOutId() {
@@ -75,5 +77,14 @@ public class StockOut {
     public void setCreatedAt(java.util.Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
 }
 

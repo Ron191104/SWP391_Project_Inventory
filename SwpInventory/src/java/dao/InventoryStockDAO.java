@@ -11,7 +11,9 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.StockIn;
 import model.StockInDetail;
 import model.StockOut;
@@ -22,6 +24,10 @@ import model.StockOutDetail;
  * @author User
  */
 public class InventoryStockDAO {
+
+    java.sql.Connection con = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
 
     public List<StockIn> getStockInListByDateRange(Date from, Date to) {
         List<StockIn> list = new ArrayList<>();
@@ -185,6 +191,25 @@ public class InventoryStockDAO {
         return null;
     }
 
+    public String getUnitByProductId(int productId) {
+        String sql = "SELECT unit FROM products WHERE product_id = ?";
+
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("unit");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public int insertStockOut(StockOut stockOut) {
         String sql = "INSERT INTO stock_out (employee_id, stock_out_date, reason, note, created_at) "
                 + "VALUES (?, ?, ?, ?, GETDATE())";
@@ -228,6 +253,107 @@ public class InventoryStockDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<StockOut> getAllStockOut() {
+        List<StockOut> list = new ArrayList<>();
+        String sql = "SELECT * FROM stock_out ORDER BY stock_out_id DESC";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                StockOut so = new StockOut();
+                so.setStockOutId(rs.getInt("stock_out_id"));
+                so.setEmployeeId(rs.getInt("employee_id"));
+                so.setStockOutDate(rs.getTimestamp("stock_out_date"));
+                so.setReason(rs.getString("reason"));
+                so.setNote(rs.getString("note"));
+                so.setCreatedAt(rs.getTimestamp("created_at"));
+                so.setStatus(rs.getInt("status"));
+                list.add(so);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<StockOut> getStockOutByStatus(int status) {
+        List<StockOut> list = new ArrayList<>();
+        String sql = "SELECT * FROM stock_out WHERE status = ? ORDER BY stock_out_id DESC";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, status);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                StockOut so = new StockOut();
+                so.setStockOutId(rs.getInt("stock_out_id"));
+                so.setEmployeeId(rs.getInt("employee_id"));
+                so.setStockOutDate(rs.getTimestamp("stock_out_date"));
+                so.setReason(rs.getString("reason"));
+                so.setNote(rs.getString("note"));
+                so.setCreatedAt(rs.getTimestamp("created_at"));
+                so.setStatus(rs.getInt("status"));
+                list.add(so);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public void exportStock(int stockOutId) {
+        updateStatus(stockOutId, 1);
+        Map<Integer, Integer> details = getStockOutDetailsMap(stockOutId);
+        try {
+            con = DBConnect.getConnection();
+            for (Map.Entry<Integer, Integer> entry : details.entrySet()) {
+                int productId = entry.getKey();
+                int quantity = entry.getValue();
+                // Trừ kho tổng (products)
+                String updateInventory = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
+                ps = con.prepareStatement(updateInventory);
+                ps.setInt(1, quantity);
+                ps.setInt(2, productId);
+                ps.executeUpdate();
+                ps.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateStatus(int stockOutId, int status) {
+        String query = "UPDATE stock_out SET status = ? WHERE stock_out_id = ?";
+
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, status);
+            ps.setInt(2, stockOutId);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Map<Integer, Integer> getStockOutDetailsMap(int stockOutId) {
+        Map<Integer, Integer> detailsMap = new HashMap<>();
+        String sql = "SELECT product_id, quantity FROM stock_out_details WHERE stock_out_id = ?";
+        try {
+            con = DBConnect.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, stockOutId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int productId = rs.getInt("product_id");
+                int quantity = rs.getInt("quantity");
+                detailsMap.put(productId, quantity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return detailsMap;
     }
 
 }

@@ -306,6 +306,12 @@
                 </div>
                 <div class="dashboard-card">
                     <i class="fas fa-list-alt card-icon"></i>
+                    <h3>Tạo phiếu xuất kho</h3>
+                    <p>Xem danh sách đơn hàng và tạo phiếu xuất kho</p>
+                    <a href="stock_out_list">Xem đơn</a>
+                </div>
+                <div class="dashboard-card">
+                    <i class="fas fa-list-alt card-icon"></i>
                     <h3>Lịch sử xuất nhập kho</h3>
                     <p>Xem báo cáo xuất/nhập kho theo thời gian</p>
                     <a href="stock_report">Xem báo cáo</a>

@@ -5,6 +5,7 @@
 package controller;
 
 import dao.InventoryStockDAO;
+import dao.ProductDAO;
 import dao.StoreDAO;
 import dao.StoreStockInDAO;
 import jakarta.servlet.ServletException;
@@ -12,10 +13,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import model.Product;
 import model.StockOut;
 import model.StockOutDetail;
 import model.Store;
@@ -84,15 +87,47 @@ public class InventoryOrderDetailController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        StoreStockInDAO dao = new StoreStockInDAO();
+        InventoryStockDAO invDAO = new InventoryStockDAO();
+        StoreStockInDAO sidao = new StoreStockInDAO();
         int id = Integer.parseInt(request.getParameter("id"));
+        StoreStockIn stockIn = sidao.getStockInById(id);
+        List<StoreStockInDetail> details = sidao.getStockInDetails(id);
         String action = request.getParameter("action");
 
+        HttpSession session = request.getSession();
+        Integer employeeId = (Integer) session.getAttribute("id");
+
+        if (employeeId == null) {
+            request.setAttribute("error", "Bạn cần đăng nhập trước");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
         if ("approve".equals(action)) {
-            dao.updateStatus(id, 1);
+            sidao.updateStatus(id, 1);
+            StockOut stockOut = new StockOut();
+            stockOut.setStockOutDate(new Date());
+            stockOut.setReason("Xuất hàng cho cửa hàng");
+            stockOut.setNote(stockIn.getNote());
+            stockOut.setCreatedAt(new Date());
+            stockOut.setEmployeeId(employeeId); // ✅ Gán employeeId
+
+            int stockOutId = invDAO.insertStockOut(stockOut);
+
+            for (StoreStockInDetail d : details) {
+                StockOutDetail sod = new StockOutDetail();
+                sod.setStockOutId(stockOutId);
+                sod.setProductId(d.getProductId());
+                sod.setQuantity(d.getQuantity());
+                sod.setPriceOut(d.getPriceIn());
+                sod.setProductName(d.getProductName());
+                sod.setUnitName(d.getUnitName());
+
+                invDAO.insertStockOutDetail(sod);
+            }
 
         } else if ("reject".equals(action)) {
-            dao.updateStatus(id, 2);
+            sidao.updateStatus(id, 2);
         }
         response.sendRedirect("inventory_order_detail?id=" + id);
     }

@@ -182,55 +182,7 @@ public class StoreStockInDAO {
         }
     }
 
-    public void exportStock(int stockInId) {
-        Map<Integer, Integer> details = getStockInDetailsMap(stockInId);
-
-        try {
-            con = DBConnect.getConnection();
-
-            for (Map.Entry<Integer, Integer> entry : details.entrySet()) {
-                int productId = entry.getKey();
-                int quantity = entry.getValue();
-
-                // Trừ kho tổng (products)
-                String updateInventory = "UPDATE products SET quantity = quantity - ? WHERE product_id = ?";
-                ps = con.prepareStatement(updateInventory);
-                ps.setInt(1, quantity);
-                ps.setInt(2, productId);
-                ps.executeUpdate();
-                ps.close();
-            }
-
-            if (con != null) {
-                con.close();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Map<Integer, Integer> getStockInDetailsMap(int stockInId) {
-        Map<Integer, Integer> detailsMap = new HashMap<>();
-        String sql = "SELECT product_id, quantity FROM store_stock_in_details WHERE store_stock_in_id = ?";
-
-        try {
-            con = DBConnect.getConnection();
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, stockInId);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int productId = rs.getInt("product_id");
-                int quantity = rs.getInt("quantity");
-                detailsMap.put(productId, quantity);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return detailsMap;
-    }
+    
 
     public int getStoreIdByStockInId(int stockInId) {
         String sql = "SELECT store_id FROM store_stock_in WHERE store_stock_in_id = ?";
@@ -247,62 +199,61 @@ public class StoreStockInDAO {
         }
         return -1;
     }
-    
-   public void receiveStockIn(int stockInId, int[] productIds, int[] quantities) {
-    int storeId = getStoreIdByStockInId(stockInId);
 
-    try {
-        con = DBConnect.getConnection();
+    public void receiveStockIn(int stockInId, int[] productIds, int[] quantities) {
+        int storeId = getStoreIdByStockInId(stockInId);
 
-        String sql = "SELECT CASE WHEN pu.is_base_unit = 1 THEN ? ELSE ? * pu.conversion_value END AS store_quantity "
-                   + "FROM store_stock_in_details s "
-                   + "JOIN product_units pu ON s.product_id = pu.product_id AND s.unit_name = pu.unit_name "
-                   + "WHERE s.store_stock_in_id = ? AND s.product_id = ?";
+        try {
+            con = DBConnect.getConnection();
 
-        String updateStoreSql = "UPDATE store_products SET quantity = quantity + ? WHERE store_id = ? AND product_id = ?";
-        String insertStoreSql = "INSERT INTO store_products (store_id, product_id, quantity) VALUES (?, ?, ?)";
+            String sql = "SELECT CASE WHEN pu.is_base_unit = 1 THEN ? ELSE ? * pu.conversion_value END AS store_quantity "
+                    + "FROM store_stock_in_details s "
+                    + "JOIN product_units pu ON s.product_id = pu.product_id AND s.unit_name = pu.unit_name "
+                    + "WHERE s.store_stock_in_id = ? AND s.product_id = ?";
 
-        for (int i = 0; i < productIds.length; i++) {
-            int productId = productIds[i];
-            int quantity = quantities[i];
+            String updateStoreSql = "UPDATE store_products SET quantity = quantity + ? WHERE store_id = ? AND product_id = ?";
+            String insertStoreSql = "INSERT INTO store_products (store_id, product_id, quantity) VALUES (?, ?, ?)";
 
-            int storeQuantity = quantity; // default
+            for (int i = 0; i < productIds.length; i++) {
+                int productId = productIds[i];
+                int quantity = quantities[i];
 
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, quantity);
-            ps.setInt(2, quantity);
-            ps.setInt(3, stockInId);
-            ps.setInt(4, productId);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                storeQuantity = rs.getInt("store_quantity");
-            }
-            rs.close();
-            ps.close();
+                int storeQuantity = quantity; // default
 
-            ps = con.prepareStatement(updateStoreSql);
-            ps.setInt(1, storeQuantity);
-            ps.setInt(2, storeId);
-            ps.setInt(3, productId);
-            int rows = ps.executeUpdate();
-            ps.close();
-
-            if (rows == 0) {
-                ps = con.prepareStatement(insertStoreSql);
-                ps.setInt(1, storeId);
-                ps.setInt(2, productId);
-                ps.setInt(3, storeQuantity);
-                ps.executeUpdate();
+                ps = con.prepareStatement(sql);
+                ps.setInt(1, quantity);
+                ps.setInt(2, quantity);
+                ps.setInt(3, stockInId);
+                ps.setInt(4, productId);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    storeQuantity = rs.getInt("store_quantity");
+                }
+                rs.close();
                 ps.close();
+
+                ps = con.prepareStatement(updateStoreSql);
+                ps.setInt(1, storeQuantity);
+                ps.setInt(2, storeId);
+                ps.setInt(3, productId);
+                int rows = ps.executeUpdate();
+                ps.close();
+
+                if (rows == 0) {
+                    ps = con.prepareStatement(insertStoreSql);
+                    ps.setInt(1, storeId);
+                    ps.setInt(2, productId);
+                    ps.setInt(3, storeQuantity);
+                    ps.executeUpdate();
+                    ps.close();
+                }
             }
+
+            updateStatus(stockInId, 3);
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        updateStatus(stockInId, 3);
-        con.close();
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
-
 
 }

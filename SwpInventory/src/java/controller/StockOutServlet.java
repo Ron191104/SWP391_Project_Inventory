@@ -31,13 +31,19 @@ public class StockOutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int stockInId = Integer.parseInt(request.getParameter("id"));
+        int stockOutId = Integer.parseInt(request.getParameter("id"));
+        InventoryStockDAO invDAO = new InventoryStockDAO();
 
-        StoreStockInDAO dao = new StoreStockInDAO();
-        StoreStockIn stockIn = dao.getStockInById(stockInId);
-        List<StoreStockInDetail> details = dao.getStockInDetails(stockInId);
+        StockOut stockOut = invDAO.getStockOutById(stockOutId);
+        List<StockOutDetail> details = invDAO.getStockOutDetails(stockOutId);
+        for (StockOutDetail d : details) {
+            String productName = invDAO.getProductNameById(d.getProductId());
+            d.setProductName(productName);
+            String unitName = invDAO.getUnitByProductId(d.getProductId());
+            d.setUnitName(unitName);
+        }
 
-        request.setAttribute("stockIn", stockIn);
+        request.setAttribute("so", stockOut);
         request.setAttribute("details", details);
 
         request.getRequestDispatcher("stock_out_form.jsp").forward(request, response);
@@ -47,45 +53,10 @@ public class StockOutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int stockInId = Integer.parseInt(request.getParameter("id"));
-
-        StoreStockInDAO storeDAO = new StoreStockInDAO();
+        int stockOutId = Integer.parseInt(request.getParameter("id"));
         InventoryStockDAO invDAO = new InventoryStockDAO();
+        invDAO.exportStock(stockOutId);
 
-        StoreStockIn stockIn = storeDAO.getStockInById(stockInId);
-        List<StoreStockInDetail> details = storeDAO.getStockInDetails(stockInId);
-
-        // ✅ Lấy employeeId từ session
-        HttpSession session = request.getSession();
-        Integer employeeId = (Integer) session.getAttribute("id");
-
-        if (employeeId == null) {
-            // Session hết hạn hoặc chưa đăng nhập
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        StockOut stockOut = new StockOut();
-        stockOut.setStockOutDate(new Date());
-        stockOut.setReason("Xuất hàng cho cửa hàng");
-        stockOut.setNote(stockIn.getNote());
-        stockOut.setCreatedAt(new Date());
-        stockOut.setEmployeeId(employeeId); // ✅ Gán employeeId
-
-        int stockOutId = invDAO.insertStockOut(stockOut);
-
-        for (StoreStockInDetail d : details) {
-            StockOutDetail sod = new StockOutDetail();
-            sod.setStockOutId(stockOutId);
-            sod.setProductId(d.getProductId());
-            sod.setQuantity(d.getQuantity());
-            sod.setPriceOut(d.getPriceIn());
-
-            invDAO.insertStockOutDetail(sod);
-        }
-
-        storeDAO.exportStock(stockInId);
-
-        response.sendRedirect("inventory_order_detail?id=" + stockInId);
+        response.sendRedirect("stock_out_list");
     }
 }

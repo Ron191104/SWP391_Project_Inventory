@@ -194,10 +194,10 @@
                                     <span class="status-approved">Đã duyệt</span>
                                 </c:when>
                                 <c:when test="${si.status == 2}">
-                                    <span class="status-rejected">Từ chối</span>
+                                    <span class="status-rejected">Đã từ chối</span>
                                 </c:when>
                                 <c:when test="${si.status == 3}">
-                                    <span class="status-approved">Đã xuất kho</span>
+                                    <span class="status-rejected">Đã xuất kho</span>
                                 </c:when>
                             </c:choose>
                         </td>

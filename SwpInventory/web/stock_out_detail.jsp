@@ -195,15 +195,16 @@
 </head>
 <body>
     <div class="container">
-        <a href="stock_report" class="links" >Quay lại</a>
+        <a href="stock_out_list" class="links" >Quay lại</a>
         <h2>Chi tiết xuất kho ID=${stockOut.stockOutId}</h2>
+        <h3>Nhân viên: ${employee.name}</h3>
      
         <table>
             <tr>
                 <th>Mã sản phẩm</th>
                 <th>Tên sản phẩm</th>
                 <th>Số lượng</th>
-                <th>Giá xuất</th>
+                <th>Đơn vị</th>
             </tr>
 
             <c:forEach items="${details}" var="d">
@@ -211,7 +212,7 @@
                     <td>${d.productId}</td>
                     <td>${d.productName}</td>
                     <td>${d.quantity}</td>
-                    <td><fmt:formatNumber value="${d.priceOut}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                    <td>${d.unitName}</td>
                 </tr>
             </c:forEach>
 
