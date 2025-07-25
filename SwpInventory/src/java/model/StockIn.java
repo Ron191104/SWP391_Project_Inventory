@@ -3,12 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+
 import java.util.Date;
+import java.util.List;
+
 /**
  *
  * @author User
  */
 public class StockIn {
+
     private int stockInId;
     private int supplierId;
     private String supplierName;
@@ -17,19 +21,13 @@ public class StockIn {
     private String note;
     private Date createdAt;
 
-    public StockIn() {}
+    private List<StockInDetail> details; // ✅ Thêm danh sách chi tiết
 
-    public String getSupplierName() {
-        return supplierName;
+    public StockIn() {
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-    
-
-    public StockIn(int stockInId, int supplierId, int employeeId, java.util.Date stockInDate,
-                   String note, java.util.Date createdAt) {
+    public StockIn(int stockInId, int supplierId, int employeeId, Date stockInDate,
+            String note, Date createdAt) {
         this.stockInId = stockInId;
         this.supplierId = supplierId;
         this.employeeId = employeeId;
@@ -38,6 +36,7 @@ public class StockIn {
         this.createdAt = createdAt;
     }
 
+    // Getters & Setters
     public int getStockInId() {
         return stockInId;
     }
@@ -54,6 +53,14 @@ public class StockIn {
         this.supplierId = supplierId;
     }
 
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
     public int getEmployeeId() {
         return employeeId;
     }
@@ -62,11 +69,11 @@ public class StockIn {
         this.employeeId = employeeId;
     }
 
-    public java.util.Date getStockInDate() {
+    public Date getStockInDate() {
         return stockInDate;
     }
 
-    public void setStockInDate(java.util.Date stockInDate) {
+    public void setStockInDate(Date stockInDate) {
         this.stockInDate = stockInDate;
     }
 
@@ -82,9 +89,15 @@ public class StockIn {
         return createdAt;
     }
 
-    public void setCreatedAt(java.util.Date createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    public List<StockInDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<StockInDetail> details) {
+        this.details = details;
+    }
 }
-
-
