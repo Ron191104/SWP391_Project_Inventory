@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.StoreDAO;
 import dao.StoreProductDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
+import model.Store;
 import model.StoreProduct;
 
 /**
@@ -60,7 +62,10 @@ public class StoreSetPriceController extends HttpServlet {
 
         StoreProductDAO dao = new StoreProductDAO();
         List<StoreProduct> productList = dao.getAllStoreProduct(storeId);
+ StoreDAO sdao = new StoreDAO();
+        List<Store> list = sdao.getAllStore();
 
+        request.setAttribute("listStore", list);
         request.setAttribute("storeProduct", productList);
         request.getRequestDispatcher("store_set_price.jsp").forward(request, response);
     }

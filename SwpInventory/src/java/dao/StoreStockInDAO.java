@@ -118,7 +118,7 @@ public class StoreStockInDAO {
 
     public List<StoreStockInDetail> getStockInDetails(int stockInId) {
         List<StoreStockInDetail> list = new ArrayList<>();
-        String query = "SELECT d.*, p.product_name FROM store_stock_in_details d "
+        String query = "SELECT d.*, p.product_name, p.barcode FROM store_stock_in_details d "
                 + "JOIN products p ON d.product_id = p.product_id WHERE d.store_stock_in_id = ?";
         try {
             con = DBConnect.getConnection();
@@ -134,6 +134,7 @@ public class StoreStockInDAO {
                 d.setPriceIn(rs.getDouble("price_in"));
                 d.setProductName(rs.getString("product_name"));
                 d.setUnitName(rs.getString("unit_name"));
+                d.setBarcode(rs.getString("barcode"));
                 list.add(d);
             }
         } catch (Exception e) {

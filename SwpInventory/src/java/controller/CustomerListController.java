@@ -6,6 +6,7 @@
 package controller;
 
 import dao.CustomerDAO;
+import dao.StoreDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Customer;
+import model.Store;
 
 /**
  *
@@ -35,7 +37,10 @@ public class CustomerListController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         CustomerDAO customerDAO = new CustomerDAO();
         List<Customer> customerList = customerDAO.getAllCustomers();
+ StoreDAO dao = new StoreDAO();
+        List<Store> list = dao.getAllStore();
 
+        request.setAttribute("listStore", list);
         request.setAttribute("customerList", customerList);
 
         request.getRequestDispatcher("customer_list.jsp").forward(request, response);
