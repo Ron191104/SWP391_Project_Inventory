@@ -9,8 +9,9 @@ package model;
  * @author User
  */
 public class StockInDetail {
+
     private int stockInDetailId;
-    private int stockInId;
+    private double stockInId;
     private int productId;
     private int quantity;
     private double priceIn;
@@ -18,10 +19,11 @@ public class StockInDetail {
     private java.util.Date expiredDate;
     private String productName;
 
-    public StockInDetail() {}
+    public StockInDetail() {
+    }
 
-    public StockInDetail(int stockInDetailId, int stockInId, int productId, int quantity,
-                         double priceIn, java.util.Date manufactureDate, java.util.Date expiredDate) {
+    public StockInDetail(int stockInDetailId, double stockInId, int productId, int quantity,
+            double priceIn, java.util.Date manufactureDate, java.util.Date expiredDate) {
         this.stockInDetailId = stockInDetailId;
         this.stockInId = stockInId;
         this.productId = productId;
@@ -38,7 +40,6 @@ public class StockInDetail {
     public void setProductName(String productName) {
         this.productName = productName;
     }
-    
 
     public int getStockInDetailId() {
         return stockInDetailId;
@@ -48,7 +49,7 @@ public class StockInDetail {
         this.stockInDetailId = stockInDetailId;
     }
 
-    public int getStockInId() {
+    public double getStockInId() {
         return stockInId;
     }
 
@@ -95,4 +96,6 @@ public class StockInDetail {
     public void setExpiredDate(java.util.Date expiredDate) {
         this.expiredDate = expiredDate;
     }
+
+
 }
