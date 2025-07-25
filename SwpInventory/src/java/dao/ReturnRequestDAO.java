@@ -303,4 +303,14 @@ public class ReturnRequestDAO {
         return list;
     }
 
+    public void cancelReturnRequest(int returnId) {
+        String sql = "UPDATE return_request SET status = 3 WHERE id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, returnId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

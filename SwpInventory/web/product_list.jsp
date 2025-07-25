@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sản phẩm trong kho</title>
         <style>
 
             body {
@@ -385,8 +386,8 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="dashboard.html">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
+                        <i class="fas fa-warehouse"></i> Kho Hàng
                     </a>
                     <div class="dropdown">
                         <input type="checkbox" id="product-dropdown" />
@@ -399,14 +400,10 @@
                             <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
                             <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
 
-
                         </div>
                     </div>
-                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
-                    <i class="fas fa-warehouse"></i> Kho Hàng
-                </a>
-                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="stock_in"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="stock_out_form"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
 
                     <div class="dropdown">
@@ -450,7 +447,7 @@
             </div>
         </div>
         <div class="container">
-            <h3>Quản lí sản phẩm:</h3>
+            <h1>Sản phẩm trong kho</h1>
 
             <table>
                 <thead>
@@ -465,7 +462,6 @@
                         <th>Quantity</th>
                         <th>MFD</th>
                         <th>EXP</th>
-                        <th style="width: 10px">Status</th>
 
                     </tr>
                 </thead>
@@ -488,11 +484,6 @@
                             <td>${o.manufacture_date}</td>
                             <td>${o.expired_date}</td>
 
-                            <td>
-
-                                <input type="submit" value="Edit" style="margin-bottom: 5px;" />
-                                <input type="submit" value="Delete" style="margin-bottom: 5px;" />
-                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>

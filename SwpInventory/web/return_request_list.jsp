@@ -121,14 +121,14 @@
                     <div class="request-card">
                         <h3>Yêu cầu trả hàng #${r.id}</h3>
                         <p><strong>Nhà cung cấp:</strong> ${r.supplierName}</p>
-                        <p><strong>Nhân viên tạo:</strong> ${r.employeeName}</p>
                         <p><strong>Ngày tạo:</strong> ${r.createdDate}</p>
                         <p><strong>Lý do:</strong> ${r.reason}</p>
-                        <p><strong>Trạng thái:</strong>
+                        <p><b>Trạng thái:</b>
                             <c:choose>
                                 <c:when test="${r.status == 0}">⏳ Chờ duyệt</c:when>
                                 <c:when test="${r.status == 1}">✔ Đã duyệt</c:when>
                                 <c:when test="${r.status == 2}">✖ Từ chối</c:when>
+                                <c:when test="${r.status == 3}">🗑 Đã hủy</c:when>
                             </c:choose>
                         </p>
 
@@ -136,9 +136,15 @@
                             <a href="return_request_details?returnId=${r.id}" class="btn-action">Xem chi tiết</a>
 
                             <c:if test="${r.status == 0}">
-                                <a href="cancel_return_request?id=${r.id}" class="btn-cancel"
-                                   onclick="return confirm('Bạn có chắc chắn muốn hủy yêu cầu này?')">Hủy yêu cầu</a>
+                                <form method="post" action="cancel_return_request" style="display:inline;">
+                                    <input type="hidden" name="returnId" value="${r.id}" />
+                                    <button type="submit" onclick="return confirm('Bạn có chắc muốn hủy đơn này không?');"
+                                            style="background:#dc3545;color:white;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;">
+                                        <i class="fas fa-times"></i> Hủy đơn
+                                    </button>
+                                </form>
                             </c:if>
+
                         </div>
                     </div>
                 </a>

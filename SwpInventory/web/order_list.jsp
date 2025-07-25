@@ -343,8 +343,8 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="dashboard.html">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
+                        <i class="fas fa-warehouse"></i> Kho Hàng
                     </a>
                     <div class="dropdown">
                         <input type="checkbox" id="product-dropdown" />
@@ -360,11 +360,8 @@
 
                         </div>
                     </div>
-                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
-                        <i class="fas fa-warehouse"></i> Kho Hàng
-                    </a>
-                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="stock_in"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="stock_out_form"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
 
                     <div class="dropdown">
