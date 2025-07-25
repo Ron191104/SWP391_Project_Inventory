@@ -37,15 +37,6 @@
                 color: white;
                 font-weight: 700;
             }
-            table th:first-child,
-            table td:first-child {
-                width: 10px;
-            }
-
-
-            tbody tr:hover {
-                background-color: #FDF9DA;
-            }
 
             .container {
                 max-width: 100%;
@@ -56,6 +47,10 @@
             }
 
             table tr th:first-child {
+                width: 35px;
+            }
+            
+            table tr th:nth-child(2) {
                 width: 35px;
             }
 
@@ -80,12 +75,10 @@
                 outline: none;
             }
 
-
-
             button {
                 background-color: #82CAFA;
                 border: none;
-                width: 80px;
+                width: 70px;
                 height: 30px;
                 border-radius: 6px;
                 color: white;
@@ -197,6 +190,7 @@
                     <table border="1" width="100%">
                         <tr>
                             <th>Tên sản phẩm</th>
+                            <th>Barcode</th>
                             <th>Số lượng</th>
                             <th>Đơn vị</th>
                             <th>Giá</th>
@@ -216,6 +210,8 @@
                                                 </c:if>
                                             </c:forEach>
                                         </td>
+
+                                            <td>${od.barcode}</td>
                                         <td>${od.quantity}</td>
                                         <td>${od.unit}</td>
                                         <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
@@ -236,13 +232,13 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="6" style="text-align:center;">Giỏ hàng trống</td>
+                                    <td colspan="7" style="text-align:center;">Giỏ hàng trống</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
 
                         <tr>
-                            <td colspan="5"><b>Tổng:</b></td>
+                            <td colspan="6"><b>Tổng:</b></td>
                             <td><b><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></b></td>
 
 
