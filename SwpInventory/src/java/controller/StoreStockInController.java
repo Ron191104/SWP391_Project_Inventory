@@ -95,7 +95,9 @@ public class StoreStockInController extends HttpServlet {
             od.setProductId(productId);
             od.setQuantity(quantity);
             od.setPrice(p.getPrice());
-            od.setUnit(p.getUnit());         
+            od.setUnit(p.getUnit());    
+            od.setBarcode(p.getBarcode());
+
             cart.add(od);
         }
         StoreDAO sdao = new StoreDAO();
