@@ -322,6 +322,7 @@ public class InventoryStockDAO {
             e.printStackTrace();
         }
     }
+
     public void updateStatus(int stockOutId, int status) {
         String query = "UPDATE stock_out SET status = ? WHERE stock_out_id = ?";
 
@@ -354,6 +355,18 @@ public class InventoryStockDAO {
             e.printStackTrace();
         }
         return detailsMap;
+    }
+
+    public void updateStockOutDetailQuantity(int stockOutId, int productId, int newQuantity) {
+        String sql = "UPDATE stock_out_details SET quantity = ? WHERE stock_out_id = ? AND product_id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, newQuantity);
+            ps.setInt(2, stockOutId);
+            ps.setInt(3, productId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

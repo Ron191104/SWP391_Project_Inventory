@@ -55,6 +55,12 @@ public class StockOutServlet extends HttpServlet {
 
         int stockOutId = Integer.parseInt(request.getParameter("id"));
         InventoryStockDAO invDAO = new InventoryStockDAO();
+        List<StockOutDetail> details = invDAO.getStockOutDetails(stockOutId);
+        for (StockOutDetail d : details) {
+            int newQuantity = Integer.parseInt(request.getParameter("quantity_" + d.getProductId()));
+            invDAO.updateStockOutDetailQuantity(stockOutId, d.getProductId(), newQuantity);
+        }
+
         invDAO.exportStock(stockOutId);
 
         response.sendRedirect("stock_out_list");

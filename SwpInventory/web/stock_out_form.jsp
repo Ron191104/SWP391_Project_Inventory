@@ -101,6 +101,19 @@
             table td:first-child {
                 width: 10px;
             }
+            form input[type="number"]:focus {
+                outline: none;
+                border-color: #82CAFA;
+                box-shadow: 0 0 5px #82CAFAaa;
+            }
+            form input[type="number"] {
+                width: 80%;
+                padding: 5px 0px;
+                font-size: 1rem;
+                border-radius: 6px;
+                border: 1.8px solid #ccc;
+                transition: border-color 0.3s ease;
+            }
         </style>
         <div class="header">
             <div class="header-left">
@@ -186,34 +199,36 @@
             </div>
             <p><b>Ghi chú:</b> ${so.note}</p>
 
-            <table>
-                <tr>
-                    <th>Mã sản phẩm</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Đơn vị</th>
-                </tr>
 
-                <c:forEach items="${details}" var="d">
-                    <tr>
-                        <td>${d.productId}</td>
-                        <td>${d.productName}</td>
-                        <td>${d.quantity}</td>
-                        <td>${d.unitName}</td>
+            <div style="margin-top: 50px; display: flex; justify-content: center;">
+                <form method="post" action="stock_out">
+                    <table>
+                        <tr>
+                            <th>Mã sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Đơn vị</th>
+                        </tr>
 
-                    </tr>
-                </c:forEach>
+                        <c:forEach items="${details}" var="d">
+                            <tr>
+                                <td>${d.productId}</td>
+                                <td>${d.productName}</td>
+                                <td>
+                                    <input type="number" name="quantity_${d.productId}" value="${d.quantity}" min="1" required />
+                                </td>
+                                <td>${d.unitName}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
 
+                    <input type="hidden" name="id" value="${so.stockOutId}" />
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="submit" class="btn-approve">Xác nhận xuất kho</button>
+                    </div>
+                </form>
+            </div>
 
-
-            </table>
-
-            <form method="post" action="stock_out" style="margin-top: 12px; display: flex; justify-content: center; margin-top: 50px">
-                <input type="hidden" name="id" value="${so.stockOutId}" />
-                <button type="submit" class="btn-approve">
-                    Xác nhận xuất kho
-                </button>
-            </form>
 
         </div>
 
