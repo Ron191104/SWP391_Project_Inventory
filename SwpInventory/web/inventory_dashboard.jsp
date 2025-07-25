@@ -229,7 +229,9 @@
                             <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
                         </div>
                     </div>
-
+                    <a href="${pageContext.request.contextPath}/AdminDashboardServlet">
+                        <i class="fas fa-arrow-left"></i> Trở về Dashboard Admin
+                    </a>
                 </div>
             </div>
             <div class="header-right">
@@ -245,7 +247,7 @@
                         <div>Báo cáo tháng 5 đã được cập nhật.</div>
                     </div>
                 </div>
-                 <div class="user-menu">
+                <div class="user-menu">
                     <input type="checkbox" id="user-menu-toggle" />
                     <label for="user-menu-toggle">
                         <img src="<%= request.getContextPath() + "/" +
@@ -267,7 +269,7 @@
             </div>
         </div>
         <link rel="stylesheet" href="assets/css/menu.css">
-        
+
         <div class="container">
             <c:if test="${not empty sessionScope.successMessage}"><p class="message success-message"><c:out value="${sessionScope.successMessage}"/></p><c:remove var="successMessage" scope="session"/></c:if>
             <c:if test="${not empty sessionScope.errorMessage}"><p class="message error-message"><c:out value="${sessionScope.errorMessage}"/></p><c:remove var="errorMessage" scope="session"/></c:if>

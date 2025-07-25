@@ -219,11 +219,12 @@ public class UserDAO {
     public List<User> getAllUsers() {
 
         List<User> list = new ArrayList<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users WHERE role <> 4";
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User user = new User(
+                        rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("name"),
@@ -415,6 +416,17 @@ public class UserDAO {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public void updateApprovalStatus(int userId, int status) {
+        String sql = "UPDATE users SET is_approved = ? WHERE id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, status);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
