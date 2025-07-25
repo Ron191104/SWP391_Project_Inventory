@@ -134,57 +134,55 @@
             <h3>Sửa sản phẩm:</h3>
 
             <div class="container">
-                <form action="/edit_product" method="post">
-
-                    <label for="productId">ID</label>
+                <form action="edit_product" method="post" enctype="multipart/form-data">
+                    <label>ID</label>
                     <input type="text" name="productId" value="${detail.product.id}" readonly>
 
-                    <label for="barcode">Barcode</label>
+                    <label>Barcode</label>
                     <input type="text" name="barcode" value="${detail.product.barcode}" readonly>
 
-                    <label for="name">Product Name</label>
-                    <input type="text" id="name" name="name" value="${detail.product.name}" required>
+                    <label>Product Name</label>
+                    <input type="text" name="name" value="${detail.product.name}" required>
 
-                    <label for="storeCategoryId">Category</label>
-                    <select name="storeCategoryId" id="storeCategoryId" class="product-select" required style="font-size:16px; padding:8px; width:250px;">
-                        <c:forEach items="${listStoreCategory}" var="c">
-                            <option value="${c.storeCategoryId}"
-                                    <c:if test="${c.storeCategoryId == detail.storeCategoryId}">selected</c:if>>
-                                ${c.categoryName}
-                            </option>
+                    <label>Category</label>
+                    <select name="storeCategoryId" required>
+                        <c:forEach var="c" items="${listStoreCategory}">
+                            <option value="${c.id}" <c:if test="${c.id == detail.storeCategoryId}">selected</c:if>>${c.name}</option>
                         </c:forEach>
                     </select>
 
-                    <label for="priceIn">Price In</label>
-                    <input type="number" id="priceIn" name="priceIn" value="${detail.product.price}" readonly>
+                    <label>Price In</label>
+                    <input type="number" name="priceIn" value="${detail.product.price}" readonly>
 
-                    <label for="priceOut">Price Out</label>
-                    <input type="number" id="priceOut" name="priceOut" value="${detail.priceOut}" readonly>
+                    <label>Price Out</label>
+                    <input type="number" name="priceOut" value="${detail.priceOut}" readonly>
 
-                    <label for="quantity">Quantity</label>
-                    <input type="number" id="quantity" name="quantity" value="${detail.quantity}" readonly>
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" value="${detail.quantity}" readonly>
 
-                    <label for="unit">Unit</label>
-                    <input type="text" id="unit" name="unit" value="${detail.product.unit}" readonly>
+                    <label>Unit</label>
+                    <input type="text" name="unit" value="${detail.product.unit}" readonly>
 
-                    <label for="manufacture_date">Manufactured Date</label>
-                    <input type="text" id="manufacture_date" name="manufacture_date" value="${detail.product.manufacture_date}" readonly>
+                    <label>Manufactured Date</label>
+                    <input type="text" name="manufacture_date" value="${detail.product.manufacture_date}" readonly>
 
-                    <label for="expired_date">Expired Date</label>
-                    <input type="text" id="expired_date" name="expired_date" value="${detail.product.expired_date}" readonly>
+                    <label>Expired Date</label>
+                    <input type="text" name="expired_date" value="${detail.product.expired_date}" readonly>
 
-                    <label for="description">Description</label>
-                    <input type="text" id="description" name="description" value="${detail.product.description}" required>
+                    <label>Description</label>
+                    <input type="text" name="description" value="${detail.product.description}" required>
 
-                    <label for="image">Image</label>
-                    <input type="text" id="image" name="image" value="${detail.product.image}" required>
+                    <label>Current Image</label><br>
+                    <img src="${pageContext.request.contextPath}/${detail.product.image}" width="120" height="120"><br><br>
+
+                    <label>Upload New Image</label>
+                    <input type="file" name="image" accept="image/*">
+
+                    <input type="hidden" name="oldImage" value="${detail.product.image}">
                     <input type="hidden" name="storeProductId" value="${detail.storeProductId}">
 
-                    <div class="form-actions" style="margin-top: 16px;">
-                        <input type="submit" value="Save">
-                        <a href="store_product_list"><button type="button">Cancel</button></a>
-                    </div>
-
+                    <input type="submit" value="Save">
+                    <a href="store_product_list"><button type="button">Cancel</button></a>
                 </form>
 
             </div>

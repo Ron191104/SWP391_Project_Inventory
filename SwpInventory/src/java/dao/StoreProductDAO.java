@@ -574,8 +574,7 @@ public class StoreProductDAO {
 
     public void updateStoreProduct(StoreProduct sp) {
         String updateProductQuery = "UPDATE products SET product_name = ?, image = ?, description = ? WHERE product_id = ?";
-        String updateStoreProductQuery = "UPDATE store_products SET store_category_id = ? WHERE product_id = ?";
-
+        String updateStoreProductQuery = "UPDATE store_products SET price_out = ? WHERE store_product_id = ?";
         try {
             con = DBConnect.getConnection();
             con.setAutoCommit(false);
@@ -590,24 +589,17 @@ public class StoreProductDAO {
 
             // update bảng store_products
             ps = con.prepareStatement(updateStoreProductQuery);
-            ps.setInt(1, sp.getStoreCategoryId());
+            ps.setDouble(1, sp.getPriceOut());
             ps.setInt(2, sp.getStoreProductId());
             ps.executeUpdate();
 
             con.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            try {
-                if (con != null) {
-                    con.rollback();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
         }
     }
- 
- public void subtractQuantity(int storeId, int productId, int quantity) {
+
+    public void subtractQuantity(int storeId, int productId, int quantity) {
         String query = "UPDATE store_products SET quantity = quantity - ? WHERE store_id = ? AND product_id = ?";
         try {
             con = DBConnect.getConnection();
@@ -619,7 +611,5 @@ public class StoreProductDAO {
         } catch (Exception e) {
         }
     }
- 
- 
 
 }

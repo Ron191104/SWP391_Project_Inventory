@@ -7,13 +7,17 @@ package controller;
 import dao.CategoryDAO;
 import dao.StoreProductDAO;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 
 import java.util.List;
 import model.Product;
@@ -22,12 +26,12 @@ import java.sql.Date;
 import model.Categories;
 import model.Category;
 
-
 /**
  *
  * @author User
  */
 @WebServlet(name = "EditStoreProductController", urlPatterns = {"/edit_product"})
+@MultipartConfig
 public class EditStoreProductController extends HttpServlet {
 
     /**
@@ -48,9 +52,8 @@ public class EditStoreProductController extends HttpServlet {
         Integer storeId = (Integer) session.getAttribute("storeId");
         StoreProductDAO dao = new StoreProductDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
-        
 
-        StoreProduct detail = dao.getStoreProductById(storeId,did);
+        StoreProduct detail = dao.getStoreProductById(storeId, did);
         if (detail == null) {
             response.sendRedirect("store_product_list.jsp");
             return;
@@ -61,7 +64,7 @@ public class EditStoreProductController extends HttpServlet {
         request.setAttribute("detail", detail);
         request.setAttribute("listStoreCategory", listStoreCategory);
         request.getRequestDispatcher("edit_store_product.jsp").forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -74,55 +77,66 @@ public class EditStoreProductController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        try {
+            int storeProductId = Integer.parseInt(request.getParameter("storeProductId"));
+            int storeCategoryId = Integer.parseInt(request.getParameter("storeCategoryId"));
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+            String oldImage = request.getParameter("oldImage");
+
+            // lấy ảnh từ form
+            Part imagePart = request.getPart("image");
+            String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+
+            String imagePath;
+            if (imageFileName == null || imageFileName.trim().isEmpty()) {
+                // không chọn ảnh mới -> giữ ảnh cũ
+                imagePath = oldImage;
+            } else {
+                // có ảnh mới -> lưu file
+                String uploadPath = getServletContext().getRealPath("/") + "assets" + File.separator + "image";
+                File uploadDir = new File(uploadPath);
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdirs();
+                }
+                imagePart.write(uploadPath + File.separator + imageFileName);
+
+                // chỉ lưu tên file trong DB
+                imagePath = imageFileName;
+            }
+
+            // tạo đối tượng
+            Product p = new Product();
+            p.setId(productId);
+            p.setName(name);
+            p.setImage(imagePath);
+            p.setDescription(description);
+
+            StoreProduct sp = new StoreProduct();
+            sp.setStoreProductId(storeProductId);
+            sp.setStoreCategoryId(storeCategoryId);
+            sp.setProduct(p);
+
+            // update DB
+            StoreProductDAO dao = new StoreProductDAO();
+            dao.updateStoreProduct(sp);
+
+            response.sendRedirect("store_product_list");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Lỗi cập nhật sản phẩm");
+            request.getRequestDispatcher("edit_store_product.jsp").forward(request, response);
+        }
+    }
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    request.setCharacterEncoding("UTF-8");
-
-    try {
-        // lấy thông tin cần cập nhật
-        int storeProductId = Integer.parseInt(request.getParameter("storeProductId"));
-        int storeCategoryId = Integer.parseInt(request.getParameter("storeCategoryId"));
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        String name = request.getParameter("name");
-        String image = request.getParameter("image");
-        String description = request.getParameter("description");
-
-        // tạo product và storeProduct
-        Product p = new Product();
-        p.setId(productId);
-        p.setName(name);
-        p.setImage(image);
-        p.setDescription(description);
-
-        StoreProduct sp = new StoreProduct();
-        sp.setStoreProductId(storeProductId);
-        sp.setStoreCategoryId(storeCategoryId);
-        sp.setProduct(p);
-
-        // cập nhật
-        StoreProductDAO dao = new StoreProductDAO();
-        dao.updateStoreProduct(sp);
-
-        response.sendRedirect("store_product_list.jsp");
-    } catch (Exception e) {
-        e.printStackTrace();
-        request.setAttribute("error", "Lỗi cập nhật sản phẩm");
-        request.getRequestDispatcher("edit_store_product.jsp").forward(request, response);
-    }
     }
 
     /**
