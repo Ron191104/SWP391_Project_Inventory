@@ -270,9 +270,11 @@
                     <a href="supplier_order" style="color: white;"><i class="fas fa-box"></i> Đơn hàng</a>
                     <a href="supplier_return_requests" style="color: white;"><i class="fas fa-undo-alt"></i> Yêu cầu hoàn hàng</a>
                     <a href="supplier-dashboard?view=approved" style="color: white;"><i class="fas fa-check"></i> Đã cung cấp</a>
-                    <a href="${pageContext.request.contextPath}/AdminDashboardServlet">
-                        <i class="fas fa-arrow-left"></i> Trở về Dashboard Admin
-                    </a>
+                    <c:if test="${sessionScope.userRole == 4}">
+                        <a href="AdminDashboardServlet" class="nav-link" style="color: #4CAF50; font-weight: bold;">
+                            <i class="fas fa-arrow-left"></i> Trở về Dashboard Admin
+                        </a>
+                    </c:if>
                 </div>
             </div>
 
