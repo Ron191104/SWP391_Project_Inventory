@@ -79,6 +79,22 @@
                 color: white;
                 font-weight: 700;
             }
+
+            table th:first-child,
+            table td:first-child {
+                width: 7px;
+            }
+
+            table th:nth-child(2),
+            table td:nth-child(2) {
+                width: 30px;
+            }
+            table th:nth-child(3),
+            table td:nth-child(3) {
+                width: 30px;
+            }
+
+
         </style>
     </head>
     <body>
@@ -199,8 +215,9 @@
 
             <table>
                 <tr>
-                    <th>Product ID</th>
+                    <th>STT</th>
                     <th>Tên sản phẩm</th>
+                    <th>Barcode</th>
                     <th>Đơn vị</th>
                     <th>Số lượng</th>
                     <th>Giá nhập</th>
@@ -208,10 +225,11 @@
                 </tr>
 
                 <c:set var="totalAmount" value="0" />
-                <c:forEach items="${details}" var="d">
+                <c:forEach items="${details}" var="d" varStatus="status">
                     <tr>
-                        <td>${d.productId}</td>
+                        <td>${status.index + 1}</td>
                         <td>${d.productName}</td>
+                        <td>${d.barcode}</td>
                         <td>${d.unitName}</td>
                         <td>${d.quantity}</td>
                         <td><fmt:formatNumber value="${d.priceIn}" type="currency"/></td>
@@ -223,7 +241,7 @@
                 </c:forEach>
 
                 <tr>
-                    <td colspan="5" style=" font-weight:bold">Tổng cộng:</td>
+                    <td colspan="6" style=" font-weight:bold">Tổng cộng:</td>
                     <td style=" font-weight:bold"><fmt:formatNumber value="${totalAmount}" type="currency"/></td>
                 </tr>
 

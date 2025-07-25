@@ -131,24 +131,28 @@
             </div>
         </div>
         <div class="container">
-            <h2>Xác nhận nhập hàng vào cửa hàng</h2>
+            <h2>Kiểm kê hàng từ kho</h2>
             <form action="store_stock_in_receive" method="post">
                 <input type="hidden" name="storeStockInId" value="${storeStockIn.id}">
 
                 <table>
                     <tr>
+                        <th>STT</th>
                         <th>Tên sản phẩm</th>
+                        <th>Barcode</th>
                         <th>Đơn vị</th>
                         <th>Số lượng đặt</th>
                         <th>Số lượng nhập thực tế</th>
                     </tr>
-                    <c:forEach items="${details}" var="item">
+                    <c:forEach items="${details}" var="item" varStatus="status">
                         <tr>
+                            <td>${status.index + 1}</td>
                             <td>${item.productName}</td>
+                            <td>${item.barcode}</td>
                             <td>${item.unitName}</td>
                             <td>${item.quantity}</td>
                             <td>
-                                <input type="number" name="actualQuantity" min="0" value="${item.quantity}" placeholder="${item.quantity}">
+                                <input type="number" name="actualQuantity" min="0" required="">
                                 <input type="hidden" name="productId" value="${item.productId}">
                             </td>
                         </tr>
