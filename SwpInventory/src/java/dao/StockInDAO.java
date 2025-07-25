@@ -25,7 +25,7 @@ public class StockInDAO {
                                     "    UPDATE SET quantity = target.quantity + ? " +
                                     "WHEN NOT MATCHED THEN " +
                                     "    INSERT (product_id, quantity) VALUES (?, ?);";
-        String syncProductTableSQL = "UPDATE p SET p.quantity = inv.quantity FROM products p JOIN inventory inv ON p.product_id = inv.product_id WHERE p.product_id = ?;";
+        String updateProductQuantitySQL = "UPDATE products SET quantity = quantity + ? WHERE product_id = ?;";
 
         Connection con = null;
         boolean success = false;
@@ -70,9 +70,10 @@ public class StockInDAO {
                     psInventory.executeUpdate();
                 }
                 
-                try (PreparedStatement psSync = con.prepareStatement(syncProductTableSQL)) {
-                    psSync.setInt(1, productId);
-                    psSync.executeUpdate();
+                try (PreparedStatement psUpdateProduct = con.prepareStatement(updateProductQuantitySQL)) {
+                    psUpdateProduct.setInt(1, quantity);
+                    psUpdateProduct.setInt(2, productId);
+                    psUpdateProduct.executeUpdate();
                 }
             }
 

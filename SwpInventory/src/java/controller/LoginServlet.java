@@ -1,6 +1,7 @@
 package controller;
 
 import dao.UserDAO;
+import dao.SupplierDAO;
 import model.User;
 import dao.SystemLogDAO;
 import jakarta.servlet.*;
@@ -10,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,6 +42,15 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+//        if (user.getRole() == 3) { // Supplier
+//            SupplierDAO supplierDAO = new SupplierDAO();
+//            int supplierId = supplierDAO.getSupplierIdByUserId(user.getId()); // Hàm tự viết
+//            HttpSession session = request.getSession();
+//            session.setAttribute("supplierId", supplierId); // Lưu vào session
+//            response.sendRedirect("SupplierDashboardServlet"); // Điều hướng thẳng vào dashboard supplier
+//            return;
+//        }
+
         // Đã được duyệt, cho đăng nhập như bình thường
         HttpSession session = request.getSession();
         session.setAttribute("userName", user.getName());
@@ -51,7 +62,6 @@ public class LoginServlet extends HttpServlet {
         // Ghi LOG đăng nhập thành công
         SystemLogDAO logDao = new SystemLogDAO();
         logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");
-        
 
         // Điều hướng theo role (int)
         int role = user.getRole();

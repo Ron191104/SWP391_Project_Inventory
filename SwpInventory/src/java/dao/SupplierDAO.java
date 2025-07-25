@@ -8,19 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierDAO {
+
     public List<Supplier> getAllSuppliers() {
         List<Supplier> list = new ArrayList<>();
         String sql = "SELECT * FROM suppliers";
-        try (Connection conn = DBConnect.getConnection();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+        try (Connection conn = DBConnect.getConnection(); Statement st = conn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
                 Supplier s = new Supplier(
-                    rs.getInt("supplier_id"),
-                    rs.getString("supplier_name"),
-                    rs.getString("phone"),
-                    rs.getString("email"),
-                    rs.getString("address")
+                        rs.getInt("supplier_id"),
+                        rs.getString("supplier_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address")
                 );
                 list.add(s);
             }
@@ -32,8 +31,7 @@ public class SupplierDAO {
 
     public void addSupplier(String name, String phone, String email, String address) {
         String sql = "INSERT INTO suppliers (supplier_name, phone, email, address) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setString(2, phone);
             ps.setString(3, email);
@@ -46,8 +44,7 @@ public class SupplierDAO {
 
     public void updateSupplier(int id, String name, String phone, String email, String address) {
         String sql = "UPDATE suppliers SET supplier_name = ?, phone = ?, email = ?, address = ? WHERE supplier_id = ?";
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setString(2, phone);
             ps.setString(3, email);
@@ -61,8 +58,7 @@ public class SupplierDAO {
 
     public void deleteSupplier(int id) {
         String sql = "DELETE FROM suppliers WHERE supplier_id = ?";
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (Exception e) {
@@ -72,17 +68,16 @@ public class SupplierDAO {
 
     public Supplier getSupplierById(int id) {
         String sql = "SELECT * FROM suppliers WHERE supplier_id = ?";
-        try (Connection conn = DBConnect.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new Supplier(
-                    rs.getInt("supplier_id"),
-                    rs.getString("supplier_name"),
-                    rs.getString("phone"),
-                    rs.getString("email"),
-                    rs.getString("address")
+                        rs.getInt("supplier_id"),
+                        rs.getString("supplier_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address")
                 );
             }
         } catch (Exception e) {
@@ -91,4 +86,18 @@ public class SupplierDAO {
         return null;
     }
 
+    public int getSupplierIdByUserId(int userId) {
+        int supplierId = -1;
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(
+                "SELECT supplier_id FROM suppliers WHERE user_id = ?")) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                supplierId = rs.getInt("supplier_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return supplierId;
+    }
 }
