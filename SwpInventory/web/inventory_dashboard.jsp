@@ -212,7 +212,7 @@
                         </div>
                     </div>
                     <a href="stock_in"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                    <a href="stock_out_form"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="stock_out_list"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
 
                     <div class="dropdown">
