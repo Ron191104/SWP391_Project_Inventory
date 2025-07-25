@@ -243,6 +243,18 @@
             <a href="store-inventory-statistics?searchKeyword=${searchKeyword}&categoryId=${selectedCategoryId}&supplierId=${selectedSupplierId}&sortBy=${sortBy}&sortOrder=${sortOrder}&pageIndex=${totalPages}">Trang cuối</a>
         </c:if>
     </div>
+    <a href="AdminDashboardServlet" style="
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;">
+    ← Quay về trang chính
+</a>
 
 </body>
 </html>

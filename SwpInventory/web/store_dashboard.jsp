@@ -182,6 +182,11 @@
                     </div>                   
                     <a href="sales"><i class="fas fa-shopping-cart"></i> Bán hàng</a>
                     <a href="customer_list"><i class="fas fa-users"></i> Khách hàng</a>
+                     <c:if test="${sessionScope.userRole == 4}">
+            <a href="AdminDashboardServlet" class="nav-link" style="color: #4CAF50; font-weight: bold;">
+                <i class="fas fa-arrow-left"></i> Trở về Dashboard Admin
+            </a>
+        </c:if>
                     <c:if test="${not empty sessionScope.storeId}">
                         <c:forEach var="store" items="${listStore}">
                             <c:if test="${store.storeId == sessionScope.storeId}">
