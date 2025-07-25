@@ -16,6 +16,7 @@ public class StoreStockInDetail {
     private double priceIn;
     private String productName;
     private String unitName;
+    private String barcode;
 
     public StoreStockInDetail() {
     }
@@ -84,6 +85,14 @@ public class StoreStockInDetail {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 
 }

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.StoreDAO;
 import dao.StoreDashboardDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import model.Store;
 import model.StoreProduct;
 
 /**
@@ -94,7 +96,10 @@ public class StoreDashboardController extends HttpServlet {
             request.setAttribute("filter", filter);
             request.setAttribute("fromDate", fromDate);
             request.setAttribute("toDate", toDate);
+            StoreDAO sdao = new StoreDAO();
+            List<Store> list = sdao.getAllStore();
 
+            request.setAttribute("listStore", list);
             request.getRequestDispatcher("store_dashboard.jsp").forward(request, response);
 
         } catch (Exception e) {
