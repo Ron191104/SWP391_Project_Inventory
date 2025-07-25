@@ -13,6 +13,7 @@ public class StoreOrderDetails {
     private int quantity;
     private double price;
     private String unit;
+    private String barcode;
 
     public StoreOrderDetails() {
     }
@@ -55,4 +56,13 @@ public class StoreOrderDetails {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+    
 }
