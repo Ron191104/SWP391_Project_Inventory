@@ -226,9 +226,11 @@
                             <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
                         </div>
                     </div>
-                    <a href="${pageContext.request.contextPath}/AdminDashboardServlet">
-                        <i class="fas fa-arrow-left"></i> Trở về Dashboard Admin
-                    </a>
+                    <c:if test="${sessionScope.userRole == 4}">
+                        <a href="AdminDashboardServlet" class="nav-link" style="color: #4CAF50; font-weight: bold;">
+                            <i class="fas fa-arrow-left"></i> Trở về Dashboard Admin
+                        </a>
+                    </c:if>
                 </div>
             </div>
             <div class="header-right">
