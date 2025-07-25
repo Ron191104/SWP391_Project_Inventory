@@ -147,9 +147,11 @@
             <div class="header-left">
                 <h1> Nhà Cung Cấp</h1>
                 <div class="nav">
+                    <a href="${pageContext.request.contextPath}/supplier_dashboard">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
                     <a href="supplier_order">Đơn hàng</a>
                     <a href="supplier-dashboard?view=approved">Đã cung cấp</a>
-                    <a href="supplier_logout.jsp">Đăng xuất</a>
                 </div>
             </div>
         </div>

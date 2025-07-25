@@ -219,9 +219,11 @@
             <div class="header-left">
                 <h1>Nhà Cung Cấp</h1>
                 <div class="nav">
+                    <a href="${pageContext.request.contextPath}/supplier_dashboard">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
                     <a href="supplier_order"><i class="fas fa-box"></i> Đơn hàng</a>
                     <a href="supplier_return_requests"><i class="fas fa-undo-alt"></i> Yêu cầu hoàn hàng</a>
-                    <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                 </div>
             </div>
             <div class="header-right">

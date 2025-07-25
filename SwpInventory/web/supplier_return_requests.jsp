@@ -219,9 +219,11 @@
             <div class="header-left">
                 <h1>Nhà Cung Cấp</h1>
                 <div class="nav">
+                    <a href="${pageContext.request.contextPath}/supplier_dashboard">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
                     <a href="supplier_order"><i class="fas fa-box"></i> Đơn hàng</a>
                     <a href="supplier_return_requests"><i class="fas fa-undo-alt"></i> Yêu cầu hoàn hàng</a>
-                    <a href="supplier_logout.jsp"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                 </div>
             </div>
             <div class="header-right">
@@ -275,6 +277,7 @@
                     <option value="0" ${param.status == '0' ? 'selected' : ''}>Đang chờ duyệt</option>
                     <option value="1" ${param.status == '1' ? 'selected' : ''}>Đã duyệt</option>
                     <option value="2" ${param.status == '2' ? 'selected' : ''}>Từ chối</option>
+                    <option value="3" ${param.status == '3' ? 'selected' : ''}>Đã hủy</option>
                 </select>
             </form>
 
@@ -299,12 +302,14 @@
                                     <c:choose>
                                         <c:when test="${r.status == 0}">⏳ Chờ duyệt</c:when>
                                         <c:when test="${r.status == 1}">✔ Đã duyệt</c:when>
-                                        <c:otherwise>✖ Từ chối</c:otherwise>
+                                        <c:when test="${r.status == 2}">✖ Từ chối</c:when>
+                                        <c:when test="${r.status == 3}">🗑 Đã hủy</c:when>
                                     </c:choose>
+
                                 </span>
                             </td>
                             <td>
-                                <a class="btn-detail" href="return_request_details?returnId=${r.id}">
+                                <a class="btn-detail"href="supplier_return_details?returnId=${r.id}">
                                     <i class="fas fa-eye"></i> Xem chi tiết
                                 </a>
                             </td>

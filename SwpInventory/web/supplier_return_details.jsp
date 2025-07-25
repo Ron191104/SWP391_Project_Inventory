@@ -101,9 +101,11 @@
         <div class="header">
             <h1>Nhà Cung Cấp</h1>
             <div class="nav">
+                <a href="${pageContext.request.contextPath}/supplier_dashboard">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
                 <a href="supplier_order">Đơn hàng</a>
                 <a href="supplier_return_requests">Hoàn trả</a>
-                <a href="supplier_logout.jsp">Đăng xuất</a>
             </div>
         </div>
 
@@ -116,7 +118,6 @@
             <h2>Chi tiết yêu cầu hoàn trả #${returnInfo.id}</h2>
 
             <p><b>Ngày tạo:</b> ${returnInfo.createdDate}</p>
-            <p><b>Nhân viên gửi:</b> ${returnInfo.employeeName}</p>
             <p><b>Lý do:</b> ${returnInfo.reason}</p>
             <p><b>Ghi chú:</b> ${returnInfo.note}</p>
             <p><b>Trạng thái:</b>

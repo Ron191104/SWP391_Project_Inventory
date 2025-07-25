@@ -165,22 +165,17 @@
             <h2>Chi tiết yêu cầu hoàn trả #${returnRequest.id}</h2>
 
             <p><strong>Ngày tạo:</strong> ${returnRequest.createdDate}</p>
-            <p><strong>Nhân viên gửi:</strong> ${returnRequest.employeeName}</p>
             <p><strong>Lý do:</strong> ${returnRequest.reason}</p>
             <p><strong>Ghi chú:</strong> ${returnRequest.note}</p>
-            <p><strong>Trạng thái:</strong>
+            <p><b>Trạng thái:</b>
                 <c:choose>
-                    <c:when test="${returnRequest.status == 1}">
-                        ✔ Đã duyệt
-                    </c:when>
-                    <c:when test="${returnRequest.status == 2}">
-                        ✘ Đã bị từ chối
-                    </c:when>
-                    <c:otherwise>
-                        ⏳ Đang chờ duyệt
-                    </c:otherwise>
+                    <c:when test="${r.status == 0}">⏳ Chờ duyệt</c:when>
+                    <c:when test="${r.status == 1}">✔ Đã duyệt</c:when>
+                    <c:when test="${r.status == 2}">✖ Từ chối</c:when>
+                    <c:when test="${r.status == 3}">🗑 Đã hủy</c:when>
                 </c:choose>
             </p>
+
 
             <c:choose>
                 <c:when test="${returnRequest.status == 1}">
@@ -188,6 +183,9 @@
                 </c:when>
                 <c:when test="${returnRequest.status == 2}">
                     <p style="color: red; font-weight: bold;">✘ Yêu cầu hoàn trả đã bị từ chối.</p>
+                </c:when>
+                    <c:when test="${returnRequest.status == 3}">
+                    <p style="color: red; font-weight: bold;">🗑 Đơn hàng đã bị hủy.</p>
                 </c:when>
                 <c:otherwise>
                     <p style="color: orange; font-weight: bold;">⏳ Yêu cầu đang chờ duyệt.</p>

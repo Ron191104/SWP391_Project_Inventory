@@ -244,7 +244,6 @@
         <div class="header">
             <div class="header-left"><h1>Tên kho</h1></div>
             <div class="nav">
-                <a href="${pageContext.request.contextPath}/dashboard.jsp"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <div class="dropdown">
                     <input type="checkbox" id="product-dropdown-stockin" />
                     <label for="product-dropdown-stockin" class="dropdown-label"><i class="fas fa-box"></i> Sản phẩm</label>
