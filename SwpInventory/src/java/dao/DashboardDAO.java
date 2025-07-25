@@ -5,7 +5,7 @@ import dal.DBConnect;
 
 public class DashboardDAO {
     public int getCustomerCount() {
-        String sql = "SELECT COUNT(*) FROM Customer";
+        String sql = "SELECT COUNT(*) FROM Customers";
         try (Connection conn = DBConnect.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -25,7 +25,7 @@ public class DashboardDAO {
     }
 
     public int getPurchaseInvoiceCount() {
-        String sql = "SELECT COUNT(*) FROM PurchaseInvoice";
+        String sql = "SELECT COUNT(*) FROM stock_in_details";
         try (Connection conn = DBConnect.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -35,7 +35,7 @@ public class DashboardDAO {
     }
 
     public int getSalesInvoiceCount() {
-        String sql = "SELECT COUNT(*) FROM SalesInvoice";
+        String sql = "SELECT COUNT(*) FROM sales_details";
         try (Connection conn = DBConnect.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
