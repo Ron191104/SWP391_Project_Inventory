@@ -218,7 +218,7 @@
     </div>
     <div class="container">
         <div class="info-container">
-            <img src="assets/image/ngu.jpg" alt="Warehouse Image" />
+           
             <h2>Thông tin kho</h2>
             <p>Kho của chúng tôi được trang bị đầy đủ các thiết bị hiện đại, giúp quản lý hàng hóa một cách hiệu quả và an toàn. Chúng tôi cung cấp dịch vụ lưu trữ và quản lý hàng hóa cho các doanh nghiệp với nhiều loại hình dịch vụ khác nhau.</p>
             <p>Địa chỉ: 123 Đường ABC, Thành phố XYZ</p>
