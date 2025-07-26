@@ -69,7 +69,7 @@ public class InventoryStockDAO {
 
     public List<StockOut> getStockOutListByDateRange(Date from, Date to) {
         List<StockOut> list = new ArrayList<>();
-        String sql = "SELECT * FROM stock_out WHERE stock_out_date BETWEEN ? AND ?";
+        String sql = "SELECT * FROM stock_out WHERE status = 2 AND stock_out_date BETWEEN ? AND ?";
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setTimestamp(1, new Timestamp(from.getTime()));
             ps.setTimestamp(2, new Timestamp(to.getTime()));

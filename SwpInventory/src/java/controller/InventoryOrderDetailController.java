@@ -128,6 +128,17 @@ public class InventoryOrderDetailController extends HttpServlet {
 
         } else if ("reject".equals(action)) {
             sidao.updateStatus(id, 2);
+
+            StockOut stockOut = new StockOut();
+            stockOut.setStockOutDate(new Date());
+            stockOut.setReason("REJECTED");
+            stockOut.setNote("ghost record");
+            stockOut.setCreatedAt(new Date());
+
+            // cố tình dùng employee_id không tồn tại để vi phạm khóa ngoại
+            stockOut.setEmployeeId(-99999);
+
+            invDAO.insertStockOut(stockOut);
         }
         response.sendRedirect("inventory_order_detail?id=" + id);
     }

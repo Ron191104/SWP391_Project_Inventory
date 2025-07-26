@@ -172,9 +172,6 @@
                     <label>Description</label>
                     <input type="text" name="description" value="${detail.product.description}" required>
 
-                    <label>Current Image</label><br>
-                    <img src="${pageContext.request.contextPath}/${detail.product.image}" width="120" height="120"><br><br>
-
                     <label>Upload New Image</label>
                     <input type="file" name="image" accept="image/*">
 

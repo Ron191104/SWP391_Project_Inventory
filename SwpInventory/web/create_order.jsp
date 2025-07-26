@@ -349,8 +349,8 @@
             <div class="header-left">
                 <h1>Tên kho</h1>
                 <div class="nav">
-                    <a href="dashboard.html">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
+                        <i class="fas fa-warehouse"></i> Kho Hàng
                     </a>
                     <div class="dropdown">
                         <input type="checkbox" id="product-dropdown" />
@@ -366,11 +366,8 @@
 
                         </div>
                     </div>
-                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
-                        <i class="fas fa-warehouse"></i> Kho Hàng
-                    </a>
-                    <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                    <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
+                    <a href="stock_in"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                    <a href="stock_out_list"><i class="fas fa-truck"></i> Xuất kho</a>
                     <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
 
                     <div class="dropdown">
@@ -384,7 +381,11 @@
                             <a href="store_category_list"><i class="fas fa-list"></i> Danh sách phân loại</a>
                         </div>
                     </div>
-
+                    <c:if test="${sessionScope.userRole == 4}">
+                        <a href="AdminDashboardServlet" class="nav-link" style="color: #4CAF50; font-weight: bold;">
+                            <i class="fas fa-arrow-left"></i> Trở về Dashboard Admin
+                        </a>
+                    </c:if>
                 </div>
             </div>
             <div class="header-right">
@@ -402,13 +403,21 @@
                 </div>
                 <div class="user-menu">
                     <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="user-menu-dropdown" aria-label="Menu người dùng">
-                        <img src="https://i.pravatar.cc/40" alt="Avatar người dùng" class="user-avatar" />
+                    <label for="user-menu-toggle">
+                        <img src="<%= request.getContextPath() + "/" +
+                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty()
+                                ? session.getAttribute("userImage")
+                                : "images/default-avatar.png") %>"
+                             alt="Avatar người dùng"
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
                     </label>
-                    <nav class="dropdown-menu" id="user-menu-dropdown">
-                        <a href="myprofile.html">My Profile</a>
-                        <a href="change_password.html">Change Password</a>
-                        <a href="login.html">Log Out</a>
+                    <nav class="dropdown-menu">
+                        <span style="padding:12px 16px; color:#0080C0; font-weight:bold;">
+                            <%= session.getAttribute("userName") %>
+                        </span>
+                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
+                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
+                        <a href="login.jsp"><i class=""></i> Login</a>
                     </nav>
                 </div>
             </div>
