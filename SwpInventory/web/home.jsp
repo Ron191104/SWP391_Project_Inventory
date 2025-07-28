@@ -18,7 +18,7 @@
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: white;
             color: #333;
         }
         a {
@@ -182,28 +182,8 @@
 <body>
     <div class="header">
         <div class="header-left">
-            <h1>Tên kho</h1>
-            <div class="nav">
-                <a href="dashboard.html">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                </a>
-                <div class="dropdown">
-                    <input type="checkbox" id="product-dropdown" />
-                    <label for="product-dropdown" class="dropdown-label">
-                        <i class="fas fa-box"></i> Sản phẩm
-                    </label>
-                    <div class="dropdown-menu">
-                        <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
-                        <a href="add_product.html"><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                    </div>
-                </div>
-                <a href="${pageContext.request.contextPath}/inventory_dashboard">
-                    <i class="fas fa-warehouse"></i> Kho Hàng
-                </a>
-                <a href="import_goods.html"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                <a href="export_goods.html"><i class="fas fa-truck"></i> Xuất kho</a>
-                <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
-            </div>
+            <h1>Inventory Management System</h1>
+            
         </div>
         <div class="header-right">
             <div class="login-register">

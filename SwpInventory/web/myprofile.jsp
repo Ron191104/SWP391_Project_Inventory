@@ -117,7 +117,7 @@
                 <input type="text" name="isApproved" value="${user.isApproved == 1 ? 'Đã duyệt' : 'Chưa duyệt'}" readonly />
 
                 <button type="submit">Cập nhật</button>
-                <a href="javascript:history.back()" style="display: inline-block; margin-top: 10px; color: #555; text-decoration: none;">
+                <a href="AdminDashboardServlet" style="display: inline-block; margin-top: 10px; color: #555; text-decoration: none;">
                     ← Quay lại
                 </a>
             </form>

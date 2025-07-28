@@ -428,5 +428,22 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+    
+    // check phone Exists
+public boolean checkPhoneExists(String phone) throws SQLException, ClassNotFoundException {
+    String sql = "SELECT COUNT(*) FROM users WHERE phone = ?";
+    try (Connection conn = DBConnect.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, phone);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
+}
+
 
 }
