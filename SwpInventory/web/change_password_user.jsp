@@ -68,22 +68,8 @@
 </head>
 <body>
 
-    <div class="topbar">
-        <div class="role">
-            Vai trò: 
-            <c:choose>
-                <c:when test="${sessionScope.userRole == '1'}">Quản lý kho</c:when>
-                <c:when test="${sessionScope.userRole == '2'}">Quản lý cửa hàng</c:when>
-                <c:when test="${sessionScope.userRole == '3'}">Nhà cung cấp</c:when>
-                <c:when test="${sessionScope.userRole == '4'}">Admin</c:when>
-                <c:otherwise>Không xác định</c:otherwise>
-            </c:choose>
-        </div>
-        <div class="links">
-            <a href="login.jsp">← Đăng nhập lại</a>
-            <a href="AdminDashboardServlet">← Quay lại</a>
-        </div>
-    </div>
+    <%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
 
     <div class="form-container">
         <h2>Đổi mật khẩu</h2>
