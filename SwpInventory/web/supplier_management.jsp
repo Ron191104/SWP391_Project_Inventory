@@ -24,9 +24,40 @@
         a.back-link { display: inline-block; margin-top: 20px; color: #0288d1; text-decoration: none; font-weight: 600; font-size: 14px; }
         a.back-link:hover { text-decoration: underline; }
         @media (max-width: 768px) { .main-form { flex-direction: column; } .main-form input, .main-form button { flex: 1 1 100%; } }
+
+        .edit-dropdown { position: relative; display: inline-block; }
+        .edit-form-content {
+            display: none;
+            position: absolute;
+            z-index: 999;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 12px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-width: 280px;
+            top: 30px;
+            right: 0;
+        }
+        .edit-dropdown.active .edit-form-content {
+            display: block;
+        }
+        .edit-form-content input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .edit-form-content button {
+            width: 100%;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
+     <%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
 <div class="container">
     <h2>Quản lý nhà cung cấp</h2>
 
@@ -40,9 +71,6 @@
         <button type="submit">Thêm</button>
     </form>
 
-    <!-- Bảng dữ liệu -->
-    <c:set var="editingId" value="${param.editId}" />
-
     <table>
         <tr>
             <th>ID</th>
@@ -55,51 +83,55 @@
 
         <c:forEach var="s" items="${suppliers}">
             <tr>
-                <c:choose>
-                    <c:when test="${editingId == s.supplierId}">
-                        <!-- Form sửa (chỉ hiển thị nếu đúng editId) -->
-                        <form method="post" action="suppliers">
-                            <td>${s.supplierId}
-                                <input type="hidden" name="action" value="update"/>
-                                <input type="hidden" name="supplier_id" value="${s.supplierId}"/>
-                            </td>
-                            <td><input type="text" name="supplier_name" value="${s.supplierName}" required/></td>
-                            <td><input type="text" name="phone" value="${s.phone}"/></td>
-                            <td><input type="text" name="email" value="${s.email}"/></td>
-                            <td><input type="text" name="address" value="${s.address}"/></td>
-                            <td>
+                <td>${s.supplierId}</td>
+                <td>${s.supplierName}</td>
+                <td>${s.phone}</td>
+                <td>${s.email}</td>
+                <td>${s.address}</td>
+                <td>
+                    <div class="edit-dropdown" id="dropdown-${s.supplierId}">
+                        <button type="button" onclick="toggleDropdown('${s.supplierId}')">Sửa</button>
+                        <div class="edit-form-content">
+                            <form method="post" action="suppliers">
+                                <input type="hidden" name="action" value="update" />
+                                <input type="hidden" name="supplier_id" value="${s.supplierId}" />
+                                <input type="text" name="supplier_name" value="${s.supplierName}" placeholder="Tên" required />
+                                <input type="text" name="phone" value="${s.phone}" placeholder="Điện thoại" />
+                                <input type="text" name="email" value="${s.email}" placeholder="Email" />
+                                <input type="text" name="address" value="${s.address}" placeholder="Địa chỉ" />
                                 <button type="submit">Lưu</button>
-                                <a href="suppliers" style="margin-left:5px;">Hủy</a>
-                            </td>
-                        </form>
-                    </c:when>
-                    <c:otherwise>
-                        <!-- Hiển thị bình thường -->
-                        <td>${s.supplierId}</td>
-                        <td>${s.supplierName}</td>
-                        <td>${s.phone}</td>
-                        <td>${s.email}</td>
-                        <td>${s.address}</td>
-                        <td>
-                            <!-- Nút Sửa (gửi tham số editId lên URL) -->
-                            <form method="get" action="suppliers" style="display:inline;">
-                                <input type="hidden" name="editId" value="${s.supplierId}"/>
-                                <button type="submit">Sửa</button>
+                                <button type="button" onclick="toggleDropdown('${s.supplierId}')">Đóng</button>
                             </form>
-                            <!-- Nút Xóa -->
-                            <form method="post" action="suppliers" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');" style="display:inline;">
-                                <input type="hidden" name="action" value="delete"/>
-                                <input type="hidden" name="supplier_id" value="${s.supplierId}"/>
-                                <button type="submit">Xóa</button>
-                            </form>
-                        </td>
-                    </c:otherwise>
-                </c:choose>
+                        </div>
+                    </div>
+
+                    <form method="post" action="suppliers" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');" style="display:inline;">
+                        <input type="hidden" name="action" value="delete"/>
+                        <input type="hidden" name="supplier_id" value="${s.supplierId}"/>
+                        <button type="submit">Xóa</button>
+                    </form>
+                </td>
             </tr>
         </c:forEach>
     </table>
 
     <a class="back-link" href="user-management">&larr; Quay lại danh sách</a>
 </div>
+
+<script>
+    function toggleDropdown(id) {
+        const dropdown = document.getElementById('dropdown-' + id);
+        dropdown.classList.toggle('active');
+    }
+
+    document.addEventListener('click', function (e) {
+        document.querySelectorAll('.edit-dropdown').forEach(el => {
+            if (!el.contains(e.target)) {
+                el.classList.remove('active');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

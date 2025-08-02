@@ -64,7 +64,8 @@
     </style>
 </head>
 <body>
-
+<%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
 <h2>Báo cáo tài chính</h2>
 
 <!-- Bộ lọc thời gian -->

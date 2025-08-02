@@ -129,7 +129,8 @@
     </script>
 </head>
 <body>
-
+<%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
     <h1>Thống kê tồn kho toàn hệ thống</h1>
 
     <div class="controls">

@@ -22,10 +22,8 @@
     </style>
 </head>
 <body>
-    <div class="menu">
-        <a href="admin-approve">Duyệt tài khoản</a>
-        <a href="admin_dashboard.jsp">Trang chủ</a>
-    </div>
+        <%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
     <h2 style="text-align:center;">Danh sách tài khoản chờ duyệt</h2>
 
     <%-- Form sửa user nếu có --%>
