@@ -35,7 +35,7 @@ public class SetStoreController extends HttpServlet {
         int storeId = Integer.parseInt(request.getParameter("storeId"));
         HttpSession session = request.getSession();
         session.setAttribute("storeId", storeId);
-        response.sendRedirect("store_product_list");
+        response.sendRedirect("store_dashboard");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
