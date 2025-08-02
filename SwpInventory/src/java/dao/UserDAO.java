@@ -444,6 +444,36 @@ public boolean checkPhoneExists(String phone) throws SQLException, ClassNotFound
     }
     return false;
 }
-
-
+// check trùng sđt
+public boolean isPhoneDuplicate(String phone, String currentUsername) {
+    String sql = "SELECT COUNT(*) FROM users WHERE phone = ? AND username <> ?";
+    try (Connection con = DBConnect.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, phone);
+        ps.setString(2, currentUsername);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+// check trùng email
+public boolean isEmailDuplicate(String email, String currentUsername) {
+    String sql = "SELECT COUNT(*) FROM users WHERE email = ? AND username <> ?";
+    try (Connection con = DBConnect.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, email);
+        ps.setString(2, currentUsername);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 }
