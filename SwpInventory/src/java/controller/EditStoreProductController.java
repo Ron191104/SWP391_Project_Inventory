@@ -96,6 +96,21 @@ public class EditStoreProductController extends HttpServlet {
             String description = request.getParameter("description");
             String oldImage = request.getParameter("oldImage");
 
+            // Kiểm tra name có rỗng hoặc chỉ toàn khoảng trắng không
+            if (name == null || name.trim().isEmpty()) {
+                StoreProductDAO dao = new StoreProductDAO();
+                CategoryDAO categoryDAO = new CategoryDAO();
+
+                StoreProduct detail = dao.getStoreProductById(storeId, storeProductId);
+                List<Categories> listStoreCategory = categoryDAO.getAllCategories();
+
+                request.setAttribute("error", "Tên sản phẩm không được để trống");
+                request.setAttribute("detail", detail);
+                request.setAttribute("listStoreCategory", listStoreCategory);
+                request.getRequestDispatcher("edit_store_product.jsp").forward(request, response);
+                return;
+            }
+
             Part imagePart = request.getPart("image");
             String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
 
@@ -109,7 +124,6 @@ public class EditStoreProductController extends HttpServlet {
                     uploadDir.mkdirs();
                 }
                 imagePart.write(uploadPath + File.separator + imageFileName);
-
                 imagePath = imageFileName;
             }
 

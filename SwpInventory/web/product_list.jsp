@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html lang="vi">
     <head>
@@ -479,7 +480,7 @@
                             <td style="width: 30px">${o.barcode}</td>
                             <td>${o.category_id}</td>
                             <td>${o.unit}</td>
-                            <td>${o.price}</td>
+                            <td><fmt:formatNumber value="${o.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             <td>${o.quantity}</td>
                             <td>${o.manufacture_date}</td>
                             <td>${o.expired_date}</td>

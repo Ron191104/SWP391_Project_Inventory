@@ -159,6 +159,47 @@ public class OrderDAO {
         return list;
     }
 
+    public OrderDisplay getOrderDisplayByID(int orderId) {
+        OrderDisplay od = null;
+
+        String sql = """
+        SELECT 
+            o.order_id,
+            o.order_date,
+            o.note,
+            o.status,
+            s.supplier_name,
+            COUNT(od.product_id) AS product_count
+        FROM orders o
+        JOIN order_details od ON o.order_id = od.order_id
+        JOIN suppliers s ON o.supplier_id = s.supplier_id
+        WHERE o.order_id = ?
+        GROUP BY o.order_id, o.order_date, o.note, o.status, s.supplier_name
+    """;
+
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, orderId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    od = new OrderDisplay();
+                    od.setOrderId(rs.getInt("order_id"));
+                    od.setOrderDate(rs.getDate("order_date"));
+                    od.setNote(rs.getString("note"));
+                    od.setStatus(rs.getInt("status"));
+                    od.setSupplierName(rs.getString("supplier_name"));
+                    od.setProductCount(rs.getInt("product_count"));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return od;
+    }
+
     public List<OrderDisplay> getOrderDisplayList() {
         List<OrderDisplay> list = new ArrayList<>();
 
@@ -288,45 +329,16 @@ public class OrderDAO {
         return list;
     }
 
-    public void deleteOrder(int orderId) {
-        String deleteOrderDetailsSql = "DELETE FROM order_details WHERE order_id = ?";
-        String deleteOrderSql = "DELETE FROM orders WHERE order_id = ?";
+    public void cancelOrder(int orderId) {
+        String sql = "UPDATE orders SET status = 4 WHERE order_id = ?";
 
-        Connection conn = null;
-        try {
-            conn = DBConnect.getConnection();
-            conn.setAutoCommit(false);
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            try (PreparedStatement psDetails = conn.prepareStatement(deleteOrderDetailsSql); PreparedStatement psOrder = conn.prepareStatement(deleteOrderSql)) {
+            ps.setInt(1, orderId);
+            ps.executeUpdate();
 
-                psDetails.setInt(1, orderId);
-                psDetails.executeUpdate();
-
-                psOrder.setInt(1, orderId);
-                psOrder.executeUpdate();
-
-                conn.commit();
-            }
         } catch (Exception e) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
             e.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.setAutoCommit(true);
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
         }
     }
 

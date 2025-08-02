@@ -460,7 +460,7 @@
 
                         <div style="text-align: left;">
                             <label for="quantity" style="display: block; margin-bottom: 4px;">Số lượng:</label>
-                            <input type="number" name="quantity" min="1" value="1"
+                            <input type="number" name="quantity" min="1" max="100" value="1"
                                    style="font-size:16px; padding:8px; width:250px;" placeholder="Nhập số lượng" required>
                         </div>
                     </div>

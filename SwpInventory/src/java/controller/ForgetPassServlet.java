@@ -76,16 +76,13 @@ public class ForgetPassServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UserDAO userDao = new UserDAO();
-        //get email 
         String email = request.getParameter("email");
-        //check if email exist, if do generate otp and send otp to the given email
         if (userDao.checkEmailExist(email)) {
             EmailSender es = new EmailSender();
             String otp = es.getRandom();
             try {
                 //send email
                 es.sendEmail(email, otp);
-                //put in session and send to otp.jsp
                 HttpSession session = request.getSession();
                 session.setAttribute("otp", otp);
                 session.setAttribute("email", email);

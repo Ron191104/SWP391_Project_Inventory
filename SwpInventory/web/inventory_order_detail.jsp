@@ -197,6 +197,7 @@
         <h2>Chi tiết đơn hàng #${stockIn.id}</h2>
 
         <p><b>Ngày tạo:</b> <fmt:formatDate value="${stockIn.importDate}" pattern="dd-MM-yyyy HH:mm:ss"/></p>
+        <p><b>Chi nhánh:</b> ${storeNameMap[stockIn.storeId]}</p>
         <p><b>Ghi chú:</b> ${stockIn.note}</p>
         <p><b>Trạng thái:</b>
             <c:choose>

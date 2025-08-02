@@ -450,9 +450,14 @@
                          position: relative;
                          padding-bottom: 40px;">
                         <h3 style="color: #0b5ed7;">Mã đơn #${so.stockOutId}</h3>
+                        <p><strong>Xuất tới:</strong> ${storeNameMap[so.storeId]} </p>
                         <p><strong>Ngày tạo:</strong> <fmt:formatDate value="${so.createdAt}" pattern="dd/MM/yyyy HH:mm:ss"/></p>
 
-                        <p><strong>Ngày xuất kho:</strong> <fmt:formatDate value="${so.stockOutDate}" pattern="dd/MM/yyyy HH:mm:ss"/></p>
+                        <c:if test="${so.stockOutDate != null}">
+                            <p><strong>Ngày xuất kho:</strong> 
+                                <fmt:formatDate value="${so.stockOutDate}" pattern="dd/MM/yyyy HH:mm:ss"/>
+                            </p>
+                        </c:if>
                         <c:if test="${not empty od.note}">
                             <p><strong>Ghi chú:</strong> ${so.note}</p>
                         </c:if>
@@ -486,6 +491,19 @@
                                         ➤ Tạo phiếu xuất kho
                                     </button>
                                 </form>
+                            </c:when>
+                            <c:when test="${so.status == 2}">
+                                <span style="
+                                      bottom: 10px;
+                                      right: 10px;
+                                      background: #cccccc;
+                                      color: #666666;
+                                      padding: 6px 12px;
+                                      border-radius: 4px;
+                                      font-size: 12px;
+                                      cursor: not-allowed;">
+                                    Đã xuất kho
+                                </span>
                             </c:when>
                             <c:otherwise>
                                 <span style="

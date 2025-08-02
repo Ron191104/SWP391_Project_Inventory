@@ -169,6 +169,7 @@ public class InventoryStockDAO {
                 s.setReason(rs.getString("reason"));
                 s.setNote(rs.getString("note"));
                 s.setCreatedAt(rs.getTimestamp("created_at"));
+                s.setStoreId(rs.getInt("store_id"));
                 return s;
             }
         } catch (Exception e) {
@@ -211,16 +212,16 @@ public class InventoryStockDAO {
     }
 
     public int insertStockOut(StockOut stockOut) {
-        String sql = "INSERT INTO stock_out (employee_id, stock_out_date, reason, note, created_at) "
-                + "VALUES (?, ?, ?, ?, GETDATE())";
+        String sql = "INSERT INTO stock_out (employee_id, reason, note, created_at, store_id) "
+                + "VALUES (?, ?, ?, GETDATE(), ?)";
         String[] returnId = {"stock_out_id"};
 
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, returnId)) {
 
             ps.setInt(1, stockOut.getEmployeeId());
-            ps.setTimestamp(2, new java.sql.Timestamp(stockOut.getStockOutDate().getTime()));
-            ps.setString(3, stockOut.getReason());
-            ps.setString(4, stockOut.getNote());
+            ps.setString(2, stockOut.getReason());
+            ps.setString(3, stockOut.getNote());
+            ps.setInt(4, stockOut.getStoreId());
 
             ps.executeUpdate();
 
@@ -268,6 +269,7 @@ public class InventoryStockDAO {
                 so.setNote(rs.getString("note"));
                 so.setCreatedAt(rs.getTimestamp("created_at"));
                 so.setStatus(rs.getInt("status"));
+                so.setStoreId(rs.getInt("store_id"));
                 list.add(so);
             }
         } catch (Exception e) {
@@ -367,6 +369,18 @@ public class InventoryStockDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean updateStockOutDate(int stockOutId) {
+        String sql = "UPDATE stock_out SET stock_out_date = GETDATE() WHERE stock_out_id = ?";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, stockOutId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

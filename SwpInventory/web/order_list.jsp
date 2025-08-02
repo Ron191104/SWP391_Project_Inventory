@@ -472,13 +472,13 @@
                                     <span style="color: green;">Đã giao hàng</span>
                                 </c:when>
                                 <c:otherwise>
-                                    <span style="color: black;">Không rõ</span>
+                                    <span style="color:#d9534f;">Đã hủy</span>
                                 </c:otherwise>
                             </c:choose>
                         </p>
                         <c:choose>
                             <c:when test="${od.status == 0}">
-                                <a href="delete_order?id=${od.orderId}"
+                                <a href="cancel_order?id=${od.orderId}"
                                    onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')"
                                    style="
                                    position: absolute;
@@ -492,6 +492,20 @@
                                    text-decoration: none;">
                                     Hủy đơn hàng
                                 </a>
+                            </c:when>
+                            <c:when test="${od.status == 4}">
+                                <span style="
+                                      position: absolute;
+                                      bottom: 10px;
+                                      right: 10px;
+                                      background: #cccccc;
+                                      color: #666666;
+                                      padding: 6px 12px;
+                                      border-radius: 4px;
+                                      font-size: 12px;
+                                      cursor: not-allowed;">
+                                    Đã hủy
+                                </span>
                             </c:when>
                             <c:otherwise>
                                 <span style="

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.DBConnect;
 import dao.InventoryStockDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,7 +13,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.StockOut;
 
 /**
@@ -74,7 +80,16 @@ public class StockOutListController extends HttpServlet {
         } else {
             list = invDAO.getAllStockOut();
         }
-
+        Map<Integer, String> storeNameMap = new HashMap<>();
+        String sql = "SELECT store_id, store_name FROM stores";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                storeNameMap.put(rs.getInt("store_id"), rs.getString("store_name"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        request.setAttribute("storeNameMap", storeNameMap);
         request.setAttribute("stockOutList", list);
         request.getRequestDispatcher("stock_out_list.jsp").forward(request, response);
     }

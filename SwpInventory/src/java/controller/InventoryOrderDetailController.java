@@ -4,6 +4,8 @@
  */
 package controller;
 
+import java.sql.*;
+import dal.DBConnect;
 import dao.InventoryStockDAO;
 import dao.ProductDAO;
 import dao.StoreDAO;
@@ -17,7 +19,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import model.Product;
 import model.StockOut;
 import model.StockOutDetail;
@@ -54,6 +59,16 @@ public class InventoryOrderDetailController extends HttpServlet {
         for (StoreStockInDetail d : details) {
             totalAmount += d.getQuantity() * d.getPriceIn();
         }
+        Map<Integer, String> storeNameMap = new HashMap<>();
+        String sql = "SELECT store_id, store_name FROM stores";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                storeNameMap.put(rs.getInt("store_id"), rs.getString("store_name"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        request.setAttribute("storeNameMap", storeNameMap);
 
         request.setAttribute("totalAmount", totalAmount);
         request.setAttribute("stockIn", stockIn);
@@ -106,10 +121,11 @@ public class InventoryOrderDetailController extends HttpServlet {
         if ("approve".equals(action)) {
             sidao.updateStatus(id, 1);
             StockOut stockOut = new StockOut();
-            stockOut.setStockOutDate(new Date());
             stockOut.setReason("Xuất hàng cho cửa hàng");
             stockOut.setNote(stockIn.getNote());
             stockOut.setCreatedAt(new Date());
+            stockOut.setStoreId(stockIn.getStoreId());
+
             stockOut.setEmployeeId(employeeId); // ✅ Gán employeeId
 
             int stockOutId = invDAO.insertStockOut(stockOut);
