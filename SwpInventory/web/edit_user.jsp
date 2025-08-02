@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%
-    model.User user = (model.User) request.getAttribute("user");
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,10 +78,28 @@
         a:hover {
             text-decoration: underline;
         }
+
+        .error {
+            color: red;
+            background: #ffeaea;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
     </style>
 </head>
+
 <body>
+       <%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
     <h2>Sửa thông tin người dùng</h2>
+
+    <c:if test="${not empty errorMsg}">
+        <div class="error">${errorMsg}</div>
+    </c:if>
+
     <form action="edit-user" method="post">
         <input type="hidden" name="username" value="${user.username}" />
 
@@ -96,19 +112,19 @@
         </label>
 
         <label>Điện thoại:
-            <input type="text" name="phone" value="${user.phone}" />
+            <input type="text" name="phone" value="${user.phone}" required />
         </label>
 
         <label>Địa chỉ:
-            <input type="text" name="address" value="${user.address}" />
+            <input type="text" name="address" value="${user.address}" required />
         </label>
 
         <label>Quyền:
-            <select name="role">
-                <option value="1" ${user.role == 1 ? 'selected' : ''}>Quản Lý Kho</option>
-                <option value="2" ${user.role == 2 ? 'selected' : ''}>Quản Lý Cửa Hàng</option>
-                <option value="3" ${user.role == 3 ? 'selected' : ''}>Nhà Cung Cấp</option>
-                <option value="4" ${user.role == 4 ? 'selected' : ''}>Admin</option>
+            <select name="role" required>
+                <option value="1" <c:if test="${user.role == 1}">selected</c:if>>Quản Lý Kho</option>
+                <option value="2" <c:if test="${user.role == 2}">selected</c:if>>Quản Lý Cửa Hàng</option>
+                <option value="3" <c:if test="${user.role == 3}">selected</c:if>>Nhà Cung Cấp</option>
+               
             </select>
         </label>
 

@@ -190,31 +190,31 @@ public class UserDAO {
             return false;
         }
     }
-
-    public User getUserByUsername(String username) {
-        User user = null;
-        String sql = "SELECT * FROM users WHERE username = ?";
-        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User(
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getInt("role"),
-                        rs.getString("image"),
-                        rs.getInt("is_approved")
-                );
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+public User getUserByUsername(String username) {
+    User user = null;
+    String sql = "SELECT * FROM users WHERE username = ?";
+    try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, username);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            user = new User(
+                    rs.getInt("id"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phone"),
+                    rs.getString("address"),
+                    rs.getInt("role"),
+                    rs.getString("image"),
+                    rs.getInt("is_approved")
+            );
         }
-        return user;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return user;
+}
 
     public List<User> getAllUsers() {
 

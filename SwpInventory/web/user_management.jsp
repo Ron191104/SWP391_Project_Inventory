@@ -72,7 +72,8 @@
         </style>
     </head>
     <body>
-
+          <%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
         <h2>Danh sách người dùng hệ thống</h2>
 
         <!-- Bảng quản lý người dùng -->
