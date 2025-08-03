@@ -5,26 +5,39 @@
     <title>Báo cáo tài chính</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            padding: 30px;
+            margin: 0;
             background-color: #f7fafd;
         }
 
+        .financial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 40px;
+            background-color: #f0f8ff;
+            min-height: 100vh;
+        }
+
         h2 {
-            color: #0077cc;
+            text-align: center;
+            color: #0288d1;
+            font-size: 26px;
+            font-weight: 700;
             margin-bottom: 20px;
         }
 
         .filter-form {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
             margin-bottom: 20px;
+            gap: 10px;
         }
 
         label {
             font-weight: bold;
-            margin-right: 10px;
         }
 
         select {
@@ -61,128 +74,133 @@
         canvas {
             margin-top: 40px;
         }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 16px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-<%-- Sidebar --%>
-    <jsp:include page="admin_sidebar.jsp" />
-<h2>Báo cáo tài chính</h2>
+<jsp:include page="admin_sidebar.jsp" />
 
-<!-- Bộ lọc thời gian -->
-<form class="filter-form" method="get" action="financial-report">
-    <label>Thống kê theo:</label>
-    <select name="filter" onchange="this.form.submit()">
-        <option value="day" <c:if test="${filter == 'day'}">selected</c:if>>Ngày</option>
-        <option value="month" <c:if test="${filter == 'month'}">selected</c:if>>Tháng</option>
-        <option value="quarter" <c:if test="${filter == 'quarter'}">selected</c:if>>Quý</option>
-        <option value="year" <c:if test="${filter == 'year'}">selected</c:if>>Năm</option>
-    </select>
-</form>
+<div class="financial-container">
+    <h2>Báo cáo tài chính</h2>
 
-<!-- Bảng dữ liệu -->
-<table>
-    <thead>
-    <tr>
-        <th>Thời gian</th>
-        <th>Doanh thu</th>
-        <th>Chi phí</th>
-        <th>Lợi nhuận</th>
-        <th>Số đơn bán</th>
-        <th>Số đơn nhập</th>
-        <th>Tỷ suất LN (%)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="r" items="${reports}">
+    <!-- Bộ lọc thời gian -->
+    <form class="filter-form" method="get" action="financial-report">
+        <label>Thống kê theo:</label>
+        <select name="filter" onchange="this.form.submit()">
+            <option value="day" <c:if test="${filter == 'day'}">selected</c:if>>Ngày</option>
+            <option value="month" <c:if test="${filter == 'month'}">selected</c:if>>Tháng</option>
+            <option value="quarter" <c:if test="${filter == 'quarter'}">selected</c:if>>Quý</option>
+            <option value="year" <c:if test="${filter == 'year'}">selected</c:if>>Năm</option>
+        </select>
+    </form>
+
+    <!-- Bảng dữ liệu -->
+    <table>
+        <thead>
         <tr>
-            <td>${r.timeLabel}</td>
-            <td>${r.revenue}</td>
-            <td>${r.cost}</td>
-            <td>${r.profit}</td>
-            <td>${r.saleOrders}</td>
-            <td>${r.stockInOrders}</td>
-            <td>${r.profitMargin}</td>
+            <th>Thời gian</th>
+            <th>Doanh thu</th>
+            <th>Chi phí</th>
+            <th>Lợi nhuận</th>
+            <th>Số đơn bán</th>
+            <th>Số đơn nhập</th>
+            <th>Tỷ suất LN (%)</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach var="r" items="${reports}">
+            <tr>
+                <td>${r.timeLabel}</td>
+                <td>${r.revenue}</td>
+                <td>${r.cost}</td>
+                <td>${r.profit}</td>
+                <td>${r.saleOrders}</td>
+                <td>${r.stockInOrders}</td>
+                <td>${r.profitMargin}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
-<!-- Biểu đồ -->
-<canvas id="financialChart" height="100"></canvas>
+    <!-- Biểu đồ -->
+    <canvas id="financialChart" height="100"></canvas>
 
-<script>
-    const labels = [
-        <c:forEach var="r" items="${reports}" varStatus="i">
-            "${r.timeLabel}"<c:if test="${!i.last}">,</c:if>
-        </c:forEach>
-    ];
-    const revenueData = [
-        <c:forEach var="r" items="${reports}" varStatus="i">
-            ${r.revenue}<c:if test="${!i.last}">,</c:if>
-        </c:forEach>
-    ];
-    const costData = [
-        <c:forEach var="r" items="${reports}" varStatus="i">
-            ${r.cost}<c:if test="${!i.last}">,</c:if>
-        </c:forEach>
-    ];
-    const profitData = [
-        <c:forEach var="r" items="${reports}" varStatus="i">
-            ${r.profit}<c:if test="${!i.last}">,</c:if>
-        </c:forEach>
-    ];
+    <script>
+        const labels = [
+            <c:forEach var="r" items="${reports}" varStatus="i">
+                "${r.timeLabel}"<c:if test="${!i.last}">,</c:if>
+            </c:forEach>
+        ];
+        const revenueData = [
+            <c:forEach var="r" items="${reports}" varStatus="i">
+                ${r.revenue}<c:if test="${!i.last}">,</c:if>
+            </c:forEach>
+        ];
+        const costData = [
+            <c:forEach var="r" items="${reports}" varStatus="i">
+                ${r.cost}<c:if test="${!i.last}">,</c:if>
+            </c:forEach>
+        ];
+        const profitData = [
+            <c:forEach var="r" items="${reports}" varStatus="i">
+                ${r.profit}<c:if test="${!i.last}">,</c:if>
+            </c:forEach>
+        ];
 
-    const ctx = document.getElementById('financialChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Doanh thu',
-                    data: revenueData,
-                    backgroundColor: 'rgba(0, 123, 255, 0.6)'
-                },
-                {
-                    label: 'Chi phí',
-                    data: costData,
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)'
-                },
-                {
-                    label: 'Lợi nhuận',
-                    data: profitData,
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                    type: 'line',
-                    borderColor: 'rgba(0, 0, 0, 0.3)',
-                    borderWidth: 2,
-                    fill: false
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1000000
+        const ctx = document.getElementById('financialChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Doanh thu',
+                        data: revenueData,
+                        backgroundColor: 'rgba(0, 123, 255, 0.6)'
+                    },
+                    {
+                        label: 'Chi phí',
+                        data: costData,
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)'
+                    },
+                    {
+                        label: 'Lợi nhuận',
+                        data: profitData,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        type: 'line',
+                        borderColor: 'rgba(0, 0, 0, 0.3)',
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
-        }
-    });
-</script>
-<a href="AdminDashboardServlet" style="
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;">
-    ← Quay về trang chính
-</a>
+        });
+    </script>
+
+    <a href="AdminDashboardServlet" class="back-link">← Quay về trang chính</a>
+</div>
 </body>
 </html>

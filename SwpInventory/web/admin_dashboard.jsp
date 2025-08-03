@@ -376,65 +376,8 @@
         </style>
     </head>
     <body>
-        <div class="header">
-            <div class="header-left">
-                <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
-                <span class="admin-role-label">(Administrator)</span>
-                <div class="nav">
-                    <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản lý kho</a>
-                    <a href="store_dashboard"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
-                    <a href="store-inventory-statistics"><i class="fas fa-chart-bar"></i> Thống kê số lượng</a>
-                    <a href="financial-report"><i class="fas fa-chart-bar"></i> Thống kê doanh thu</a>
-
-                    <div class="dropdown">
-                        <input type="checkbox" id="admin-dropdown" />
-                        <label for="admin-dropdown" class="dropdown-label">
-                            <i class="fas fa-user-shield"></i> Quản trị
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="user-management"><i class="fas fa-users-cog"></i> Quản lý người dùng</a>
-                            <a href="system-logs"><i class="fas fa-file-alt"></i> Nhật ký hệ thống</a>
-                            <a href="admin-approve"><i class="fas fa-user-check"></i> Duyệt tài khoản</a>
-                            <a href="admin/categories">Quản lý danh mục sản phẩm</a>
-                            <a href="admin/suppliers">Quản lý nhà cung cấp</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="header-right">
-                <div class="notification-wrapper">
-                    <svg class="notification-icon" viewBox="0 0 24 24">
-                    <path d="M12 22c1.1 0 1.99-.9 1.99-2H10c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z"/>
-                    </svg>
-                    <span class="notification-badge">0</span>
-                    <div class="notification-dropdown">
-                        <!-- Nội dung thông báo động -->
-                    </div>
-                </div>
-                <div class="user-menu">
-                    <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle">
-                        <img src="<%= request.getContextPath() + "/" +
-                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty()
-                                ? session.getAttribute("userImage")
-                                : "images/default-avatar.png") %>"
-                             alt="Avatar người dùng"
-                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
-                    </label>
-                    <nav class="dropdown-menu">
-                        <span style="padding:12px 16px; color:#0080C0; font-weight:bold;">
-                            <%= session.getAttribute("userName") %>
-                        </span>
-                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
-                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
-                        <a href="login.jsp"><i class=""></i> Login</a>
-                    </nav>
-                </div>
-                <span style="padding:0 16px; color:#fff6c5; font-size:x-small;">
-                    <%= session.getAttribute("userRole") %>
-                </span>
-            </div>
-        </div>
+        <jsp:include page="admin_sidebar.jsp" />
+        
 
         <main class="main-content">
             <section class="cards">

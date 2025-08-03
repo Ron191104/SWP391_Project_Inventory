@@ -518,6 +518,7 @@ public boolean isEmailDuplicate(String email, String currentUsername) {
         e.printStackTrace();
     }
     return false;
+    
 }
 
     public static void main(String[] args) {
@@ -525,4 +526,6 @@ public boolean isEmailDuplicate(String email, String currentUsername) {
 //        System.out.println(udao.getUserRole(1));
     }
 
+    
+    
 }

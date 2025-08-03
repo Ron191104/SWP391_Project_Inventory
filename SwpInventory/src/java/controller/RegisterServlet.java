@@ -15,10 +15,11 @@ import java.nio.file.Paths;
 @WebServlet("/register")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024, // 1MB
-        maxFileSize = 5 * 1024 * 1024,   // 5MB
+        maxFileSize = 5 * 1024 * 1024, // 5MB
         maxRequestSize = 10 * 1024 * 1024 // 10MB
 )
 public class RegisterServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -76,9 +77,13 @@ public class RegisterServlet extends HttpServlet {
             error = "Full name is required!";
         } else if (!name.matches("^[\\p{L} ]{2,50}$")) {
             error = "Full name must be 2–50 letters (no special characters)!";
-        } else if (!email.isEmpty() && !email.matches("^[\\w.+\\-]+@[a-zA-Z\\d\\-.]+\\.[a-zA-Z]{2,}$")) {
+        } else if (email.isEmpty()) {
+            error = "Email is required!";
+        } else if (!email.matches("^[\\w.+\\-]+@[a-zA-Z\\d\\-.]+\\.[a-zA-Z]{2,}$")) {
             error = "Invalid email format!";
-        } else if (!phone.isEmpty() && !phone.matches("^\\d{9,11}$")) {
+        } else if (phone.isEmpty()) {
+            error = "Phone number is required!";
+        } else if (!phone.matches("^\\d{9,11}$")) {
             error = "Phone number must be 9–11 digits!";
         } else if (role == 0) {
             error = "Please select a valid role!";
