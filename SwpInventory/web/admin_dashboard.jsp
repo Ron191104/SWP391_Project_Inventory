@@ -22,135 +22,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             /* CSS  */
-            * {
-                box-sizing: border-box;
-            }
-            body {
-                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4;
-                color: #333;
-                font-size: 16px;
-                overflow-x: hidden;
-            }
-            a {
-                text-decoration: none;
-                color: inherit;
-            }
 
-            .header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                background-color: #81D4FA;
-                color: white;
-                padding: 12px 24px;
-                flex-wrap: wrap;
-            }
-            .header-left {
-                display: flex;
-                align-items: center;
-                flex-wrap: wrap;
-            }
-            .header-left h1 {
-                margin: 0;
-                font-size: 2rem;
-                font-weight: 700;
-                display: flex;
-                align-items: center;
-            }
-            .header-left h1 i {
-                margin-right: 10px;
-            }
-            .admin-role-label {
-                color: #fff6c5;
-                font-weight: bold;
-                background: #c62828;
-                border-radius: 7px;
-                padding: 2px 10px;
-                margin-left: 10px;
-                font-size: 1rem;
-            }
-
-            .nav {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                margin-left: 30px;
-            }
-            .nav a {
-                color: white;
-                padding: 8px 16px;
-                border-radius: 4px;
-                font-weight: 600;
-                transition: background-color 0.3s ease;
-                white-space: nowrap;
-                display: flex;
-                align-items: center;
-            }
-            .nav a i {
-                margin-right: 8px;
-                color: #1B608A; /* Màu icon trong nav */
-            }
-            .nav a:hover, .nav a.active {
-                background-color: #1B608A;
-            }
-
-            .dropdown {
-                position: relative;
-            }
-            .dropdown input[type="checkbox"] {
-                display: none;
-            }
-            .dropdown-label {
-                cursor: pointer;
-                padding: 8px 16px;
-                border-radius: 4px;
-                color: white;
-                display: flex;
-                align-items: center;
-            }
-            .dropdown-label i {
-                margin-right: 8px;
-                color: #1B608A; /* Màu icon trong dropdown label */
-            }
-            .dropdown-menu {
-                position: absolute;
-                top: 100%;
-                right: 0;
-                background: white;
-                color: #333;
-                border-radius: 8px;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-                min-width: 200px;
-                display: none;
-                flex-direction: column;
-                z-index: 1001;
-            }
-            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
-                display: flex;
-            }
-            .dropdown-menu a {
-                padding: 12px 16px;
-                border-bottom: 1px solid #eee;
-                font-weight: 600;
-                color: #333;
-            }
-            .dropdown-menu a:last-child {
-                border-bottom: none;
-            }
-            .dropdown-menu a:hover {
-                background-color: #FDF9DA;
-            }
-
-            .header-right {
-                display: flex;
-                align-items: center;
-                gap: 10px;            /* Giảm khoảng cách giữa các thành phần */
-                margin-top: 0;        /* Xóa khoảng cách trên cùng */
-                margin-right: 10px;   /* Đưa avatar gần hơn về bên phải */
-            }
             .notification-wrapper {
                 position: relative;
                 cursor: pointer;
@@ -250,9 +122,11 @@
                 display: flex;
                 flex-wrap: wrap;
                 gap: 10px;
-                justify-content: flex-start;
-                margin: 20px 10px;
+                justify-content: center; /* ✅ Căn giữa theo chiều ngang */
+                margin: 20px auto;
+                max-width: 1000px; /* tùy chọn để giới hạn chiều rộng */
             }
+
             .card {
                 flex: 1 1 150px;
                 max-width: 220px;
@@ -265,6 +139,7 @@
                 height: 60px;
                 min-width: 150px;
             }
+
             .card.orange {
                 background: #FFF3E0;
             }
@@ -377,15 +252,11 @@
     </head>
     <body>
         <jsp:include page="admin_sidebar.jsp" />
-        
+
 
         <main class="main-content">
             <section class="cards">
-                <article class="card orange">
-                    <p>${customerCount}</p>
-                    <p>Customers</p>
-                    <i class="fas fa-user"></i>
-                </article>
+
                 <article class="card cyan">
                     <p>${supplierCount}</p>
                     <p>Suppliers</p>

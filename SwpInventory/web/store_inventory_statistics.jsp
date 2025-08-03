@@ -79,10 +79,7 @@
             font-style: italic;
             color: #555;
         }
-        label {
-            font-weight: bold;
-            color: #333;
-        }
+        
     </style>
     <script>
         // Hàm gửi form khi sắp xếp

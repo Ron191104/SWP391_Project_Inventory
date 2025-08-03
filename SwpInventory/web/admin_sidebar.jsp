@@ -134,7 +134,8 @@
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                margin-right: 10px;
+                margin-right: 0; /* giảm hoặc xóa */
+                padding-right: 10px; /* tùy chọn để tạo khoảng đều */
                 position: relative;
             }
             .user-menu {
@@ -152,6 +153,7 @@
                 height: 40px;
                 display: block;
             }
+
             .user-menu label img {
                 width: 100%;
                 height: 100%;
@@ -165,12 +167,15 @@
                 color: #333;
                 border-radius: 8px;
                 box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-                min-width: 180px;
+                min-width: 220px; /* tăng chiều rộng */
+                max-width: 300px;  /* giới hạn hợp lý */
                 display: none;
                 flex-direction: column;
                 overflow: hidden;
                 z-index: 1000;
+                word-wrap: break-word;
             }
+
             .user-menu input[type="checkbox"]:checked + label + nav.dropdown-menu {
                 display: flex;
             }
@@ -228,7 +233,7 @@
                                 : "images/default-avatar.png") %>" alt="Avatar người dùng" />
                     </label>
                     <nav class="dropdown-menu">
-                        <span style="padding:12px 16px; color:#0080C0; font-weight:bold;">
+                        <span style="padding:12px 16px; color:#0080C0; font-weight:bold; word-break: break-word; white-space: normal;">
                             <%= session.getAttribute("userName") %>
                         </span>
                         <a href="${pageContext.request.contextPath}/myprofile">Profile</a>

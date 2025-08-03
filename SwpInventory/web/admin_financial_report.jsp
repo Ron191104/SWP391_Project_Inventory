@@ -36,9 +36,7 @@
             gap: 10px;
         }
 
-        label {
-            font-weight: bold;
-        }
+        
 
         select {
             padding: 6px 10px;
