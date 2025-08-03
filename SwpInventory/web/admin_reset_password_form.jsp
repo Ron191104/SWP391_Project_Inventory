@@ -108,7 +108,7 @@
         <input type="password" id="newPassword" name="newPassword" required />
 
         <input type="submit" value="Xác nhận đổi mật khẩu" />
-        <a href="user_management.jsp" class="back-link">← Quay lại quản lý người dùng</a>
+        <a href="user-management" class="back-link">← Quay lại quản lý người dùng</a>
     </form>
 
     <c:if test="${not empty message}">

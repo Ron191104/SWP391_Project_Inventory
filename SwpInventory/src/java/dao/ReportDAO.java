@@ -13,39 +13,54 @@ public class ReportDAO extends DBConnect {
         List<FinancialReport> reports = new ArrayList<>();
         String timeExpr;
 
-        // Chuyển filterType thành biểu thức SQL cụ thể
         switch (filterType) {
             case "day":
-                timeExpr = "FORMAT(ISNULL(s.sale_date, si.stock_in_date), 'yyyy-MM-dd')";
+                timeExpr = "FORMAT(sale_date, 'yyyy-MM-dd')";
                 break;
             case "quarter":
-                timeExpr = "CONCAT('Q', DATEPART(QUARTER, ISNULL(s.sale_date, si.stock_in_date)), '-', YEAR(ISNULL(s.sale_date, si.stock_in_date)))";
+                timeExpr = "CONCAT('Q', DATEPART(QUARTER, sale_date), '-', YEAR(sale_date))";
                 break;
             case "year":
-                timeExpr = "FORMAT(ISNULL(s.sale_date, si.stock_in_date), 'yyyy')";
+                timeExpr = "FORMAT(sale_date, 'yyyy')";
                 break;
-            default: // mặc định là theo tháng
-                timeExpr = "FORMAT(ISNULL(s.sale_date, si.stock_in_date), 'yyyy-MM')";
+            default:
+                timeExpr = "FORMAT(sale_date, 'yyyy-MM')";
         }
 
-        // Ghép chuỗi SQL với timeExpr thay vì dùng tham số
-        String sql = "SELECT " + timeExpr + " AS ThoiGian, "
-                + "SUM(sd.quantity * sd.price_out) AS DoanhThu, "
-                + "SUM(sid.quantity * sid.price_in) AS ChiPhi, "
-                + "COUNT(DISTINCT s.sale_id) AS SoDonBan, "
-                + "COUNT(DISTINCT si.stock_in_id) AS SoDonNhap, "
-                + "SUM(ISNULL(sd.quantity * sd.price_out, 0)) - SUM(ISNULL(sid.quantity * sid.price_in, 0)) AS LoiNhuan, "
-                + "CASE WHEN SUM(ISNULL(sid.quantity * sid.price_in, 0)) > 0 "
-                + "THEN ROUND(100.0 * (SUM(ISNULL(sd.quantity * sd.price_out, 0)) - SUM(ISNULL(sid.quantity * sid.price_in, 0))) / SUM(sid.quantity * sid.price_in), 2) ELSE 0 END AS TySuatLoiNhuan "
-                + "FROM sales s "
-                + "LEFT JOIN sales_details sd ON s.sale_id = sd.sale_id "
-                + "FULL OUTER JOIN stock_in si ON " + timeExpr + " = " + timeExpr + " "
-                + "LEFT JOIN stock_in_details sid ON si.stock_in_id = sid.stock_in_id "
-                + "GROUP BY " + timeExpr + " "
-                + "ORDER BY " + timeExpr;
+        // Build the SQL with CTE
+        String sql = "WITH DoanhThuCTE AS ( "
+                + "    SELECT "
+                + "        " + timeExpr + " AS ThoiGian, "
+                + "        SUM(sd.quantity * sd.price_out) AS DoanhThu, "
+                + "        COUNT(DISTINCT s.sale_id) AS SoDonBan "
+                + "    FROM sales s "
+                + "    LEFT JOIN sales_details sd ON s.sale_id = sd.sale_id "
+                + "    GROUP BY " + timeExpr + " "
+                + "), "
+                + "ChiPhiCTE AS ( "
+                + "    SELECT "
+                + "        " + timeExpr.replace("sale_date", "stock_in_date") + " AS ThoiGian, "
+                + "        SUM(sid.quantity * sid.price_in) AS ChiPhi, "
+                + "        COUNT(DISTINCT si.stock_in_id) AS SoDonNhap "
+                + "    FROM stock_in si "
+                + "    LEFT JOIN stock_in_details sid ON si.stock_in_id = sid.stock_in_id "
+                + "    GROUP BY " + timeExpr.replace("sale_date", "stock_in_date") + " "
+                + ") "
+                + "SELECT "
+                + "    ISNULL(d.ThoiGian, c.ThoiGian) AS ThoiGian, "
+                + "    ISNULL(d.DoanhThu, 0) AS DoanhThu, "
+                + "    ISNULL(c.ChiPhi, 0) AS ChiPhi, "
+                + "    ISNULL(d.SoDonBan, 0) AS SoDonBan, "
+                + "    ISNULL(c.SoDonNhap, 0) AS SoDonNhap, "
+                + "    (ISNULL(d.DoanhThu, 0) - ISNULL(c.ChiPhi, 0)) AS LoiNhuan, "
+                + "    CASE WHEN ISNULL(c.ChiPhi, 0) > 0 "
+                + "        THEN ROUND(100.0 * (ISNULL(d.DoanhThu, 0) - ISNULL(c.ChiPhi, 0)) / ISNULL(c.ChiPhi, 0), 2) "
+                + "        ELSE 0 END AS TySuatLoiNhuan "
+                + "FROM DoanhThuCTE d "
+                + "FULL OUTER JOIN ChiPhiCTE c ON d.ThoiGian = c.ThoiGian "
+                + "ORDER BY ThoiGian";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
                 FinancialReport fr = new FinancialReport(
                         rs.getString("ThoiGian"),
@@ -58,7 +73,6 @@ public class ReportDAO extends DBConnect {
                 );
                 reports.add(fr);
             }
-
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

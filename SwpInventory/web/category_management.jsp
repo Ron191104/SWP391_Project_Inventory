@@ -78,6 +78,7 @@
 </head>
 <body>
     <jsp:include page="admin_sidebar.jsp" />
+
 <div class="container">
     <h2>Quản lý danh mục sản phẩm</h2>
     <div class="form-title">Thêm danh mục mới</div>
@@ -87,38 +88,62 @@
         <button type="submit">Thêm</button>
     </form>
 
-    <table>
+   <table>
+    <tr>
+        <th>ID</th>
+        <th>Tên danh mục</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+    </tr>
+    <c:forEach var="cat" items="${categories}">
         <tr>
-            <th>ID</th>
-            <th>Tên danh mục</th>
-            <th>Hành động</th>
-        </tr>
-        <c:forEach var="cat" items="${categories}">
-            <tr>
-                <td>${cat.categoryId}</td>
-                <td>${cat.categoryName}</td>
-                <td>
-                    <div class="edit-dropdown" id="dropdown-${cat.categoryId}">
-                        <button type="button" onclick="toggleDropdown('${cat.categoryId}')">Sửa</button>
-                        <div class="edit-form-content">
-                            <form method="post" action="categories">
-                                <input type="hidden" name="action" value="update" />
-                                <input type="hidden" name="category_id" value="${cat.categoryId}" />
-                                <input type="text" name="category_name" value="${cat.categoryName}" required />
-                                <button type="submit">Lưu</button>
-                                <button type="button" onclick="toggleDropdown('${cat.categoryId}')">Đóng</button>
-                            </form>
+            <td>${cat.categoryId}</td>
+            <td>${cat.categoryName}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${cat.status == 1}">
+                        <span style="color: green; font-weight: bold;">Đang hoạt động</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span style="color: red; font-weight: bold;">Đã xóa</span>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${cat.status == 1}">
+                        <!-- Sửa + Xóa nếu đang hoạt động -->
+                        <div class="edit-dropdown" id="dropdown-${cat.categoryId}">
+                            <button type="button" onclick="toggleDropdown('${cat.categoryId}')">Sửa</button>
+                            <div class="edit-form-content">
+                                <form method="post" action="categories">
+                                    <input type="hidden" name="action" value="update" />
+                                    <input type="hidden" name="category_id" value="${cat.categoryId}" />
+                                    <input type="text" name="category_name" value="${cat.categoryName}" required />
+                                    <button type="submit">Lưu</button>
+                                    <button type="button" onclick="toggleDropdown('${cat.categoryId}')">Đóng</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                    <form method="post" action="categories" style="display:inline-block; margin-left:5px;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');">
-                        <input type="hidden" name="action" value="delete"/>
-                        <input type="hidden" name="category_id" value="${cat.categoryId}"/>
-                        <button type="submit">Xóa</button>
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
+                        <form method="post" action="categories" style="display:inline-block; margin-left:5px;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');">
+                            <input type="hidden" name="action" value="delete"/>
+                            <input type="hidden" name="category_id" value="${cat.categoryId}"/>
+                            <button type="submit">Xóa</button>
+                        </form>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- Hiện nút Khôi phục nếu đã xóa -->
+                        <form method="post" action="categories" onsubmit="return confirm('Khôi phục danh mục này?');">
+                            <input type="hidden" name="action" value="restore"/>
+                            <input type="hidden" name="category_id" value="${cat.categoryId}"/>
+                            <button type="submit" style="background-color: #4caf50; color: white; border: none; border-radius: 4px; padding: 6px 10px; font-weight: bold;">Khôi phục</button>
+                        </form>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+        </tr>
+    </c:forEach>
+</table>
 </div>
 <script>
     function toggleDropdown(id) {
