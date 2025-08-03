@@ -25,7 +25,7 @@ public class DashboardDAO {
     }
 
     public int getPurchaseInvoiceCount() {
-        String sql = "SELECT COUNT(*) FROM stock_in_details";
+        String sql = "SELECT COUNT(*) FROM stock_in";
         try (Connection conn = DBConnect.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -35,7 +35,7 @@ public class DashboardDAO {
     }
 
     public int getSalesInvoiceCount() {
-        String sql = "SELECT COUNT(*) FROM sales_details";
+        String sql = "SELECT COUNT(*) FROM sales";
         try (Connection conn = DBConnect.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
