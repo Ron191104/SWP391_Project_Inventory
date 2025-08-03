@@ -152,7 +152,9 @@
                 width: 40px;
                 height: 40px;
                 display: block;
+                margin-right: 8px; /* Đẩy avatar sang trái 1 chút */
             }
+
 
             .user-menu label img {
                 width: 100%;
