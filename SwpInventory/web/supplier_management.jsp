@@ -133,7 +133,7 @@
         </c:forEach>
     </table>
 
-    <a class="back-link" href="user-management">&larr; Quay lại danh sách</a>
+    
 </div>
 
 <script>

@@ -18,13 +18,13 @@ import java.util.regex.Pattern;
 )
 public class MyProfileServlet extends HttpServlet {
     UserDAO dao = new UserDAO();
-    
+
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$", email);
     }
 
     private boolean isValidPhone(String phone) {
-        return Pattern.matches("^0\\d{9,10}$", phone); // Bắt đầu bằng 0, 10-11 số
+        return Pattern.matches("^0\\d{9,10}$", phone);
     }
 
     private boolean isValidUsername(String username) {
@@ -34,6 +34,7 @@ public class MyProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userEmail") == null) {
             response.sendRedirect("login.jsp");
@@ -41,15 +42,14 @@ public class MyProfileServlet extends HttpServlet {
         }
 
         String email = (String) session.getAttribute("userEmail");
-        User user = new UserDAO().getUserByEmail(email);
+        User user = dao.getUserByEmail(email);
         if (user == null) {
             response.sendRedirect("login.jsp");
             return;
         }
-        String userRole = dao.getUserRole(user.getRole());
-        request.setAttribute("userRole", userRole);
+
+        request.setAttribute("userRole", dao.getUserRole(user.getRole()));
         request.setAttribute("user", user);
-        
         request.getRequestDispatcher("myprofile.jsp").forward(request, response);
     }
 
@@ -64,12 +64,21 @@ public class MyProfileServlet extends HttpServlet {
         String email    = request.getParameter("email");
         String phone    = request.getParameter("phone");
         String address  = request.getParameter("address");
-        int role        = Integer.parseInt(request.getParameter("role"));
 
-        
         String error = null;
 
-        // Validate
+        // Lấy dữ liệu cũ để giữ lại role, password, ảnh
+        User oldUser = dao.getUserByUsername(username);
+        if (oldUser == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        int role = oldUser.getRole(); // giữ nguyên role
+        String password = oldUser.getPassword();
+        String image = oldUser.getImage();
+
+        // Validate input
         if (username == null || !isValidUsername(username)) {
             error = "❌ Tên đăng nhập không hợp lệ!";
         } else if (name == null || name.trim().isEmpty()) {
@@ -86,18 +95,14 @@ public class MyProfileServlet extends HttpServlet {
             error = "❌ Địa chỉ không được để trống!";
         }
 
+        // Nếu có lỗi, trả về form kèm dữ liệu
         if (error != null) {
+            User fallback = new User(username, null, name, email, phone, address, role, image, 1);
             request.setAttribute("error", error);
-            User fallback = new User(username, null, name, email, phone, address, role, null, 1);
             request.setAttribute("user", fallback);
             request.getRequestDispatcher("myprofile.jsp").forward(request, response);
             return;
         }
-
-        // Lấy dữ liệu cũ
-        User oldUser = dao.getUserByUsername(username);
-        String password = (oldUser != null) ? oldUser.getPassword() : "";
-        String image = (oldUser != null && oldUser.getImage() != null) ? oldUser.getImage() : null;
 
         // Xử lý ảnh nếu có upload
         Part imagePart = request.getPart("imageFile");
@@ -111,8 +116,10 @@ public class MyProfileServlet extends HttpServlet {
             image = "uploads/" + uploadFileName;
         }
 
-        User user = new User(username, password, name, email, phone, address, role, image, 1);
-        boolean updated = dao.updateProfile(user);
+        // Cập nhật
+        User updatedUser = new User(username, password, name, email, phone, address, role, image, 1);
+        boolean updated = dao.updateProfile(updatedUser);
+
         if (updated) {
             HttpSession session = request.getSession();
             session.setAttribute("userFullName", name);

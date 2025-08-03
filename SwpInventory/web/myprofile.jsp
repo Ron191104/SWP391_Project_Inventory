@@ -126,7 +126,8 @@
         <input type="text" name="address" value="${user.address}" required />
 
         <label>Role:</label>
-        <input type="text" name="role" value="${userRole}" readonly />
+       <input type="text" class="form-control" value="${userRole}" readonly />
+
 
         <label>Avatar (Chọn ảnh mới):</label>
         <input type="file" name="imageFile" accept="image/*" />
