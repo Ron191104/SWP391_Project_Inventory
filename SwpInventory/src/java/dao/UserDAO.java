@@ -242,6 +242,49 @@ public User getUserByUsername(String username) {
         }
         return list;
     }
+    
+    public String getUserRole(int role){
+        String userRole;
+        if(role == 1){
+            userRole = "Invetory Management";
+        }else if(role == 2){
+            userRole = "Store Management";
+        }else if(role == 3){
+            userRole = "Supplier";
+        }else if(role == 4){
+            userRole = "Admin";
+        }else{
+            userRole ="None";
+        }
+        return userRole;
+    }
+    
+     public List<User> getAllUsersWithApprove() {
+
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE role <> 4 AND is_approved = 1";
+        try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getInt("role"),
+                        rs.getString("image"),
+                        rs.getInt("is_approved")
+                );
+                list.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     // Hàm lấy user theo username và password (THÊM HÀM NÀY CHO ĐĂNG NHẬP BẰNG TÊN ĐĂNG NHẬP)
     public User getUserByUsernameAndPassword(String username, String password) {
@@ -476,4 +519,10 @@ public boolean isEmailDuplicate(String email, String currentUsername) {
     }
     return false;
 }
+
+    public static void main(String[] args) {
+//       UserDAO udao = new UserDAO();
+//        System.out.println(udao.getUserRole(1));
+    }
+
 }

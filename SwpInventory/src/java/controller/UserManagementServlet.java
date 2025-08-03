@@ -18,9 +18,9 @@ public class UserManagementServlet extends HttpServlet {
             response.sendRedirect("no_permission.jsp");
             return;
         }
-
+        
         UserDAO userDAO = new UserDAO();
-        List<User> userList = userDAO.getAllUsers();
+        List<User> userList = userDAO.getAllUsersWithApprove();
         request.setAttribute("userList", userList);
         request.getRequestDispatcher("user_management.jsp").forward(request, response);
     }

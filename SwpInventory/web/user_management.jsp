@@ -46,13 +46,28 @@
                 border-radius: 6px;
                 text-decoration: none;
                 font-size: 14px;
+                font-weight: bold;
                 cursor: pointer;
                 transition: background 0.3s ease;
+                text-align: center;
             }
 
-            /* Hover nút */
+            /* Đảm bảo button không bị style mặc định */
+            button.btn {
+                appearance: none;
+                -webkit-appearance: none;
+                border: none;
+                background: #4fc3f7;
+            }
+
+            /* Hover */
             .btn:hover {
                 background: #29b6f6;
+            }
+
+            /* Để link a có style như nút nếu gắn class btn */
+            a.btn {
+                line-height: normal;
             }
 
             /* Tiêu đề trang */
@@ -86,8 +101,7 @@
                     <th>Email</th>
                     <th>Điện thoại</th>
                     <th>Phân quyền</th>
-                    <th>Duyệt</th>
-                    <th>Thao tác</th>
+                    <th>Chỉnh sửa</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,26 +121,17 @@
                                 <c:otherwise>Khác</c:otherwise>
                             </c:choose>
                         </td>
-                        <td>
-                            <form action="ToggleApprovalServlet" method="post">
-                                <input type="hidden" name="userId" value="${u.id != null ? u.id : 0}" />
-                                <c:choose>
-                                    <c:when test="${u.isApproved == 1}">
-                                        <input type="hidden" name="action" value="unapprove" />
-                                        <button type="submit" class="btn" onclick="return confirm('Bạn có chắc muốn hủy duyệt người dùng này?')">Hủy duyệt</button>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <input type="hidden" name="action" value="approve" />
-                                        <button type="submit" class="btn">Duyệt lại</button>
-                                    </c:otherwise>
-                                </c:choose>
-                            </form>
-                        </td>
+                      
 
                         <td>
-                            <a href="edit-user?username=${u.username}" class="action">Sửa</a> |
-                            <a href="delete-user?username=${u.username}" class="action" onclick="return confirm('Xóa người dùng này?');">Xóa</a> |
-                            <a href="admin-reset-password?username=${u.username}" class="action">Đổi mật khẩu</a>
+                            <form action="ToggleApprovalServlet" method="post" style="display:inline;">
+                                <input type="hidden" name="userId" value="${u.id != null ? u.id : 0}" />
+                                <input type="hidden" name="action" value="unapprove" />
+                                <button type="submit" class="btn" onclick="return confirm('Bạn có chắc muốn hủy duyệt người dùng này?')">Xóa</button>
+                            </form>
+
+                            <a href="edit-user?username=${u.username}" class="btn">Sửa</a>
+                            <a href="admin-reset-password?username=${u.username}" class="btn">Đổi mật khẩu</a>
                         </td>
                     </tr>
                 </c:forEach>

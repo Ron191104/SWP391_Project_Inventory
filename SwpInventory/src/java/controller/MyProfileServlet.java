@@ -17,7 +17,8 @@ import java.util.regex.Pattern;
     maxRequestSize = 10 * 1024 * 1024
 )
 public class MyProfileServlet extends HttpServlet {
-
+    UserDAO dao = new UserDAO();
+    
     private boolean isValidEmail(String email) {
         return Pattern.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$", email);
     }
@@ -45,8 +46,10 @@ public class MyProfileServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-
+        String userRole = dao.getUserRole(user.getRole());
+        request.setAttribute("userRole", userRole);
         request.setAttribute("user", user);
+        
         request.getRequestDispatcher("myprofile.jsp").forward(request, response);
     }
 
@@ -63,7 +66,7 @@ public class MyProfileServlet extends HttpServlet {
         String address  = request.getParameter("address");
         int role        = Integer.parseInt(request.getParameter("role"));
 
-        UserDAO dao = new UserDAO();
+        
         String error = null;
 
         // Validate

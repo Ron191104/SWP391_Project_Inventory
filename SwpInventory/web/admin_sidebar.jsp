@@ -237,7 +237,7 @@
                     </nav>
                 </div>
                 <span style="color:#fff6c5; font-size:x-small;">
-                    Role: <%= session.getAttribute("userRole") %>
+                    Role: <%= session.getAttribute("role") %>
                 </span>
             </div>
         </div>
