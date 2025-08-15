@@ -13,7 +13,7 @@ public class UserDAO {
 
     private final String jdbcURL = "jdbc:sqlserver://localhost:1433;databaseName=Inventory;encrypt=true;trustServerCertificate=true";
     private final String jdbcUser = "sa";
-    private final String jdbcPass = "2910";
+    private final String jdbcPass = "123";
 
     // Kiểm tra trùng username
     public boolean checkUsernameExists(String username) throws Exception {
