@@ -95,12 +95,10 @@ public class InventoryStockReportController extends HttpServlet {
                     request.setAttribute("error", "Định dạng ngày không hợp lệ.");
                 }
             } else {
-                // Nếu không lọc thì lấy toàn bộ
                 stockInList = dao.getStockInListByDateRange(new Date(0), today);
                 stockOutList = dao.getStockOutListByDateRange(new Date(0), today);
             }
 
-            // Gắn tên nhà cung cấp
             for (StockIn s : stockInList) {
                 String name = dao.getSupplierNameById(s.getSupplierId());
                 s.setSupplierName(name);

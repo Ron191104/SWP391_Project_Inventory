@@ -190,15 +190,41 @@ public class UserDAO {
             return false;
         }
     }
+public User getUserByUsername(String username) {
+    User user = null;
+    String sql = "SELECT * FROM users WHERE username = ?";
+    try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, username);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            user = new User(
+                    rs.getInt("id"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("phone"),
+                    rs.getString("address"),
+                    rs.getInt("role"),
+                    rs.getString("image"),
+                    rs.getInt("is_approved")
+            );
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return user;
+}
 
-    public User getUserByUsername(String username) {
-        User user = null;
-        String sql = "SELECT * FROM users WHERE username = ?";
+    public List<User> getAllUsers() {
+
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE role <> 4";
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User(
+            while (rs.next()) {
+                User user = new User(
+                        rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("name"),
@@ -209,17 +235,34 @@ public class UserDAO {
                         rs.getString("image"),
                         rs.getInt("is_approved")
                 );
+                list.add(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return user;
+        return list;
     }
-
-    public List<User> getAllUsers() {
+    
+    public String getUserRole(int role){
+        String userRole;
+        if(role == 1){
+            userRole = "Invetory Management";
+        }else if(role == 2){
+            userRole = "Store Management";
+        }else if(role == 3){
+            userRole = "Supplier";
+        }else if(role == 4){
+            userRole = "Admin";
+        }else{
+            userRole ="None";
+        }
+        return userRole;
+    }
+    
+     public List<User> getAllUsersWithApprove() {
 
         List<User> list = new ArrayList<>();
-        String sql = "SELECT * FROM users WHERE role <> 4";
+        String sql = "SELECT * FROM users WHERE role <> 4 AND is_approved = 1";
         try (Connection conn = DBConnect.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -428,5 +471,61 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+    
+    // check phone Exists
+public boolean checkPhoneExists(String phone) throws SQLException, ClassNotFoundException {
+    String sql = "SELECT COUNT(*) FROM users WHERE phone = ?";
+    try (Connection conn = DBConnect.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
+        ps.setString(1, phone);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
+}
+// check trùng sđt
+public boolean isPhoneDuplicate(String phone, String currentUsername) {
+    String sql = "SELECT COUNT(*) FROM users WHERE phone = ? AND username <> ?";
+    try (Connection con = DBConnect.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, phone);
+        ps.setString(2, currentUsername);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+// check trùng email
+public boolean isEmailDuplicate(String email, String currentUsername) {
+    String sql = "SELECT COUNT(*) FROM users WHERE email = ? AND username <> ?";
+    try (Connection con = DBConnect.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, email);
+        ps.setString(2, currentUsername);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+    
+}
+
+    public static void main(String[] args) {
+//       UserDAO udao = new UserDAO();
+//        System.out.println(udao.getUserRole(1));
+    }
+
+    
+    
 }

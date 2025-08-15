@@ -70,6 +70,7 @@
             text-align: center;
             margin-top: 15px;
             font-weight: 600;
+            line-height: 1.5;
         }
 
         .back-link {
@@ -87,22 +88,37 @@
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Đổi mật khẩu cho: <br><b>${username}</b></h2>
+    <%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
+<div class="form-container">
+    <h2>Đổi mật khẩu cho: <br><b>${username}</b></h2>
 
-        <form action="admin-reset-password" method="post">
-            <input type="hidden" name="username" value="${username}" />
+    <form action="admin-reset-password" method="post">
+        <input type="hidden" name="username" value="${username}" />
 
-            <label for="newPassword">Mật khẩu mới:</label>
-            <input type="password" id="newPassword" name="newPassword" required />
-
-            <input type="submit" value="Xác nhận đổi mật khẩu" />
-            <a href="login.jsp" class="back-link">← Quay lại đăng nhập</a>
-        </form>
-
-        <c:if test="${not empty message}">
-            <div class="message">${message}</div>
+        <c:if test="${not empty userEmail}">
+            <div style="background-color: #e8f5e9; border: 1px solid #81c784; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+                <p><b>👤 Tên người dùng:</b> ${username}</p>
+                <p><b>📧 Email:</b> ${userEmail}</p>
+                <p style="color: #2e7d32; font-weight: bold;">⚠ Vui lòng kiểm tra kỹ thông tin người dùng trước khi đổi mật khẩu!</p>
+            </div>
         </c:if>
-    </div>
+
+        <label for="newPassword">Mật khẩu mới:</label>
+        <input type="password" id="newPassword" name="newPassword" required />
+
+        <input type="submit" value="Xác nhận đổi mật khẩu" />
+        <a href="user-management" class="back-link">← Quay lại quản lý người dùng</a>
+    </form>
+
+    <c:if test="${not empty message}">
+        <div class="message">
+            ✅ ${message}<br/>
+            <c:if test="${not empty userEmail}">
+                📧 Mật khẩu mới đã được gửi đến email: <b>${userEmail}</b>
+            </c:if>
+        </div>
+    </c:if>
+</div>
 </body>
 </html>

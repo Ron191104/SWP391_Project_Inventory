@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import model.Order;
 import model.OrderDetailsDisplay;
+import model.OrderDisplay;
 
 @WebServlet(name = "OrderDetailServlet", urlPatterns = {"/order_details"})
 public class OrderDetailServlet extends HttpServlet {
@@ -19,8 +21,10 @@ public class OrderDetailServlet extends HttpServlet {
 
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         OrderDAO dao = new OrderDAO();
+        OrderDisplay order = dao.getOrderDisplayByID(orderId);
         List<OrderDetailsDisplay> orderDetailsList = dao.getFullOrderDetails(orderId);
-
+        
+        request.setAttribute("order", order);
         request.setAttribute("orderDetailsList", orderDetailsList);
         request.getRequestDispatcher("order_details.jsp").forward(request, response);
     }

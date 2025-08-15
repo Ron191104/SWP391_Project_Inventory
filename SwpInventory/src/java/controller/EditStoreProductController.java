@@ -55,7 +55,7 @@ public class EditStoreProductController extends HttpServlet {
 
         StoreProduct detail = dao.getStoreProductById(storeId, did);
         if (detail == null) {
-            response.sendRedirect("store_product_list.jsp");
+            response.sendRedirect("store_product_list");
             return;
         }
 
@@ -80,6 +80,14 @@ public class EditStoreProductController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        Integer storeId = (Integer) session.getAttribute("storeId");
+
+        if (storeId == null) {
+            response.sendRedirect("choose_store");
+            return;
+        }
+
         try {
             int storeProductId = Integer.parseInt(request.getParameter("storeProductId"));
             int storeCategoryId = Integer.parseInt(request.getParameter("storeCategoryId"));
@@ -88,28 +96,37 @@ public class EditStoreProductController extends HttpServlet {
             String description = request.getParameter("description");
             String oldImage = request.getParameter("oldImage");
 
-            // lấy ảnh từ form
+            // Kiểm tra name có rỗng hoặc chỉ toàn khoảng trắng không
+            if (name == null || name.trim().isEmpty()) {
+                StoreProductDAO dao = new StoreProductDAO();
+                CategoryDAO categoryDAO = new CategoryDAO();
+
+                StoreProduct detail = dao.getStoreProductById(storeId, storeProductId);
+                List<Categories> listStoreCategory = categoryDAO.getAllCategories();
+
+                request.setAttribute("error", "Tên sản phẩm không được để trống");
+                request.setAttribute("detail", detail);
+                request.setAttribute("listStoreCategory", listStoreCategory);
+                request.getRequestDispatcher("edit_store_product.jsp").forward(request, response);
+                return;
+            }
+
             Part imagePart = request.getPart("image");
             String imageFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
 
             String imagePath;
             if (imageFileName == null || imageFileName.trim().isEmpty()) {
-                // không chọn ảnh mới -> giữ ảnh cũ
                 imagePath = oldImage;
             } else {
-                // có ảnh mới -> lưu file
                 String uploadPath = getServletContext().getRealPath("/") + "assets" + File.separator + "image";
                 File uploadDir = new File(uploadPath);
                 if (!uploadDir.exists()) {
                     uploadDir.mkdirs();
                 }
                 imagePart.write(uploadPath + File.separator + imageFileName);
-
-                // chỉ lưu tên file trong DB
                 imagePath = imageFileName;
             }
 
-            // tạo đối tượng
             Product p = new Product();
             p.setId(productId);
             p.setName(name);
@@ -121,7 +138,6 @@ public class EditStoreProductController extends HttpServlet {
             sp.setStoreCategoryId(storeCategoryId);
             sp.setProduct(p);
 
-            // update DB
             StoreProductDAO dao = new StoreProductDAO();
             dao.updateStoreProduct(sp);
 

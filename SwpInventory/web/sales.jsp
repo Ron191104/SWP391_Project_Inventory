@@ -346,8 +346,16 @@
                             </div>
                             <div>
                                 <label for="phone" style="font-size: 10px; font-weight: bold;">Số điện thoại:</label>
-                                <input type="text" id="phone" name="phone" class="custom-input-cart" />
-                            </div>                         
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    class="custom-input-cart"
+                                    inputmode="numeric"
+                                    maxlength="10"
+                                    pattern="^(03|05|07|08|09)[0-9]{8}$"
+                                    title="Số điện thoại phải đủ 10 chữ số"
+                                    />                            </div>                         
 
                             <input type="hidden" name="customerId" value="${customerId}">
 
@@ -416,10 +424,10 @@
 
                                 <tr><td colspan="6" style="height: 20px;"></td></tr>
 
-                                <tr>
-                                    <td colspan="4" style="text-align: left; font-weight: bold;">Thành tiền:</td>
-                                    <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
-                                </tr>
+                                <!--                                <tr>
+                                                                    <td colspan="4" style="text-align: left; font-weight: bold;">Thành tiền:</td>
+                                                                    <td colspan="2" style="font-weight: bold;"><fmt:formatNumber value="${total}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
+                                                                </tr>-->
                                 <tr>
                                     <td colspan="4" style="text-align: left; font-weight: bold;">Tổng tiền:</td>
                                     <td colspan="2" style="font-weight: bold;">

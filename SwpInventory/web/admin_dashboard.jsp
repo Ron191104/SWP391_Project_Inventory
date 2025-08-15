@@ -22,135 +22,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             /* CSS  */
-            * {
-                box-sizing: border-box;
-            }
-            body {
-                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4;
-                color: #333;
-                font-size: 16px;
-                overflow-x: hidden;
-            }
-            a {
-                text-decoration: none;
-                color: inherit;
-            }
 
-            .header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                background-color: #81D4FA;
-                color: white;
-                padding: 12px 24px;
-                flex-wrap: wrap;
-            }
-            .header-left {
-                display: flex;
-                align-items: center;
-                flex-wrap: wrap;
-            }
-            .header-left h1 {
-                margin: 0;
-                font-size: 2rem;
-                font-weight: 700;
-                display: flex;
-                align-items: center;
-            }
-            .header-left h1 i {
-                margin-right: 10px;
-            }
-            .admin-role-label {
-                color: #fff6c5;
-                font-weight: bold;
-                background: #c62828;
-                border-radius: 7px;
-                padding: 2px 10px;
-                margin-left: 10px;
-                font-size: 1rem;
-            }
-
-            .nav {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                margin-left: 30px;
-            }
-            .nav a {
-                color: white;
-                padding: 8px 16px;
-                border-radius: 4px;
-                font-weight: 600;
-                transition: background-color 0.3s ease;
-                white-space: nowrap;
-                display: flex;
-                align-items: center;
-            }
-            .nav a i {
-                margin-right: 8px;
-                color: #1B608A; /* Màu icon trong nav */
-            }
-            .nav a:hover, .nav a.active {
-                background-color: #1B608A;
-            }
-
-            .dropdown {
-                position: relative;
-            }
-            .dropdown input[type="checkbox"] {
-                display: none;
-            }
-            .dropdown-label {
-                cursor: pointer;
-                padding: 8px 16px;
-                border-radius: 4px;
-                color: white;
-                display: flex;
-                align-items: center;
-            }
-            .dropdown-label i {
-                margin-right: 8px;
-                color: #1B608A; /* Màu icon trong dropdown label */
-            }
-            .dropdown-menu {
-                position: absolute;
-                top: 100%;
-                right: 0;
-                background: white;
-                color: #333;
-                border-radius: 8px;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-                min-width: 200px;
-                display: none;
-                flex-direction: column;
-                z-index: 1001;
-            }
-            .dropdown input[type="checkbox"]:checked + .dropdown-label + .dropdown-menu {
-                display: flex;
-            }
-            .dropdown-menu a {
-                padding: 12px 16px;
-                border-bottom: 1px solid #eee;
-                font-weight: 600;
-                color: #333;
-            }
-            .dropdown-menu a:last-child {
-                border-bottom: none;
-            }
-            .dropdown-menu a:hover {
-                background-color: #FDF9DA;
-            }
-
-            .header-right {
-                display: flex;
-                align-items: center;
-                gap: 10px;            /* Giảm khoảng cách giữa các thành phần */
-                margin-top: 0;        /* Xóa khoảng cách trên cùng */
-                margin-right: 10px;   /* Đưa avatar gần hơn về bên phải */
-            }
             .notification-wrapper {
                 position: relative;
                 cursor: pointer;
@@ -250,9 +122,11 @@
                 display: flex;
                 flex-wrap: wrap;
                 gap: 10px;
-                justify-content: flex-start;
-                margin: 20px 10px;
+                justify-content: center; /* ✅ Căn giữa theo chiều ngang */
+                margin: 20px auto;
+                max-width: 1000px; /* tùy chọn để giới hạn chiều rộng */
             }
+
             .card {
                 flex: 1 1 150px;
                 max-width: 220px;
@@ -265,6 +139,7 @@
                 height: 60px;
                 min-width: 150px;
             }
+
             .card.orange {
                 background: #FFF3E0;
             }
@@ -376,74 +251,12 @@
         </style>
     </head>
     <body>
-        <div class="header">
-            <div class="header-left">
-                <h1><i class="fas fa-user-shield"></i> Admin Dashboard</h1>
-                <span class="admin-role-label">(Administrator)</span>
-                <div class="nav">
-                    <a href="inventory_dashboard.jsp"><i class="fas fa-box"></i> Quản lý kho</a>
-                    <a href="store_dashboard"><i class="fas fa-truck-loading"></i> Cửa hàng</a>
-                    <a href="supplier_dashboard"><i class="fas fa-truck"></i> Nhà cung cấp</a>
-                    <a href="store-inventory-statistics"><i class="fas fa-chart-bar"></i> Thống kê số lượng</a>
-                    <a href="financial-report"><i class="fas fa-chart-bar"></i> Thống kê doanh thu</a>
+        <jsp:include page="admin_sidebar.jsp" />
 
-                    <div class="dropdown">
-                        <input type="checkbox" id="admin-dropdown" />
-                        <label for="admin-dropdown" class="dropdown-label">
-                            <i class="fas fa-user-shield"></i> Quản trị
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="user-management"><i class="fas fa-users-cog"></i> Quản lý người dùng</a>
-                            <a href="system-logs"><i class="fas fa-file-alt"></i> Nhật ký hệ thống</a>
-                            <a href="admin-approve"><i class="fas fa-user-check"></i> Duyệt tài khoản</a>
-                            <a href="admin/categories">Quản lý danh mục sản phẩm</a>
-                            <a href="admin/suppliers">Quản lý nhà cung cấp</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="header-right">
-                <div class="notification-wrapper">
-                    <svg class="notification-icon" viewBox="0 0 24 24">
-                    <path d="M12 22c1.1 0 1.99-.9 1.99-2H10c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-1.99 2H20l-2-2z"/>
-                    </svg>
-                    <span class="notification-badge">0</span>
-                    <div class="notification-dropdown">
-                        <!-- Nội dung thông báo động -->
-                    </div>
-                </div>
-                <div class="user-menu">
-                    <input type="checkbox" id="user-menu-toggle" />
-                    <label for="user-menu-toggle">
-                        <img src="<%= request.getContextPath() + "/" +
-                            (session.getAttribute("userImage") != null && !session.getAttribute("userImage").toString().isEmpty()
-                                ? session.getAttribute("userImage")
-                                : "images/default-avatar.png") %>"
-                             alt="Avatar người dùng"
-                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;" />
-                    </label>
-                    <nav class="dropdown-menu">
-                        <span style="padding:12px 16px; color:#0080C0; font-weight:bold;">
-                            <%= session.getAttribute("userName") %>
-                        </span>
-                        <a href="<%= request.getContextPath() %>/myprofile">Profile</a>
-                        <a href="<%= request.getContextPath() %>/changepassworduser">Change Password</a>
-                        <a href="login.jsp"><i class=""></i> Login</a>
-                    </nav>
-                </div>
-                <span style="padding:0 16px; color:#fff6c5; font-size:x-small;">
-                    <%= session.getAttribute("userRole") %>
-                </span>
-            </div>
-        </div>
 
         <main class="main-content">
             <section class="cards">
-                <article class="card orange">
-                    <p>${customerCount}</p>
-                    <p>Customers</p>
-                    <i class="fas fa-user"></i>
-                </article>
+
                 <article class="card cyan">
                     <p>${supplierCount}</p>
                     <p>Suppliers</p>

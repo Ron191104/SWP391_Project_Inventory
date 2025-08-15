@@ -82,7 +82,7 @@
                             <a href="store_product_list"><i class="fas fa-bars"></i>Danh sách sản phẩm</a>
                             <a href="store_inventory"><i class="fas fa-bars"></i> Danh sách hàng tồn</a>
                             <a href="store_set_price"><i class="fas fa-cog"></i> Đặt giá sản phẩm</a>
-                        </div>
+</div>
                     </div>
 
                     <div class="dropdown">
@@ -128,7 +128,7 @@
                         <a href="myprofile.html">My Profile</a>
                         <a href="change_password.html">Change Password</a>
                         <a href="login.html">Log Out</a>
-                    </nav>
+</nav>
                 </div>
             </div>
         </div>

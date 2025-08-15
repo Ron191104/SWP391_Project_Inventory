@@ -18,8 +18,8 @@ import java.io.PrintWriter;
  *
  * @author User
  */
-@WebServlet(name = "DeleteOrderController", urlPatterns = {"/delete_order"})
-public class DeleteOrderController extends HttpServlet {
+@WebServlet(name = "CancelOrderServlet", urlPatterns = {"/cancel_order"})
+public class CancelOrderServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,12 +32,12 @@ public class DeleteOrderController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String iddelete = request.getParameter("id");
-        if (iddelete != null) {
+        String idc = request.getParameter("id");
+        if (idc != null) {
             try {
-                int id = Integer.parseInt(iddelete);
+                int id = Integer.parseInt(idc);
                 OrderDAO dao = new OrderDAO();
-                dao.deleteOrder(id);
+                dao.cancelOrder(id);
             } catch (NumberFormatException e) {
                 e.printStackTrace();  
             }

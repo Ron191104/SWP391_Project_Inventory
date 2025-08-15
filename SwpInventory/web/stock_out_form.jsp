@@ -190,6 +190,8 @@
 
                 <div style="text-align: center;">
                     <p><b>Mã đơn:</b> ${so.stockOutId}</p>
+                    <p><strong>Xuất tới:</strong> ${storeNameMap[so.storeId]} </p>
+                    <p><strong>Ngày tạo:</strong> <fmt:formatDate value="${so.createdAt}" pattern="dd/MM/yyyy HH:mm:ss"/> </p>
 
                 </div>
             </div>

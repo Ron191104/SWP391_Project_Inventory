@@ -12,20 +12,67 @@
 <html>
 <head>
     <title>Duyệt tài khoản người dùng</title>
-    <style>
-        table { border-collapse: collapse; width: 80%; margin: auto; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-        th { background: #eee; }
-        form { display: inline; }
-        .menu { margin: 20px auto; text-align: center; }
-        .menu a { margin: 0 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
-    </style>
+   <style>
+    table {
+        width: 90%;
+        margin: 30px auto;
+        border-collapse: collapse;
+        background-color: #eaf4fc; /* xanh nhạt */
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 100, 200, 0.1);
+    }
+
+    th, td {
+        padding: 12px 16px;
+        text-align: center;
+        border-bottom: 1px solid #d2e3f3;
+    }
+
+    th {
+        background-color: #81D4FA;
+        color: #003f7f;
+        font-weight: bold;
+    }
+
+    tr:hover {
+        background-color: #f2faff;
+    }
+
+    button {
+        padding: 6px 14px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    /* Nút duyệt */
+    .btn-approve {
+        background-color: #1e88e5;
+        color: white;
+    }
+
+    .btn-approve:hover {
+        background-color: #1565c0;
+    }
+
+    /* Nút xóa */
+    .btn-delete {
+        background-color: #e53935;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background-color: #c62828;
+    }
+</style>
+
 </head>
 <body>
-    <div class="menu">
-        <a href="admin-approve">Duyệt tài khoản</a>
-        <a href="admin_dashboard.jsp">Trang chủ</a>
-    </div>
+        <%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
     <h2 style="text-align:center;">Danh sách tài khoản chờ duyệt</h2>
 
     <%-- Form sửa user nếu có --%>
@@ -76,7 +123,6 @@
             <th>Email</th>
             <th>Role</th>
             <th>Duyệt</th>
-            <th>Sửa</th>
             <th>Xóa</th>
         </tr>
         <%
@@ -109,13 +155,7 @@
                     <button type="submit">Duyệt</button>
                 </form>
             </td>
-            <td>
-                <form method="get" action="admin-approve">
-                    <input type="hidden" name="action" value="edit"/>
-                    <input type="hidden" name="username" value="<%=u.getUsername()%>"/>
-                    <button type="submit">Sửa</button>
-                </form>
-            </td>
+         
             <td>
                 <form method="get" action="admin-approve" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
                     <input type="hidden" name="action" value="delete"/>

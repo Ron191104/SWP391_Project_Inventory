@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.DBConnect;
 import dao.InventoryStockDAO;
 import dao.StoreStockInDAO;
 import jakarta.servlet.ServletException;
@@ -14,8 +15,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.StockOut;
 import model.StockOutDetail;
 import model.StoreStockIn;
@@ -42,6 +48,16 @@ public class StockOutServlet extends HttpServlet {
             String unitName = invDAO.getUnitByProductId(d.getProductId());
             d.setUnitName(unitName);
         }
+        Map<Integer, String> storeNameMap = new HashMap<>();
+        String sql = "SELECT store_id, store_name FROM stores";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                storeNameMap.put(rs.getInt("store_id"), rs.getString("store_name"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        request.setAttribute("storeNameMap", storeNameMap);
 
         request.setAttribute("so", stockOut);
         request.setAttribute("details", details);
@@ -62,6 +78,7 @@ public class StockOutServlet extends HttpServlet {
         }
 
         invDAO.exportStock(stockOutId);
+        invDAO.updateStockOutDate(stockOutId);
 
         response.sendRedirect("stock_out_list");
     }

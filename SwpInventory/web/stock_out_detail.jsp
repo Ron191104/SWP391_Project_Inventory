@@ -13,27 +13,27 @@
     <div class="header">
         <div class="header-left">
             <h1>Tên kho</h1>
-                <div class="nav">
-                    <a href="${pageContext.request.contextPath}/inventory_dashboard">
-                        <i class="fas fa-warehouse"></i> Kho Hàng
-                    </a>
-                    <div class="dropdown">
-                        <input type="checkbox" id="product-dropdown" />
-                        <label for="product-dropdown" class="dropdown-label">
-                            <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
-                        </label>
-                        <div class="dropdown-menu">
-                            <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
+            <div class="nav">
+                <a href="${pageContext.request.contextPath}/inventory_dashboard">
+                    <i class="fas fa-warehouse"></i> Kho Hàng
+                </a>
+                <div class="dropdown">
+                    <input type="checkbox" id="product-dropdown" />
+                    <label for="product-dropdown" class="dropdown-label">
+                        <i class="fas fa-box"></i> <span style="font-weight:600">Sản phẩm</span>
+                    </label>
+                    <div class="dropdown-menu">
+                        <a href="product_list"><i class="fas fa-list"></i> Danh sách sản phẩm</a>
 
-                            <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
-                            <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
+                        <a href=""><i class="fas fa-plus"></i> Thêm sản phẩm</a>
+                        <a href=""><i class="fas fa-list"></i> Danh sách phân loại</a>
 
 
-                        </div>
                     </div>
-                    <a href="stock_in"><i class="fas fa-truck-loading"></i> Nhập kho</a>
-                    <a href="stock_out_form"><i class="fas fa-truck"></i> Xuất kho</a>
-                    <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
+                </div>
+                <a href="stock_in"><i class="fas fa-truck-loading"></i> Nhập kho</a>
+                <a href="stock_out_form"><i class="fas fa-truck"></i> Xuất kho</a>
+                <a href="stats.html"><i class="fas fa-chart-bar"></i> Thống kê</a>
 
                 <div class="dropdown">
                     <input type="checkbox" id="store-dropdown" />
@@ -192,10 +192,14 @@
 </head>
 <body>
     <div class="container">
-        <a href="stock_out_list" class="links" >Quay lại</a>
+        <a href="stock_report" class="links" >Quay lại</a>
         <h2>Chi tiết xuất kho ID=${stockOut.stockOutId}</h2>
-        <h3>Nhân viên: ${employee.name}</h3>
-     
+        <p><strong>Nhân viên: ${employee.name}</strong></p>
+        <p><strong>Ngày xuất kho:</strong> 
+            <fmt:formatDate value="${stockOut.stockOutDate}" pattern="dd/MM/yyyy HH:mm:ss"/>
+        </p>
+        <p><strong>Xuất tới:</strong> ${storeNameMap[stockOut.storeId]} </p>
+
         <table>
             <tr>
                 <th>Mã sản phẩm</th>

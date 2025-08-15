@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.DBConnect;
 import dao.InventoryStockDAO;
 import dao.UserDAO;
 import jakarta.servlet.ServletException;
@@ -13,7 +14,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.StockOut;
 import model.StockOutDetail;
 import model.User;
@@ -40,13 +46,11 @@ public class StockOutDetailController extends HttpServlet {
         int stockOutId = Integer.parseInt(id);
 
         InventoryStockDAO dao = new InventoryStockDAO();
-        UserDAO userDAO = new UserDAO(); // ✅ Thêm DAO để lấy thông tin nhân viên
+        UserDAO userDAO = new UserDAO(); 
 
-        // Lấy đơn xuất kho và chi tiết
         StockOut stockOut = dao.getStockOutById(stockOutId);
         List<StockOutDetail> details = dao.getStockOutDetails(stockOutId);
 
-        // Lấy tên sản phẩm cho từng chi tiết
         for (StockOutDetail d : details) {
             String productName = dao.getProductNameById(d.getProductId());
             d.setProductName(productName);
@@ -54,10 +58,19 @@ public class StockOutDetailController extends HttpServlet {
             d.setUnitName(unitName);
         }
 
-        // ✅ Lấy thông tin nhân viên từ employeeId của stockOut
         User employee = userDAO.getUserById(stockOut.getEmployeeId());
 
         // Truyền dữ liệu sang JSP
+        Map<Integer, String> storeNameMap = new HashMap<>();
+        String sql = "SELECT store_id, store_name FROM stores";
+        try (Connection con = DBConnect.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery();) {
+            while (rs.next()) {
+                storeNameMap.put(rs.getInt("store_id"), rs.getString("store_name"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        request.setAttribute("storeNameMap", storeNameMap);
         request.setAttribute("stockOut", stockOut);
         request.setAttribute("details", details);
         request.setAttribute("employee", employee); // ✅ gửi sang JSP

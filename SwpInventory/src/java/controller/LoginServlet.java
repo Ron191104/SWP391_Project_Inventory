@@ -50,6 +50,8 @@ public class LoginServlet extends HttpServlet {
 //            response.sendRedirect("SupplierDashboardServlet"); // Điều hướng thẳng vào dashboard supplier
 //            return;
 //        }
+        String userRole = dao.getUserRole(user.getRole());
+       
 
         // Đã được duyệt, cho đăng nhập như bình thường
         HttpSession session = request.getSession();
@@ -59,6 +61,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("userEmail", user.getEmail());
         session.setAttribute("username", user.getUsername()); // ✅ THÊM DÒNG NÀY
         session.setAttribute("id", user.getId());
+        session.setAttribute("role", userRole);
         // Ghi LOG đăng nhập thành công
         SystemLogDAO logDao = new SystemLogDAO();
         logDao.insertLog(user.getUsername(), "Đăng nhập", "Đăng nhập thành công");

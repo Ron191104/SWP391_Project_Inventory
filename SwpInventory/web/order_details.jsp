@@ -337,20 +337,20 @@
                 background-color: white;
             }
             .links {
-            display: flex;
-            justify-content: space-between;
-            margin-left: 20px;
-            color: #1976D2;
-            text-decoration: underline;
-            font-size: 0.98rem;
-        }
+                display: flex;
+                justify-content: space-between;
+                margin-left: 20px;
+                color: #1976D2;
+                text-decoration: underline;
+                font-size: 0.98rem;
+            }
 
         </style>
     </head>
     <body>
         <div class="header">
             <div class="header-left">
-               <h1>Tên kho</h1>
+                <h1>Tên kho</h1>
                 <div class="nav">
                     <a href="${pageContext.request.contextPath}/inventory_dashboard">
                         <i class="fas fa-warehouse"></i> Kho Hàng
@@ -419,6 +419,29 @@
         <div class="container" style="text-align: center">
             <a href="order_list" class="links" >Quay lại</a>
             <h2>Chi tiết đơn hàng #${param.orderId}</h2>
+            <p><b>Nhà cung cấp:</b> ${order.supplierName}</p>
+            <p><b>Ngày tạo:</b> <fmt:formatDate value="${order.orderDate}" pattern="dd-MM-yyyy"/></p>
+            
+            <p><b>Trạng thái:</b>
+                <c:choose>
+                    <c:when test="${order.status == 0}">
+                        <span style="color: gray;">Đang chờ xác nhận</span>
+                    </c:when>
+                    <c:when test="${order.status == 1}">
+                        <span style="color: blue;">Đã xác nhận</span>
+                    </c:when>
+                    <c:when test="${order.status == 2}">
+                        <span style="color: red;">Đã từ chối</span>
+                    </c:when>
+                    <c:when test="${order.status == 3}">
+                        <span style="color: green;">Đã giao hàng</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span style="color:#d9534f;">Đã hủy</span>
+                    </c:otherwise>
+                </c:choose>
+            </p>
+            <p style="text-align: left;"><b>Ghi chú:</b> ${order.note}</p>
 
             <table>
                 <tbody>
@@ -437,8 +460,8 @@
                             <td>${od.unit}</td>
                             <td><fmt:formatNumber value="${od.price}" type="currency" currencySymbol="₫" groupingUsed="true"/></td>
                             <td>
-                                
-                                
+
+
                                 <c:set var="subtotal" value="${od.quantity * od.price}" />
                                 <fmt:formatNumber value="${subtotal}" type="currency" currencySymbol="₫" groupingUsed="true"/>
                                 <c:set var="total" value="${total + subtotal}" />

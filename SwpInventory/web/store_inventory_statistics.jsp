@@ -79,10 +79,7 @@
             font-style: italic;
             color: #555;
         }
-        label {
-            font-weight: bold;
-            color: #333;
-        }
+        
     </style>
     <script>
         // Hàm gửi form khi sắp xếp
@@ -129,7 +126,8 @@
     </script>
 </head>
 <body>
-
+<%-- Sidebar --%>
+    <jsp:include page="admin_sidebar.jsp" />
     <h1>Thống kê tồn kho toàn hệ thống</h1>
 
     <div class="controls">
